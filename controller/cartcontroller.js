@@ -19,14 +19,17 @@ const LoadCart = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.session.email });
 
-    const cartProduct = await Cart.findOne({ User: user._id }).populate(
-      "Items.Products"
-    );
+    const cartProduct = await Cart.findOne({ User: user._id }).populate("Items.Products");
+
+    if (!cartProduct) {
+      return res.render("../views/user/cart", { cartProduct: null, total: 0 });
+    }
     
     await calculateTotalPrice(user._id).then((total) => {
       req.session.orderplaced = false;
-      res.render("../views/user/cart", { cartProduct: cartProduct, total });
+      res.render("../views/user/cart", { cartProduct, total });
     });
+    
   } catch (error) {
     console.log(error.message);
   }

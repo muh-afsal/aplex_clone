@@ -421,6 +421,18 @@ const LoadWallet = async (req, res) => {
   }
 };
 
+
+const LoadAboutpage=async(req,res)=>{
+  try {
+    res.render("../views/user/aboutpage.ejs")
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+
 //LogoutUser
 
 const LogoutUser = async (req, res) => {
@@ -451,4 +463,5 @@ module.exports = {
   editAdress,
   DeleteuserAddress,
   LoadWallet,
+  LoadAboutpage
 };

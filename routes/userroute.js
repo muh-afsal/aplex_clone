@@ -21,6 +21,7 @@ router.get("/login", userController.loadLogin);
 router.post("/login", userController.loginUser);
 router.get("/logout", userController.LogoutUser);
 router.get("/home", userController.loadHome);
+router.get("/about", userController.LoadAboutpage);
 router.get("/otp", userController.otpSender);
 router.get("/otpentry", userController.LoadOTP);
 router.post("/otp", userController.otpverify);

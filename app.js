@@ -16,7 +16,7 @@ const morgan = require('morgan')
 app.use(express.static("public"));
 app.use(require('nocache')())
 
-app.use(morgan('tiny'));
+// app.use(morgan('tiny'));
 
 
 app.use(session({

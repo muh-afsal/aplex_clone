@@ -26,7 +26,7 @@
         <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">My Shopping Cart</h2>
         <div class="container-fluid cart-container">
             <div class="cart-products-container">
-                <%if(cartProduct.Items.length>0){%>
+                <% if (cartProduct && cartProduct.Items && cartProduct.Items.length > 0) { %>
 
                     <div class="cart-products-listing" style=" padding-top: 13px;">
                         <div class="table-container">
@@ -169,39 +169,35 @@
         </div>
 
 
-        <!-- <p class="text-danger">aflu is bad boy </p> -->
         <%-include("./partials/footer.ejs")%>
 
 
 
 
-            <script>
-                window.addEventListener("load", () => {
-                    localStorage.setItem("cartcount", '<%-cartProduct.Items.length%>')
-                })
-                document.addEventListener("DOMContentLoaded", function () {
-                    // alert(cartProduct.Items.length);
-                    if (cartProduct.Items.length === 0) {
-                        window.location.reload();
-
-                    }
-                });
-
-
-                function navigatetocheckout() {
-                    window.location.href = "/checkout";
+        <script>
+            window.addEventListener("load", () => {
+                if (typeof cartProduct !== 'undefined' && cartProduct !== null && cartProduct.Items) {
+                    localStorage.setItem("cartcount", cartProduct.Items.length);
+                } else {
+                    localStorage.setItem("cartcount", '0');
                 }
-                function navigatetoproductlisting() {
-                    window.location.href = "/productlistingverified";
+            });
+        
+            document.addEventListener("DOMContentLoaded", function () {
+                if (typeof cartProduct !== 'undefined' && cartProduct !== null && cartProduct.Items && cartProduct.Items.length === 0) {
+                    window.location.reload();
                 }
-
-
-
-
-
-
-
-            </script>
+            });
+        
+            function navigatetocheckout() {
+                window.location.href = "/checkout";
+            }
+        
+            function navigatetoproductlisting() {
+                window.location.href = "/productlistingverified";
+            }
+        </script>
+        
 
             <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
                 integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
