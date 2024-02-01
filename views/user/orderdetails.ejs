@@ -1,0 +1,256 @@
+<%-include("./partials/header.ejs")%>
+    <title>Order Details</title>
+    <link rel="stylesheet" href="/css/user/orderDetails.css">
+
+    </head>
+
+    <body>
+
+        <%-include("./partials/nav-after-login.ejs")%>
+
+            <div class="orderplacedcontainer container-fluid">
+                <div style="display: flex;justify-content: flex-end;width: 90%;margin-top: 30px;">
+                    <%if(orderData.Status=="Delivered" ){%>
+                        <button id="downloadbtn" onclick="generateAndDownloadInvoice('<%=orderData._id%>')">Download
+                            Invoice</button>
+                        <%}%>
+                </div>
+
+                <h3 style="font-weight: 700; margin-top: 20px;">Order Details</h3>
+                <div id="wholeTogglediv">
+                    <div id="toglerdiv" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample"><i
+                            class="fa-solid fa-ellipsis-vertical "></i></div>
+
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <%if(orderData.Status=="Ordered" ){%>
+                                <a href="" id="cancelbtn" data-toggle="modal" data-target="#cancelOrder">Cancel
+                                    Order</a>
+                                <%}%>
+                                    <%if(orderData.Status=="Delivered" ){%>
+                                        <a href="" id="returnbtn" data-toggle="modal" data-target="#returnReason">Return
+                                            Order</a>
+                                        <%}%>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- modal for confirmation of order cancel -->
+                <div class="modal fade" id="cancelOrder" tabindex="-1" role="dialog" aria-labelledby="cancelOrderLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>Are you sure ?</h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" style="background-color: #959595;"
+                                    data-dismiss="modal">Cancel</button>
+                                <a href="/cancelOrder/<%=orderData._id%>"><button type="button"
+                                        class="btn btn-primary">Confirm</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal for reason of return  -->
+                <div class="modal fade" id="returnReason" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: 700;">Reason</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/returnOrder/<%=orderData._id%>" method="POST" id="form">
+                                    <label for="entry ">Enter the Reason for returning the product</label>
+                                    <input type="text" class="form-control entry shadow-none" placeholder="Reason "
+                                        name="returnReason">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" style="background-color: #959595;"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Return</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="orderdetails">
+                    <div id="order_date_id">
+                        <h4 style="font-weight: 600;" id="orderid">#<%=orderData.orderNumber%>
+                        </h4>
+                        <h4 style="font-weight: 600;" id="orderstatus"><span
+                                style="color: rgba(0, 0, 0, 0.483);">Status:</span>
+                            <%=orderData.Status%>
+                        </h4>
+                        <h4 style="font-weight: 600;" id="Totalprice">₹<%=orderData.TotalPrice%>/-</h4>
+                    </div>
+                </div>
+                <div class="product_listing">
+                    <div class="product_listing_head">
+                        <p style="    margin-right: 26%;">Products</p>
+                        <p id="product-price">Price</p>
+                        <p>Quantity</p>
+                        <p>Sub Total</p>
+                    </div>
+                    <div class="product_listing_container">
+                        <%orderData.Items.forEach((value,index)=>{%>
+                            <div class="products_div">
+                                <div id="product_img_name">
+                                    <img style="    width: 70px;" src="<%=value.productId.Image[0]%>" alt="">
+                                    <p style="margin-left: 10px;">
+                                        <%=value.productId.Name%>
+                                    </p>
+                                </div>
+
+                                <p id="product-price">₹
+                                    <%if(value.productId.isOffer){%>
+                                        <%=value.productId.DiscountPrice%>
+                                            <%}else{%>
+                                                <%=value.productId.Price%>
+                                                    <%}%>/-
+                                </p>
+                                <p>
+                                    <%=value.quantity%>
+                                </p>
+                                <p>₹
+                                    <%if(value.productId.isOffer){%>
+                                        <%=value.productId.DiscountPrice*value.quantity%>
+                                            <%}else{%>
+                                                <%=value.productId.Price*value.quantity%>
+                                                    <%}%>/-
+                                </p>
+                            </div>
+                            <%})%>
+
+                    </div>
+
+                </div>
+                <div id="ordersummary_address">
+                    <div class="order_summary">
+                        <h5 style="font-weight: 600;">Order Summary</h5>
+                        <div class="total-values-container">
+
+
+                            <div class="total-values">
+                                <p class="total-texts">Coupon Discount Price :</p>
+                                <p class="cart-prices">-₹<%=orderData.CoupenDiscount%>/-</p>
+                            </div>
+                            <div class="total-values">
+                                <p class="total-texts" style="font-size: x-large; color: rgb(77, 77, 77) ;">Grand Total
+                                    :</p>
+                                <p style="font-size: x-large; font-weight: 600; color: #6b6b6b; " class="cart-prices">
+                                    <span id="total">₹<%=orderData.TotalPrice%></span>/-
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order_summary">
+                        <h5 style="font-weight: 600;">Selected Address</h5>
+                        <div id="address_container">
+                            <div class="addressTexts" style="color: gray;">
+                                <div class="address_values">
+                                    <span>Shipping Name : </span>
+                                    <span>Phone No :</span>
+                                    <span>City :</span>
+                                    <span>State :</span>
+                                    <span>Country :</span>
+                                    <span>Pincode :</span>
+
+                                </div>
+                                <div class="address_values">
+                                    <span>
+                                        <%=orderData.Address.shippingName%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.phone%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.city%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.state%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.country%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.pincode%>
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <script>
+
+                function generateAndDownloadInvoice(orderId) {
+
+
+                    let timerInterval;
+                    Swal.fire({
+                        title: "Preparing For Download..",
+                        html: "Download will start in <b></b> seconds.",
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                const secondsLeft = Math.ceil(Swal.getTimerLeft() / 1000);
+                                timer.textContent = `${secondsLeft}`;
+                            }, 1000);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    });
+
+
+                    fetch(`/generateInvoices`, {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId })
+                    }).then(response => response.json())
+                        .then(res => {
+                            if (res.success) {
+                                window.location.href = `/downloadinvoice/${orderId}`;
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during fetch:", error);
+                        });
+                };
+
+
+
+
+            </script>
+
+            <%-include("./partials/footer.ejs")%>
+                <%-include("./partials/footerlinks.ejs")%>

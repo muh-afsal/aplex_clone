@@ -1,0 +1,68 @@
+<%-include("./partials/header.ejs")%>
+<title>Orders</title>
+<style>
+ 
+</style>
+<link rel="stylesheet" href="/css/user/orders.css">
+</head>
+
+<body>
+
+    <%-include("./partials/nav-after-login.ejs")%>
+
+    <div class="product-text-container container-fluid" style="display: flex; justify-content: center;">
+        <h4 style=" font-size: xx-large;   margin-top: 11px; font-weight: 700;" id="ManageProduct-text">Orders</h4>
+      
+    </div>
+    <div>
+        <div class="col-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                <h2 class="tm-block-title text-dark">Orders</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Order ID</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Payment Status</th>
+                            <th scope="col">Order Status</th>
+                            <th scope="col">Details</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%orderData.forEach((data,index)=>{%>
+                            <tr>
+                                <th scope="row">
+                                    <%=index+1%>
+                                </th>
+                                <td>
+                                    <%=data.orderNumber%>
+                                </td>
+                                <td>
+                                    <%=data.OrderDate.toLocaleDateString()%>
+                                </td>
+                                <td>
+                                    <%=data.paymentStatus%>
+                                </td>
+                                <td>
+                                    <%=data.Status%>
+                                </td>
+                                <td><a href="/orderDetails?id=<%=data._id%>">View Details</a></td>
+
+                            </tr>
+                            <%})%>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+
+    <%-include("./partials/footer.ejs")%>
+    <%-include("./partials/footerlinks.ejs")%>

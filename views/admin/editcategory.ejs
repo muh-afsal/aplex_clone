@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Category</title>
+  <link rel="stylesheet" href="/css/admin/addProduct.css">
+  <style>
+    #category-name-input{
+     width:30%;
+     margin-left: 15px;
+     border-radius: 10px;
+    }
+    #add-category-btn{
+        margin-top: 49px;
+    border-radius: 9px;
+    width: 10vw;
+    height: 41px;
+    background-color: #4461F2;
+    color: white;
+    font-weight: 600;
+    margin-left: 21vw;
+    box-shadow: 0px 0px 5px -1px #4461F2;
+    margin-bottom: 34px;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include("./partials/side-bar.ejs")%>
+    <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+      <h4 style="    margin-top: 11px;" id="ManageProduct-text">Edit Category</h4>
+      <button type="submit " value="submit" class="btn" id="login-btn" style="float: right;"><a
+          style="text-decoration: none; color: #000000;" href="/admin/manageCategory">Cancel</a></button>
+    </div>
+    <form action="/admin/editCategory?id=<%=Category._id%>" method="POST" id="form" >
+      <div class="general-info container-fluid" style=" height: auto;   width: 60%;margin-left: 13%;">
+        <h5 style="margin-left: 10px; color:#4461F2; margin-bottom: 30px;">General Information</h5>
+        <% if( typeof message !=="undefined"){%>         
+            <p class="text-center text-success" style="font-size: small;">  <%- message %> <a class="text-decoration-none text-dark close" style="    font-size: x-large;margin-left: 4px;"  href="/admin/editCategory">x</a></p>
+         <% }%>
+        <% if( typeof errmessage !=="undefined"){%>         
+            <p class="text-center text-danger" style="font-size: small;">  <%- errmessage %> <a class="text-decoration-none text-dark close" style="    font-size: x-large;margin-left: 4px;"  href="/admin/editCategory">x</a></p>
+         <% }%>
+        <div>
+          <div class="form-group">
+            <label for="formGroupExampleInput" style="margin-left: 2%; font-size: smaller; font-weight: 600;">Category Name</label>
+            <input type="text" class="form-control  shadow-none" maxlength="20" value="<%=Category.name%>" id="category-name-input" name="name"
+              placeholder="Category name">
+            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="nameError"></div>
+          </div>
+          
+        </div>
+        <div class="form-group" style="    margin-top: 2vw; margin-left: 12px;">
+          <label for="formGroupExampleInput2" style=" font-size: smaller; font-weight: 600;;">Category Description</label>
+          <input type="text" class="form-control shadow-none" id="product-des-input" value="<%=Category.description%>" name="description"
+            style="font-size: smaller;" placeholder="Category Description">
+          <div class="text-danger " style="font-size: small; margin-left: 20px;" id="descriptionError"></div>
+        </div>
+        
+
+        <button type="submit " class="btn" value="submit" id="add-category-btn">Update</button>
+    </form>
+      </div>
+  
+      
+   
+    <script>
+
+
+
+
+
+
+      //to validat other inputs
+      function isEmpty(value) {
+        const trimmedValue = value.trim();
+        return trimmedValue === "";
+      }
+      // Function to validate the form on submit
+      document.querySelector("form").addEventListener("submit", function (event) {
+        const nameInput = document.getElementById("category-name-input");
+        const nameValue = nameInput.value;
+        const nameError = document.querySelector("#nameError");
+
+
+        const descriptionInput = document.querySelector("#product-des-input");
+        const descriptionValue = descriptionInput.value;
+        const descriptionError = document.querySelector("#descriptionError");
+
+        nameError.textContent = "";
+        descriptionError.textContent = "";
+       
+
+
+        if (isEmpty(nameValue)) {
+          nameError.textContent = "Category Name cannot be empty";
+          event.preventDefault();
+        }
+        if (isEmpty(descriptionValue)) {
+          descriptionError.textContent = "Description cannot be empty";
+          event.preventDefault();
+        }
+
+
+       
+
+      })
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

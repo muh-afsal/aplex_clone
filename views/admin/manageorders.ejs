@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManageOrder</title>
+    <link rel="stylesheet" href="/css/admin/ManageProduct.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+
+</head>
+<style>
+    div.dataTables_wrapper div.dataTables_length select {
+        width: 53px;
+    }
+
+    th.no-sort i {
+        display: none;
+    }
+
+    .Entry {
+        font-size: medium;
+        height: 49px;
+        background-color: #DBECFF;
+        box-shadow: 0px 2px 13px -8px #000000;
+        border-radius: 10px;
+        width: 91%;
+        margin-left: 25px;
+        border: none;
+        padding: 9px;
+    }
+    .active::before {
+    
+    background-color: #ffffff!important;
+}
+</style>
+
+<body>
+    <%-include("./partials/side-bar.ejs")%>
+
+        <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+            <h4 style="    margin-top: 11px;" id="ManageProduct-text">Manage Orders</h4>
+        </div>
+        <div>
+            <div class="col-12 tm-block-col">
+                <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                    <h2 class="tm-block-title text-dark">Orders</h2>
+                    <button type="button" id="returnreqBTN" class="btn-primary"
+                        style="margin-left: 20px; float: right ;border-radius: 6px;border: none;" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Sales Report<i class="fa-solid fa-download ml-2"></i></button>
+                    <a href="/admin/returndetails"><button type="button" id="returnreqBTN" class="btn-dark"
+                            style="float: right ;border-radius: 6px;border: none">Return requests </button></a>
+                    <table class="table" id="orders">
+                        <thead>
+                            <tr>
+                                <th scope="col" data-order="asc">No. <i class="fas fa-sort"></i></th>
+                                <th scope="col">Order ID</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Payment Status</th>
+                                <th scope="col">Order Status</th>
+                                <th scope="col">Details</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%orderData.forEach((data,index)=>{%>
+                                <tr>
+                                    <th scope="row">
+                                        <%=index+1%>
+                                    </th>
+                                    <td>
+                                        <%=data.orderNumber%>
+                                    </td>
+                                    <td>
+                                        <%=data.OrderDate.toLocaleDateString()%>
+                                    </td>
+                                    <td>
+                                        <%=data.paymentStatus%>
+                                    </td>
+                                    <td>
+                                        <%=data.Status%>
+                                    </td>
+                                    <td><a style="text-decoration: none;"
+                                            href="/admin/orderdetails?id=<%=data._id%>">View Details</a></td>
+
+                                </tr>
+                                <%})%>
+
+
+                        </tbody>
+                        <!-- modal to download sales report -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/admin/salesReport" method="POST" id="salesReportForm">
+                                            <label for="fromDate" class="form-label">From:</label>
+                                            <input type="date" id="fromDate" name="startDate" class="Entry">
+                                            <div style="margin-left: 30px;color: red;" id="fromDateError"></div>
+                                            <label for="toDate" class="form-label">To:</label>
+                                            <input type="date" id="toDate" name="endDate" class="Entry">
+                                            <div style="margin-left: 30px; color: red;"   id="toDateError"></div>
+                                            <label for="formatSelect" class="form-label">Select Format:</label>
+                                            <div class="row mt-5">
+                                                <div class="col-sm-6"> 
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="downloadFormat" value="pdf" id="pdfCheckbox" checked>
+                                                        <label class="form-check-label" for="pdfCheckbox">
+                                                            PDF
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6"> 
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="downloadFormat" value="excel" id="excelCheckbox">
+                                                        <label class="form-check-label" for="excelCheckbox">
+                                                            Excel
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Move the submit button inside the form -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Download</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const salesReportForm = document.getElementById('salesReportForm');
+                const fromDateInput = document.getElementById('fromDate');
+                const toDateInput = document.getElementById('toDate');
+                const fromDateError = document.getElementById('fromDateError');
+                const toDateError = document.getElementById('toDateError');
+    
+                salesReportForm.addEventListener('submit', function (event) {
+                    // Reset previous error messages
+                    fromDateError.textContent = '';
+                    toDateError.textContent = '';
+    
+                    // Get selected dates
+                    const fromDate = new Date(fromDateInput.value);
+                    const toDate = new Date(toDateInput.value);
+    
+                    // Get current date
+                    const currentDate = new Date();
+    
+                    // Check if start date is after current date
+                    if (fromDate > currentDate) {
+                        fromDateError.textContent = 'Start date cannot be after current date';
+                        event.preventDefault();
+                    }
+    
+                    // Check if end date is after current date
+                    if (toDate > currentDate) {
+                        toDateError.textContent = 'End date cannot be after current date';
+                        event.preventDefault();
+                    }
+    
+                    // Check if end date is before start date
+                    if (fromDate > toDate) {
+                        toDateError.textContent = 'End date cannot be before start date';
+                        event.preventDefault();
+                    }
+    
+                    // Check if both date fields are empty
+                    if (!fromDateInput.value && !toDateInput.value) {
+                        fromDateError.textContent = 'Start date is required';
+                        toDateError.textContent = 'End date is required';
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+        
+        <script>
+            // new DataTable('#orders');
+
+            $(document).ready(function () {
+                $("#orders").DataTable({
+                    columnDefs: [
+                        { orderable: false, targets: [1, 2, 3, 4, 5,] },
+                    ],
+                    order: [[0, 'asc']],
+                });
+            });
+
+        </script>
+        <script>
+
+        </script>
+</body>
+
+
+</html>

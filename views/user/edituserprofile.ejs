@@ -1,0 +1,100 @@
+<%-include("./partials/header.ejs")%>
+    <link rel="stylesheet" href="/css/user/editUser.css">
+    <title>Edit Profile</title>
+    </head>
+
+    <body>
+
+        <%-include("./partials/nav-after-login.ejs")%>
+            <div class="profile_container container-fluid">
+
+                <div class="userDetails_container ">
+                    <form action="/editprofile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                        <div class="profile_img_container">
+                            <div class="image_upload " style="display: flex; flex-direction: column;">
+                                <div id="profile_image"
+                                    style="background-size: contain; background-position: center; background-image: url(/assets/<%=userData.profileImage%>);">
+
+                                </div>
+                                <label for="file" class="custom-upload-btn">Upload Image</label>
+                                <div class="text-danger " style="font-size: small; " id="mainImageError"></div>
+
+                                <input name="image" type="file" accept="image/*" id="file"
+                                    onchange="previewImage('file','profile_image')" class="file-input">
+
+                            </div>
+                            <h3 id="userName">
+                                <%=userData.username%> <br>
+                                    <p style="font-size: smaller;font-weight: 600; margin-top: 10px; color: #0000006b;">
+                                        <%=userData.email%>
+                                    </p>
+                            </h3>
+
+                        </div>
+                        <div class="profile_info_container">
+
+                            <div style="display: flex; gap: 40px;" class="userinputcontainer">
+                                <div style="display: flex;flex-direction: column;">
+                                <input type="text" maxlength="20" class="input_text " id="name" name="username" style="padding-left: 20px;" value="<%=userData.username%>">
+                                <div class="text-danger" id="nameError"></div>
+                              </div>
+                                <input type="text" class="input_text text-muted" id="email" name="email" style="padding-left: 20px;" value="<%=userData.email%>" readonly>
+                            </div>
+                            
+                            <div style="display: flex; flex-direction: column;" class="userinputcontainer" >
+                                <input type="text" maxlength="10" class="input_text" id="phone" name="phone" style="padding-left: 20px;" value="<%=userData.phone%>">
+                                <div class="text-danger" id="phoneError"></div>
+                            </div>
+                            
+                            <button id="saveChangesBtn" class="custom-upload-btn" type="submit">Save Changes</button>
+                    </form>
+
+                </div>
+                <%-include("./partials/side-bar.ejs")%>
+
+
+            </div>
+
+            </div>
+
+           
+           <script>
+            function validateForm() {
+                const username = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+        
+                const usernameRegex = /^[a-zA-Z]+$/;
+        
+                const phoneRegex = /^(?!0+$)(?!9+$)\d{10}$/;
+        
+                let isValid = true;
+        
+                if (username === '') {
+                    document.getElementById('nameError').innerText = 'Username cannot be empty';
+                    isValid = false;
+                } else if (!usernameRegex.test(username)) {
+                    document.getElementById('nameError').innerText = 'Invalid characters in username';
+                    isValid = false;
+                } else {
+                    document.getElementById('nameError').innerText = '';
+                }
+        
+                if (phone === '') {
+                    document.getElementById('phoneError').innerText = 'Phone number cannot be empty';
+                    isValid = false;
+                } else if (!phoneRegex.test(phone)) {
+                    document.getElementById('phoneError').innerText = 'Invalid phone number,it should be 10 digits';
+                    isValid = false;
+                } else {
+                    document.getElementById('phoneError').innerText = '';
+                }
+        
+                return isValid;
+            }
+        
+        </script>
+        
+            
+
+            <%-include("./partials/footer.ejs")%>
+                <%-include("./partials/footerlinks.ejs")%>

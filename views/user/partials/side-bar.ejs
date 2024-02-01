@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin/slide-nav.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+            body{
+                margin: 0px;
+                padding: 0;
+                font-family: Arial, sans-serif;
+             }
+             .l-navbar {
+            width: 70px;
+            transition: 0.3s;
+            margin-top: 80px!important;
+            background-color: #ffffff!important;
+        }
+
+        .l-navbar:hover {
+            width: 250px;
+        }
+
+        .nav_list {
+            width: 100%;
+        }
+
+        .l-navbar:hover .nav_list {
+            width: 250px;
+        }
+        .nav_link{
+            margin-bottom: 20px;
+            color: black;
+          text-decoration: none!important;
+          height: auto!important;
+        }
+
+        .icons {
+               color: #4461F2;
+        }
+
+        /* Add this style for hovering color for links */
+        .nav_link:hover {
+            background-color: #4461F2;
+            margin-left: 10px;
+            color:aliceblue !important ;
+        }
+        @media (min-width:768px){
+               #header{
+                display: none;
+               } 
+        }
+        @media (min-width:992px){
+            .aplex-logo{
+    display: none;
+}
+        }
+        </style>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="body-pd">
+        <header class="header" id="header" style="    border-radius: 13px; ">
+            <div class="header_toggle" style="color: black;"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+            <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+        </header>
+        <div class="l-navbar" id="nav-bar" style="background-color: white ;    ">
+            <nav class="nav">
+                <div>
+                    <a href="/profile" class="nav_logo" style="text-decoration: none;">
+                        <i class='fa-solid fa-user nav_logo-icon'></i>
+                        <span class="nav_logo-name" style="text-decoration: none;color: black;">My Profile</span>
+                    </a>
+                    <div class="nav_list">
+                        <a href="/home" class="nav_link active">
+                            <i title="Dashboard" style="font-size: larger;" class='icons fa-solid fa-house'></i>
+                            <span class="nav_name">Home</span>
+                        </a>
+                        <a href="/cart" class="nav_link">
+                            <i title="Products" style="font-size: larger;" class='icons fa-solid fa-cart-shopping'></i>
+                            <span class="nav_name">Cart</span>
+                        </a>
+                        <a href="/wishlist" class="nav_link">
+                            <i title="Category" style="font-size: larger;" class='icons fa-solid fa-heart'></i>
+                            <span class="nav_name">Wishlist</span>
+                        </a>
+                        <a href="/wallet" class="nav_link">
+                            <i title="Users" style="font-size: larger;" class='icons fa-solid fa-wallet'></i>
+                            <span class="nav_name">Wallet</span>
+                        </a>
+                        <a href="/address" class="nav_link">
+                            <i title="Orders" style="font-size: x-large;" class='icons fa-solid fa-location-dot'></i>
+                            <span class="nav_name">Address</span>
+                        </a>
+                        <a href="/orders" class="nav_link">
+                            <i title="Banner" class='icons fa-solid fa-truck-fast'></i>
+                            <span class="nav_name">Orders</span>
+                        </a>
+                        <a href="/coupon" class="nav_link">
+                            <i title="Banner" class='icons fa-solid fa-ticket nav_icon'></i>
+                            <span class="nav_name">Coupons</span>
+                        </a>
+                        <a href="/logout" class="nav_link">
+                            <i title="Logout" style="color: red;" class=' bx bx-log-out nav_icon'></i>
+                            <span class="nav_name">Logout</span> </a>
+
+                    </div>
+                </div>
+        </div>
+
+    </div>
+    </nav>
+    </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    bodypd = document.getElementById(bodyId),
+                    headerpd = document.getElementById(headerId)
+
+                // Validate that all variables exist
+                if (toggle && nav && bodypd && headerpd) {
+                    toggle.addEventListener('click', () => {
+                        // show navbar
+                        nav.classList.toggle('show')
+                        // change icon
+                        toggle.classList.toggle('bx-x')
+                        // add padding to body
+                        bodypd.classList.toggle('body-pd')
+                        // add padding to header
+                        headerpd.classList.toggle('body-pd')
+                    })
+                }
+            }
+
+            showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+            /*===== LINK ACTIVE =====*/
+            const linkColor = document.querySelectorAll('.nav_link')
+
+            function colorLink() {
+                if (linkColor) {
+                    linkColor.forEach(l => l.classList.remove('active'))
+                    this.classList.add('active')
+                }
+            }
+            linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+            // Your code to run since DOM is loaded and ready
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

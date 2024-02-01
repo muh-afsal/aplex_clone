@@ -1,0 +1,95 @@
+<%-include("./partials/header.ejs")%>
+    <title>Wallet</title>
+    <link rel="stylesheet" href="/css/user/waller.css">
+
+    </head>
+
+    <body>
+
+        <%-include("./partials/nav-after-login.ejs")%>
+
+
+            <div class="profile_container container-fluid">
+                <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">Wallet</h2>
+                <div class="Wallet_history_container container-fluid">
+                    <div class="orderdetails">
+                        <div id="order_date_id">
+                            <div style="display: flex;justify-content: center;align-items: center;"><img
+                                    style="    width: 56px;" src="/assets/wallet.png" alt="">
+                                <h4 style=" margin-left: 15px; color: rgb(87, 87, 87); font-weight: 600;" id="orderid">
+                                    Wallet Balance:</h4>
+                            </div>
+
+
+
+                            <h4 style="font-weight: 600;margin-left: 70px;" id="Totalprice">₹<%=userData.walletBalance%>
+                                    /-</h4>
+                        </div>
+                    </div>
+                    <div id="activity_Container">
+                        <div class="orderdetails">
+                           
+                            <div class="col-12 tm-block-col">
+                                <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll ">
+                                    <h2 class="tm-block-title text-dark "
+                                        style="font-size: larger; font-weight: 500 ;padding: 5px;">TRANSACTION DETAILS
+                                    </h2>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No.</th>
+                                                <th scope="col">TRANSACTION ID</th>
+                                                <th scope="col">AMOUNT</th>
+                                                <th scope="col">DESCRIPTION </th>
+                                                <th scope="col">TRANSACTION TYPE</th>
+                                                <th scope="col">CANCELLED AT</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%userData.Activity.forEach((value,index)=>{%>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <%=index+1%>
+                                                    </th>
+                                                    <td>
+                                                        <%=value.TransactionID%>
+                                                    </td>
+                                                    <td>
+                                                        <%=value.amount%>
+                                                    </td>
+                                                    <td>
+                                                        <%=value.message%>
+                                                    </td>
+                                                    <td>
+                                                        <%=value.TransactionType%>
+                                                    </td>
+                                                    <td>
+                                                        <%= value.Date.toLocaleDateString('en-GB', { day: '2-digit' ,
+                                                            month: '2-digit' , year: '2-digit' }) %>
+                                                    </td>
+
+
+                                                </tr>
+                                                <%})%>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <%-include("./partials/side-bar.ejs")%>
+
+                <script>
+
+                </script>
+
+                <%-include("./partials/footer.ejs")%>
+                    <%-include("./partials/footerlinks.ejs")%>

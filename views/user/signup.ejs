@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/user/signup.css">
+
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/navbar.ejs")%>
+
+
+        <div class="container-fluid signup-container">
+            <h2 class="text-center text-dark signup-text">Sign Up</h2>
+            <div class="container " id="inner-container">
+                <div class="container-fluid signup-img">
+
+                </div>
+                <div class="container-fluid signup-inputs">
+
+                    <form action="/signup" method="POST" style="margin-top: 11px; margin-left: -26px;" id="form">
+                        <div class="form-group  mb-4">
+                            <input id="name" maxlength="20" type="name" class="form-control entry shadow-none" placeholder="Username"
+                                name="name">
+                            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="nameError"></div>
+
+                            <small class="form-text text-muted "></small>
+                        </div>
+                        <div class="form-group  mb-4">
+                            <input id="email" type="text" maxlength="20" class="form-control entry shadow-none"
+                                placeholder="Email Address" name="email">
+                            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="emailError">
+                            </div>
+                            <% if( typeof message !=="undefined" ){%>
+                                <p class=" text-danger mt-6 " style="font-size: small; gap: 10px;margin-left: 30px;">
+                                    <%- message %>
+                                </p>
+                                <% }%>
+                        </div>
+                        <div class="form-group  mb-4">
+                            <input oninput="limitDigits(this, 10)" id="phone" type="number" class="form-control entry shadow-none"
+                                placeholder="Phone Number" name="phone">
+                            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="phoneError">
+                            </div>
+
+                            <small class="form-text text-muted "></small>
+                        </div>
+                        <div class="form-group mt-4">
+                            <input id="createpassword" type="password" class="form-control entry shadow-none"
+                                name="createpassword" placeholder="Create Password">
+                            <div class="text-danger " style="font-size: small; margin-left: 20px;"
+                                id="createpasswordError"></div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <input id="password" type="password" class="form-control entry shadow-none" name="password"
+                                placeholder="Confirm Password">
+                            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="passwordError">
+                            </div>
+                        </div>
+
+                        <button type="submit " class="btn" value="submit" id="signup-btn">Sign Up</button>
+                    </form>
+                    <h4 id="dont-have-account" style="font-size: medium; font-weight: 400 ;">Already have an account? <a
+                            href="/login" class="text-primary text-center text-decoration-none">Login</a></h4>
+
+                </div>
+            </div>
+        </div>
+        <%-include("./partials/footer.ejs")%>
+            <!-- <footer class="footer container-fluid">
+        
+    </footer> -->
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+            <script>
+                
+                function limitDigits(input, maxLength) {
+            const value = input.value;
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength);
+            }
+        }
+
+                function validateEmail(email) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
+                    return emailRegex.test(email);
+                }
+                
+                 function isEmpty(value) {
+                     const trimmedValue = value.trim();
+                     return trimmedValue === "";
+                 }
+                function validatephone(phone) {
+                    return phone.length === 10;
+                }
+                function validatePassword(password) {
+                    // Define the strong password pattern
+                    const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%^&*])[A-Za-z\d!@#\$%^&*]{8,}$/;
+
+                    // Test the password against the pattern
+                    return strongPasswordPattern.test(password);
+                }
+                document.querySelector("form").addEventListener("submit", function (event) {
+                    const nameInput = document.querySelector("#name");
+                    const nameValue = nameInput.value;
+                    const nameError = document.querySelector("#nameError");
+
+
+                    const emailInput = document.querySelector("#email");
+                    const emailValue = emailInput.value;
+                    const emailError = document.querySelector("#emailError");
+
+
+                    const phoneInput = document.querySelector("#phone");
+                    const phoneValue = phoneInput.value;
+                    const phoneError = document.querySelector("#phoneError");
+
+                    const createpasswordInput = document.querySelector("#createpassword");
+                    const createpasswordValue = createpasswordInput.value;
+                    const createpasswordError = document.querySelector("#createpasswordError");
+
+                    const passwordInput = document.querySelector("#password");
+                    const passwordValue = passwordInput.value;
+                    const passwordError = document.querySelector("#passwordError");
+
+
+
+
+                    nameError.textContent = "";
+                    emailError.textContent = "";
+                    phoneError.textContent = "";
+                    createpasswordError.textContent = "";
+                    passwordError.textContent = "";
+
+                    if (isEmpty(nameValue)) {
+                        nameError.textContent = "Username cant be empty";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(emailValue)) {
+                        emailError.textContent = "Email cant be empty";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(phoneValue)) {
+                        phoneError.textContent = "Phone Number cant be empty";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(createpasswordValue)) {
+                        createpasswordError.textContent = "Create Password cant be empty";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(passwordValue)) {
+                        passwordError.textContent = "Confirm Password cant be empty";
+                        event.preventDefault();
+                    }
+
+                    //validating email
+                    if (!validateEmail(emailValue)) {
+                        emailError.textContent = "Email is not valid";
+                        event.preventDefault();
+                    }
+                    if (!validatephone(phoneValue)) {
+                        phoneError.textContent = "Phone number is not valid,please enter a 10 digit phone number";
+                        event.preventDefault();
+                    }
+                         if (/^(\d)\1+$/.test(phoneValue)) {
+                        phoneError.textContent = 'Invalid phone number';
+                        event.preventDefault();
+                    }
+                    //validate password
+                    if (!validatePassword(createpasswordValue)) {
+                        createpasswordError.textContent = "Password is too weak";
+                        event.preventDefault();
+                    }
+                    if (passwordValue !== createpasswordValue) {
+                        passwordError.textContent = "Password did't match";
+                        event.preventDefault();
+                    }
+                })
+
+
+
+
+
+
+            </script>
+</body>
+
+</html>

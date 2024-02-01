@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Verification Form</title>
+  <link rel="stylesheet" href="/css/user/otp.css" />
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <script src="script.js" defer></script>
+  <style>
+    #resendLink {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <i class="bx bxs-check-shield"></i>
+    </header>
+    <h4>Enter OTP Code</h4>
+    <% if( typeof message !=="undefined" ){%>
+    <p class="text-center text-danger" style="font-size: small;color: red!important;"> <%- message %></p>
+    <% }%>
+    <form action="/otp" method="post" name="otp">
+      <div class="input-field">
+        <input type="number" name="otp1" />
+        <input type="number" name="otp2" disabled />
+        <input type="number" name="otp3" disabled />
+        <input type="number" name="otp4" disabled />
+      </div>
+      <div style="display: flex;flex-direction: row; margin-top: 30px;"> <p>Time Remaining:<span id="seconds"></span></p><a id="resendLink" href="/otp"
+          style="margin-left: 30px;color: rgb(33, 33, 255);">Resend OTP</a></div>
+      <button>Verify OTP</button>
+    </form>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll("input"),
+      button = document.querySelector("button"),
+      resendLink = document.getElementById("resendLink"),
+      secondsSpan = document.getElementById("seconds");
+
+    let countdown = 120;
+
+    function updateCountdown() {
+      const minutes = Math.floor(countdown / 60);
+      const seconds = countdown % 60;
+      secondsSpan.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function disableResendLink() {
+      resendLink.style.display = 'none';
+      resendLink.setAttribute('aria-disabled', 'true');
+      resendLink.style.pointerEvents = 'none';
+    }
+
+    function enableResendLink() {
+      resendLink.style.display = 'inline';
+      resendLink.removeAttribute('aria-disabled');
+      resendLink.style.pointerEvents = 'auto';
+    }
+
+    function startCountdown() {
+      const countdownInterval = setInterval(() => {
+        countdown--;
+        updateCountdown();
+
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          enableResendLink();
+        }
+      }, 1000);
+    }
+
+    inputs.forEach((input, index1) => {
+      input.addEventListener("keyup", (e) => {
+        const currentInput = input,
+          nextInput = input.nextElementSibling,
+          prevInput = input.previousElementSibling;
+
+        if (currentInput.value.length > 1) {
+          currentInput.value = "";
+          return;
+        }
+        if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
+          nextInput.removeAttribute("disabled");
+          nextInput.focus();
+        }
+
+        if (e.key === "Backspace") {
+          inputs.forEach((input, index2) => {
+            if (index1 <= index2 && prevInput) {
+              input.setAttribute("disabled", true);
+              input.value = "";
+              prevInput.focus();
+            }
+          });
+        }
+        if (!inputs[3].disabled && inputs[3].value !== "") {
+          button.classList.add("active");
+          return;
+        }
+        button.classList.remove("active");
+      });
+    });
+
+    window.addEventListener("load", () => {
+      inputs[0].focus();
+      updateCountdown();
+      startCountdown();
+    });
+  </script>
+
+</body>
+
+</html>

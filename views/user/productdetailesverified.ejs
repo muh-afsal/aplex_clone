@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details verified</title>
+
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="/css/user/login.css">
+<link rel="stylesheet" href="/css/user/productDetailVerified.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/nav-after-login.ejs")%>
+
+
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="product-imgs">
+                    <div class="img-display">
+                        <div class="img-showcase" id="img-container">
+
+                            <img style="border-radius: 18px;" src="<%=products.Image[0]%>" alt="" id="displayIng">
+
+                        </div>
+                    </div>
+                    <div class="img-select" id="image-sel">
+                        <div class="img-item" onclick="showPrviewinDetail('displayIng','img1')">
+                            <a href="#" data-id="1">
+                                <img src="<%=products.Image[0]%>" id="img1" alt="shoe image">
+                            </a>
+                        </div>
+                        <div class="img-item" onclick="showPrviewinDetail('displayIng','img2')">
+                            <a href="#" data-id="2">
+                                <img src="<%=products.Image[2]%>" id="img2" alt="shoe image">
+                            </a>
+                        </div>
+                        <div class="img-item" onclick="showPrviewinDetail('displayIng','img3')">
+                            <a href="#" data-id="3">
+                                <img src="<%=products.Image[3]%>" id="img3" alt="shoe image">
+                            </a>
+                        </div>
+                        <div class="img-item" onclick="showPrviewinDetail('displayIng','img4')">
+                            <a href="#" data-id="4">
+                                <img src="<%=products.Image[4]%>" id="img4" alt="shoe image">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card right -->
+                <div class="product-content">
+                    <h2 class="product-title">
+                        <%=products.Name%>
+                    </h2>
+                    <h4 style="    font-weight: 600; color: #6d6d6d;">
+                        <%=products.Category.name%> Series
+                    </h4>
+
+                    <div class="product-price">
+
+                        <%if(products.isOffer){%>
+                            <div style="display: flex;flex-direction: row;align-items: center;">
+                                <p> <span class="previous-price">₹ <%=products.Price%> /-</span></p>
+                                <p> <span style="font-size: x-large; font-weight: 700;color: red;margin-left: 20px;">
+                                        <%=products.DiscountPercentage%>%OFF
+                                    </span></p>
+                            </div>
+                            <%}%>
+
+                                <p class="new-price"> <span>₹
+                                        <%if(products.isOffer){%>
+                                            <%=products.DiscountPrice%>
+                                                <%}else{%>
+                                                    <%=products.Price%>
+                                                        <%}%>
+                                                            /-
+                                    </span></p>
+                    </div>
+
+                    <div class="product-detail">
+                        <h3 style=" font-weight: 700; ">About this item: </h3>
+                        <p>
+                            <%=products.Description%>
+                        </p>
+
+
+                    </div>
+
+                    <div class="purchase-info" style="display: flex;">
+
+                        <a class="bttonlink" onclick="addtowishlist('<%=products._id%>')"><button type="submit " value="submit" class="btn">Add to
+                                Whishlist</button></a>
+
+                        <a class="bttonlink" onclick="addToCart(event,'<%=products._id%>')"> <button type="submit " value="submit"
+                                class="btn addcartbtn" style="margin-left: 22px;">Add to Cart</button></a>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            function addtowishlist(productId) {
+                // alert(productId)
+                const addtowishlist = fetch('/addtowishlist', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ productId })
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        if (res.success) {
+                            (function () {
+                                Toastify({
+                                    text: res.message,
+                                    duration: 2000,
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "to",
+                                    position: "center",
+                                    stopOnFocus: true,
+                                    style: {
+                                        background: "#52b963",
+                                        borderRadius: "8px"
+
+                                    },
+                                    onClick: function () { }
+                                }).showToast();
+                            })();
+                        } else {
+                            (function () {
+                                Toastify({
+                                    text: res.message,
+                                    duration: 2000,
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "to",
+                                    position: "center",
+                                    stopOnFocus: true,
+                                    style: {
+                                        background: "#FF0000",
+                                        borderRadius: "8px"
+
+                                    },
+                                    onClick: function () { }
+                                }).showToast();
+                            })(); alert("Error");
+                        }
+
+                    })
+            }
+
+
+
+        </script>
+        <script>
+            const addtocartbtn = document.getElementById("")
+        </script>
+        <script>
+            var options = {
+                width: 400,
+                zoomWidth: 500,
+                offset: { vertical: 20, horizontal: 40 }
+            };
+            new ImageZoom(document.getElementById("img-container"), options);
+        </script>
+        <script src="/scripts/productdetial.js"></script>
+        <script src="/scripts/cart.js"></script>
+        <%-include("./partials/footer.ejs")%>
+
+
+</body>
+
+</html>

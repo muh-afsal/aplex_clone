@@ -1,0 +1,65 @@
+<%-include("./partials/header.ejs")%>
+  <title>Coupons</title>
+  <link rel="stylesheet" href="/css/user/coupon.css">
+
+
+  </head>
+
+  <body>
+
+    <%-include("./partials/nav-after-login.ejs")%>
+
+      <h3 style="    margin-top: 24px;font-weight: 700;text-align: center; margin-bottom: -26px;">Coupons</h3>
+      <div class=" container-fluid  Coupons_container"
+        style="display: flex; justify-content: center; flex-direction: row;">
+        <%if(!couponData || couponData.length===0){%>
+          <img width="280px" src="/assets/no_coupon_available.png" alt="">
+          <h4 style="color: #969696;
+        font-size: larger;font-weight: 600;text-align: center ;">No Coupons Available for Now</h4>
+
+          <%}else{%>
+            <%couponData.forEach((data,index)=>{%>
+
+              <div class="coupon">
+                <div class="left">
+                  <div>Enjoy Your Gift</div>
+                </div>
+                <div class="center">
+                  <div>
+                    <h2 id="discountPrice">
+                      <%=data.DiscountValue%>/- OFF
+                    </h2>
+                    <h3>Coupon Code:-</h3>
+                    <h3 id="coupon_code">
+                      <%=data.CouponCode%>
+                    </h3>
+                    <small>Valid From <%= data.StartDate.toLocaleDateString('en-GB', { day: '2-digit' , month: '2-digit'
+                        , year: '2-digit' }) %></small><br>
+                    <small>Valid Until <%= data.ExpirationDate.toLocaleDateString('en-GB', { day: '2-digit' ,
+                        month: '2-digit' , year: '2-digit' }) %></small>
+                  </div>
+                </div>
+
+                <div class="right">
+                  <div>87878521112</div>
+                </div>
+
+              </div>
+
+              <%})%>
+
+                <%}%>
+
+
+
+      </div>
+
+
+
+
+      <script>
+
+      </script>
+
+      <%-include("./partials/footer.ejs")%>
+        <%-include("./partials/footerlinks.ejs")%>

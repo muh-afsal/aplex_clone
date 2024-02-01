@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin/slide-nav.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+             .l-navbar {
+            width: 70px;
+            transition: 0.3s;
+            margin-top: 33px;
+        }
+
+
+        .l-navbar:hover {
+            width: 250px;
+        }
+
+        .nav_list {
+            width: 100%;
+        }
+
+        .l-navbar:hover .nav_list {
+            width: 250px;
+        }
+
+        .nav_link:hover {
+            background-color: #4461F2;
+            color: white;
+            margin-left: 10px;
+
+        }
+        @media (min-width:768px){
+               #header{
+                display: none;
+               } 
+        }
+      
+
+        .OffersLink{
+            text-decoration: none;
+            font-size: medium;
+            font-weight: 600;
+            color: rgb(59, 59, 59);
+            margin-left: 41px;
+
+        }
+        .d-inline-flex{
+            margin-bottom: -13px;
+
+        }
+        .collapse.show {
+            display: block !important;
+        }
+        .card-body{
+            border: none!important;
+        }
+
+        </style>
+
+</head>
+
+<body>
+    <div id="body-pd">
+        <header class="header" id="header" style="    border-radius: 13px; ">
+            <div class="header_toggle" style="color: black;"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+            <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+        </header>
+        <div class="l-navbar" id="nav-bar" style="background-color: white ;    ">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav_logo" style="text-decoration: none;">
+                        <i class='fa-solid fa-user nav_logo-icon'></i>
+                        <span class="nav_logo-name" style="text-decoration: none;color: black;">Admin</span>
+                    </a>
+                    <div class="nav_list">
+                        <a href="/admin/admin" class="nav_link active">
+                            <i title="Dashboard" class='bx bx-grid-alt nav_icon'></i>
+                            <span class="nav_name">Dashboard</span>
+                        </a>
+                        <a href="/admin/manageProduct" class="nav_link">
+                            <i title="Products" class='fa-solid fa-box nav_icon'></i>
+                            <span class="nav_name">Products</span>
+                        </a>
+                        <a href="/admin/manageCategory" class="nav_link">
+                            <i title="Category" class='fa-solid fa-layer-group nav_icon'></i>
+                            <span class="nav_name">Category</span>
+                        </a>
+                        <a href="/admin/manageUser" class="nav_link">
+                            <i title="Users" class='fa-solid fa-users nav_icon'></i>
+                            <span class="nav_name">Users</span>
+                        </a>
+                        <a href="/admin/orders" class="nav_link">
+                            <i title="Orders" class='fa-solid fa-list nav_icon'></i>
+                            <span class="nav_name">Orders</span>
+                        </a>
+                        <a href="/admin/Managecoupon" class="nav_link">
+                            <i title="Banner" class='fa-solid fa-ticket nav_icon'></i>
+                            <span class="nav_name">Coupons</span>
+                        </a>
+                        <a href="#" class="nav_link">
+                            <i title="Settings" class='fa fa-solid fa-gear nav_icon'></i>
+                            <span class="nav_name">Settings</span>
+                        </a>
+                        <p class="d-inline-flex gap-1 ">
+                        <a  class="nav_link " data-bs-toggle="collapse" href="#Offerscollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i title="Offers" class='fa fa-solid fa-percent' style="font-size:x-large ;"></i>
+                            <span class="nav_name">Offers</span>
+                                </a>
+                              </p>
+                              <div class="collapse" id="Offerscollapse" >
+                                <div class="card card-body">
+                                  <a href="/admin/categoryOffers" class="OffersLink">Category Offers</a>
+                                  <a href="/admin/referalOffers" class="OffersLink">Referal Offers</a>
+                                  <a href="/admin/productOffers" class="OffersLink">Product Offers</a>
+                                </div>
+                              </div>
+                         
+                        <a href="/admin/adminlogout" class="nav_link text-danger ">
+                            <i  title="Logout" class='bx bx-log-out nav_icon'></i>
+                            <span class="nav_name">Logout</span> </a>
+
+                    </div>
+                </div>
+        </div>
+
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    bodypd = document.getElementById(bodyId),
+                    headerpd = document.getElementById(headerId)
+
+                // Validate that all variables exist
+                if (toggle && nav && bodypd && headerpd) {
+                    toggle.addEventListener('click', () => {
+                        // show navbar
+                        nav.classList.toggle('show')
+                        // change icon
+                        toggle.classList.toggle('bx-x')
+                        // add padding to body
+                        bodypd.classList.toggle('body-pd')
+                        // add padding to header
+                        headerpd.classList.toggle('body-pd')
+                    })
+                }
+            }
+
+            showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+            /*===== LINK ACTIVE =====*/
+            const linkColor = document.querySelectorAll('.nav_link')
+
+            function colorLink() {
+                if (linkColor) {
+                    linkColor.forEach(l => l.classList.remove('active'))
+                    this.classList.add('active')
+                }
+            }
+            linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+            // Your code to run since DOM is loaded and ready
+        });
+    </script>
+
+    
+    
+    
+</body>
+
+</html>

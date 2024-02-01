@@ -1,0 +1,464 @@
+
+
+
+<%-include("./partials/header.ejs")%>
+
+    <title>Manage Category Offers</title>
+
+</head>
+<style>
+ #addCoupon_btn {
+            border-radius: 9px;
+            width: 137px;
+            margin-top: 8px;
+            height: 41px;
+            background-color: #4461F2;
+            color: white;
+            font-weight: 600;
+            /* margin-left: 1095px; */
+            box-shadow: 0px 0px 5px -1px #4461F2;
+        }
+
+        .Entry {
+    font-size: medium;
+    height: 48px;
+    background-color: #DBECFF;
+    box-shadow: 0px 2px 13px -8px #000000;
+    border-radius: 10px;
+    width: 91%;
+    margin-left: 25px;
+    border: none;
+    padding: 10px;
+    padding-right: 13px;
+}
+.errorDiv{
+    font-size: small;
+    margin-left: 40px;
+}
+</style>
+<body>
+    <%-include("./partials/side-bar.ejs")%>
+        <div class=" search-nav">
+            <div>
+            </div>
+            <div class="search-bars" style="margin-left: 26vw; margin-top: 20px;">
+                <input type="text" style="border:none;    height: 36px;" class="form-control rounded-pill shadow-none"
+                    placeholder="Search...">
+                <div class="search-icon" style="color: #4461F2;">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+            <h4 style="    margin-top: 11px;" id="ManageProduct-text">Manage Category Offers</h4>
+            <button type="button " value="submit" class="btn" id="login-btn" style="float: right;"data-bs-toggle="modal" data-bs-target="#addcategoryOffer"><span
+                style="text-decoration: none; color: #fff;" >Add Offer +</span></button>
+                
+                  <!---------------- modal for add category offer ----------------->
+                  <div class="modal fade" id="addcategoryOffer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        
+                        </div>
+                        <div class="modal-body">
+                          <h4 style="margin-left: 20px; font-weight:600;">Add Category Offer</h4>
+                          <form action="/admin/addcategoryOffer" method="POST" style="margin-top: 25px;" id="addform">
+                            <div class="form-group mb-4">
+                              <label for="newCouponName" style="color: #000000; font-size: smaller; margin-left: 30px;">Select a Category</label>
+                              <select class="Entry  form-select-input " id="SelectCategory"
+                              name="categoryName"  id="" aria-label=".form-select-sm example">
+                              <option selected disabled>Choose...</option>
+                              <% Categorydata.forEach(category => { %>
+                                <option value="<%= category._id %>"><%= category.name %></option>
+                              <% }); %>
+                          </select>
+                              <div class="text-danger errorDiv" id="selectCategoryError"></div>
+                            </div>
+                            <div class="form-group mb-4">
+                              <label for="newDiscountValue" style="color: #000000; font-size: smaller; margin-left: 30px;">Offer Persentage</label>
+                              <input id="OfferePersentage" type="number"  class="Entry" placeholder="Enter the Offer Persentage" name="OfferePersentage">
+                              <div class="text-danger errorDiv" id="OfferePersentageError"></div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                              <label for="newexpiringDate" style="color: #000000; font-size: smaller; margin-left: 30px;">Expiring Date</label>
+                              <input id="newexpiringDate" type="date"  class="Entry" placeholder="Expire Date" name="newexpiringDate">
+                              <div class="text-danger errorDiv" id="newexpiringDateError"></div>
+                            </div>
+                            <button type="submit" class="btn" value="submit" style="display: block; margin: 0 auto; margin-top: 48px;width: 20vw;" id="addCoupon_btn">Add Offer</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+        </div>
+        <div>
+            <div class="col-12 tm-block-col">
+                <div class="tm-bg-primary-dark tm-block tm-block-scroll">
+                    <h2 class="tm-block-title text-dark">Users</h2>
+                 
+                    <% if( typeof errorMessage !=="undefined" ){%>
+                        <div class="alert text-danger alert-danger d-flex justify-content-center align-items-center"  role="alert">
+                            <%- errorMessage %> <a class="text-decoration-none text-dark " style="font-size: x-large; font-weight: 400;margin-left: 10px;" href="/admin/categoryOffers">x</a>
+                          </div>
+                           
+                        <% }%>
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th scope="col">No.</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Offer Persentage</th>
+                                <th scope="col">Start from</th>
+                                <th scope="col">End on</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                            <%Offerdata.forEach((data,index)=>{%>
+                                <tr id="offerRow_<%=data._id%>" >
+                                <td>
+                                    <%=index+1%>
+                                </td>
+                                <td>
+                                    <%=data.CategoryName.name%>
+                                </td>
+                                <td>
+                                    <%=data.OfferPersentage%>%
+                                </td>
+
+
+                                <td>
+                                    <% if (data.Added) { %>
+                                        <%= data.Added.toLocaleDateString('en-GB', { day: '2-digit'
+                                            , month: '2-digit' , year: '2-digit' }) %>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <% if (data.EndDate) { %>
+                                        <%= data.EndDate.toLocaleDateString('en-GB', { day: '2-digit'
+                                            , month: '2-digit' , year: '2-digit' }) %>
+                                            <% } %>
+                                </td>
+                              
+                               
+                                <td class="edits">
+                                    <span class="icon"><a style="cursor: pointer;"
+                                        class="text-decoration-none text-secondary"
+                                        data-toggle="modal"
+                                        data-target="#editAddressModal<%= data._id %>">&#9998;</a></span>
+                                </td>
+                                <td class="edits">
+                                    <span class="icon ml-3 delete"><a style="cursor: pointer;"
+                                        class="text-decoration-none text-danger" data-toggle="modal"
+                                        data-target="#DeleteOfferModal<%= data._id %>">&#128465;</a></span>
+                                </td>
+                                </tr>
+                                      <!-- are you sure confirmation modal -->
+                                      <div class="modal fade" id="DeleteOfferModal<%= data._id %>" tabindex="-1"
+                                        role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="logoutModalLabel">
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5>Are you sure you want to remove this Coupon?</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class=" btn-secondary "
+                                                        data-dismiss="modal" style="border-radius: 7px; "
+                                                        aria-label="close">
+                                                        Cancel
+                                                    </button>
+
+                                                    <a class="confirm-button btn-danger "
+                                                        style="cursor: pointer; color: #DBECFF ; background-color: #4461F2; padding: 4px; border-radius: 7px;"
+                                                        onclick="confirmDelete('<%= data._id %>','offerRow_<%=data._id%>')"
+                                                        data-dismiss="modal" aria-label="close">Confirm</a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                      <!---------------- modal for edit category offer ----------------->
+                                     <div class="modal fade" id="editAddressModal<%= data._id %>" tabindex="-1"
+                                        role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4 style=" margin-left: 20px;  font-weight:600;">Edit Category Offer
+                                                    </h4>
+                                                    <form action="/admin/editcategoryoffer?id=<%= data._id %>"
+                                                        method="POST" style="margin-top: 25px;"
+                                                        id="editform_<%= data._id%>"
+                                                        onsubmit="SubmitEditform(event,'<%= data._id%>')">
+                                                        <div class="form-group mb-4">
+                                                            <label for="CouponName"
+                                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Category
+                                                                Name</label>
+                                                            <input id="CouponName_<%= data._id%>" type="text"
+                                                                value="<%=data.CategoryName.name%>" class="Entry"
+                                                                placeholder="Coupon Name" name="CouponName" readonly>
+                                                            <div class="text-danger errorDiv"
+                                                                id="CouponNameError_<%= data._id%>"></div>
+                                                        </div>
+                                                          <div class="form-group mb-4">
+                                                            <label for="newDiscountValue" style="color: #000000; font-size: smaller; margin-left: 30px;">Offer Persentage</label>
+                                                            <input id="OfferePersentage_<%= data._id%>" type="number"  class="Entry"  name="OfferePersentage" value="<%=data.OfferPersentage%>" >
+                                                            <div class="text-danger errorDiv" id="OfferePersentageError_<%= data._id%>"></div>
+                                                          </div>
+                                                          
+                                                          <div class="form-group mb-4">
+                                                            <label for="newexpiringDate" style="color: #000000; font-size: smaller; margin-left: 30px;">Expiring Date</label>
+                                                            <input id="newexpiringDate_<%= data._id%>" type="date"  class="Entry" placeholder="Expire Date" name="newexpiringDate" value="<%=data.EndDate.toISOString().split('T')[0]%>">
+                                                            <div class="text-danger errorDiv" id="newexpiringDateError_<%= data._id%>"></div>
+                                                          </div>
+                                                        
+                                                        <button type="submit" class="btn" value="submit"
+                                                            style="margin-top: 48px; margin-left: 64px;"
+                                                            id="signup-btn">Edit Offer</button>
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                          <%})%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function isEmpty(value) {
+                const trimmedValue = value.trim();
+                return trimmedValue === "";
+            }
+
+          
+
+            function SubmitEditform(event, id) {
+             
+
+                const DiscountValueInput = document.querySelector("#OfferePersentage_" + id);
+                const DiscountValueValue = DiscountValueInput.value;
+                const DiscountValueError = document.querySelector("#OfferePersentageError_" + id)
+
+                const expiringDateInput = document.querySelector("#newexpiringDate_" + id);
+                const expiringDateValue = expiringDateInput.value;
+                const expiringDateError = document.querySelector("#newexpiringDateError_" + id);
+
+
+                DiscountValueError.textContent = "";
+                expiringDateError.textContent = "";
+
+
+                if (isEmpty(DiscountValueValue)) {
+                    DiscountValueError.textContent = "Discount Value is required ! ";
+                    event.preventDefault();
+                }
+                if (isEmpty(expiringDateValue)) {
+                    expiringDateError.textContent = "Ending Date is Required !";
+                    event.preventDefault();
+                }
+
+
+                // validating the amount 
+               
+                const isDateRangeValid = validatDateRange( expiringDateValue, expiringDateError);
+
+
+
+                // validaring the date 
+                function validatDateRange( endDate,endError) {
+                    startError.textContent = "";
+                    endError.textContent = "";
+
+                    const todaysDate = new Date();
+                    todaysDate.setHours(0, 0, 0, 0);
+
+                    const endDateVal = new Date(endDate);
+                    endDateVal.setHours(0, 0, 0, 0);
+
+                    if (startDateVal > endDateVal) {
+                        endError.textContent = "The expiration date cannot be before the starting date!";
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    return true;
+                }
+
+
+            }
+
+        </script>
+
+
+
+        
+    <!------------------------ validation for add Category offer  ----------------------->
+    <script>
+    function isEmpty(value) {
+                    const trimmedValue = value.trim();
+                    return trimmedValue === "";
+                }
+
+
+        document.getElementById("addform").addEventListener("submit", function (event) {
+
+
+               
+       
+            const CategoryNameInput = document.querySelector("#SelectCategory");
+           const CategoryNameValue = CategoryNameInput.options[CategoryNameInput.selectedIndex].value;
+           const CategoryNameError = document.querySelector("#selectCategoryError");
+
+
+
+            const OfferPerInput = document.querySelector("#OfferePersentage");
+            const OfferPerValue = OfferPerInput.value;
+            const OfferPerError = document.querySelector("#OfferePersentageError");
+            
+
+            const newexpiringDateInput = document.querySelector("#newexpiringDate");
+            const newexpiringDateValue = newexpiringDateInput.value;
+            const newexpiringDateError = document.querySelector("#newexpiringDateError");
+            
+
+
+
+
+
+              CategoryNameError.textContent = "";
+              OfferPerError.textContent = "";
+              newexpiringDateError.textContent = "";
+
+
+            if (CategoryNameValue==="Choose...") {
+                CategoryNameError.textContent = "Select a Category Name !";
+                event.preventDefault();
+            }
+            if (isEmpty(OfferPerValue)) {
+                OfferPerError.textContent = "Offer Persentage is required ! ";
+                event.preventDefault();
+            }
+
+            if (isNaN(OfferPerValue) || OfferPerValue < 1 || OfferPerValue > 100) {
+            OfferPerError.textContent = "Offer Persentage must be between 1 and 100!";
+            event.preventDefault();
+        }
+
+           
+            if (isEmpty(newexpiringDateValue)) {
+                newexpiringDateError.textContent = "Ending Date is Required !";
+                event.preventDefault();
+            }
+
+
+        if(newexpiringDateValue || newstartDateValue){
+            const isDateRangeValid = validatnewDateRange( newexpiringDateValue,newexpiringDateError);
+        }
+
+            
+
+
+            // validaring the date 
+            function validatnewDateRange( endDate,endError) {
+                
+                endError.textContent = "";
+
+                const todaysDate = new Date();
+                todaysDate.setHours(0, 0, 0, 0);
+
+                
+
+                const endDateVal = new Date(endDate);
+                endDateVal.setHours(0, 0, 0, 0);
+                
+                        if (startDateVal > endDateVal) {
+                            endError.textContent = "The expiration date cannot be before the starting date!";
+                            event.preventDefault();
+                            return false;
+                        }
+
+                return true;
+            }
+
+        })
+
+
+
+
+    </script>   
+     <script>
+        function confirmDelete(offerId,rowId) {
+            fetch(`/admin/deletecategoryOffer/${offerId}`, {
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }) .then(response => response.json())
+                        .then(res => {
+                    
+                            
+                            document.getElementById(rowId).style.display = 'none';
+
+                            if (res.success) {
+                                showToast(res.message, "#52b963");
+                            } else {
+                                showToast(res.message, "#FF0000");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during fetch:", error);
+                            showToast("An error occurred", "#FF0000");
+                        });
+        }
+
+
+
+      
+        function showToast(message, background) {
+                    Toastify({
+                        text: message,
+                        duration: 2000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "to",
+                        position: "center",
+                        stopOnFocus: true,
+                        style: {
+                            background: background,
+                            borderRadius: "8px"
+                        },
+                        onClick: function () { }
+                    }).showToast();
+                }
+
+    </script>
+
+<%-include("./partials/footerlinks.ejs")%>

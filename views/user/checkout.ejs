@@ -1,0 +1,688 @@
+<%-include("./partials/header.ejs")%>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/css/user/checkout.css">
+    </head>
+
+    <body>
+
+        <!-- Nav bar -->
+        <%-include("./partials/nav-after-login.ejs")%>
+            <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">Checkout</h2>
+            <div class="container-fluid cart-container">
+                <div class="cart-products-container">
+                    <div class="cart-products-listing" style=" padding-top: 13px;">
+
+                        <div class="selectAddresscontainer">
+                            <div role="button" class="selectAddress">
+                                <button id="addAddressbtn" data-toggle="modal" data-target="#exampleModal"><i
+                                        class="fa-solid fa-plus" style="   font-size: 49px;"></i></button>
+                                <h4>Add Address</h4>
+                                <!-- add address modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4 style=" margin-left: 20px;  font-weight:600;">Add Address</h4>
+                                                <form action="/addAddress" method="POST" style=" margin-top: 25px;"
+                                                    id="form">
+                                                    <div class="form-group  mb-4">
+                                                        <input id="shippingName" maxlength="15" type="text"
+                                                            class="form-control entry shadow-none"
+                                                            placeholder="Shipping name" name="shippingName">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;"
+                                                            id="shippingNameError"></div>
+
+                                                        <small class="form-text text-muted "></small>
+                                                    </div>
+                                                    <div class="form-group  mb-4">
+
+                                                        <input id="phone" oninput="limitDigits(this, 10)" type="number"
+                                                            class="form-control entry shadow-none"
+                                                            placeholder="Phone Number" name="phone">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;"
+                                                            id="phoneError">
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="form-group mt-4">
+                                                        <input id="city" maxlength="10" type="text"
+                                                            class="form-control entry shadow-none" name="city"
+                                                            placeholder="City">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;" id="cityError">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mt-4">
+                                                        <input id="state" maxlength="10" type="text"
+                                                            class="form-control entry shadow-none" name="state"
+                                                            placeholder="State">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;"
+                                                            id="stateError"></div>
+                                                    </div>
+                                                    <div class="form-group mt-4">
+                                                        <input id="country" maxlength="10" type="text"
+                                                            class="form-control entry shadow-none" name="country"
+                                                            placeholder="Country">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;"
+                                                            id="countryError"></div>
+                                                    </div>
+                                                    <div class="form-group mt-4">
+                                                        <input id="pincode" oninput="limitDigits(this, 6)" type="number"
+                                                            class="form-control entry shadow-none" name="pincode"
+                                                            placeholder="Pincode">
+                                                        <div class="text-danger "
+                                                            style="font-size: small; margin-left: 20px;"
+                                                            id="pincodeError"></div>
+                                                    </div>
+
+
+
+                                                    <button type="submit " class="btn" value="submit"
+                                                        style="margin-top: 48px;     margin-left: 64px ;"
+                                                        id="signup-btn">Add Address</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <%userData.address.forEach((value)=>{%>
+                                <div class="DisplayAddress">
+                                    <div class="form-check" style="margin-bottom: 20px;">
+                                        <input class="form-check-input" type="radio" name="selectAddressRadio"
+                                            id="selectaddress_<%=value._id%>" value="<%=value._id%>">
+                                        <label style="font-weight: 600;" class="form-check-label" for="<%=value._id%>">
+                                            <%=value.shippingName%>
+                                        </label>
+                                    </div>
+                                    <div class="addressTexts" style="color: gray;">
+                                        <span>Shipping Name : </span><span>
+                                            <%=value.shippingName%>
+                                        </span><br>
+                                        <span>Phone No : </span><span>
+                                            <%=value.phone%>
+                                        </span><br>
+                                        <span>City : </span><span>
+                                            <%=value.city%>
+                                        </span><br>
+                                        <span>State : </span><span>
+                                            <%=value.state%>
+                                        </span><br>
+                                        <span>Country : </span><span>
+                                            <%=value.country%>
+                                        </span><br>
+                                        <span>Pincode : </span><span>
+                                            <%=value.pincode%>
+                                        </span>
+                                    </div>
+                                </div>
+                                <%})%>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="cart-total-container">
+                    <h4 style=" margin-left: 10px;  font-weight:600;margin-top: 10px;">Order Summary</h4>
+                    <div class="total-values-container">
+                        <div class="preview-products" style="overflow:scroll;">
+                            <%cartData.Items.forEach((value)=>{%>
+                                <div class="display_product"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <img style="width: 60px;" src="<%=value.Products.Image[0]%>" alt="">
+                                    <p style="overflow: hidden;">
+                                        <%=value.Products.Name%>
+                                    </p>
+                                    <p style="margin-right: 10px;">
+                                        <%if(value.Products.isOffer){%>
+                                            <%=value.Products.DiscountPrice%>/-
+                                                <%}else{%>
+                                                    <%=value.Products.Price%>/-
+                                                        <%}%>
+                                    </p>
+                                </div>
+                                <%})%>
+                        </div>
+                        <div class="total-values">
+                            <p class="total-texts">Subtotal :</p>
+                            <p class="cart-prices" id="cartTotal-Subtotal"><%-subtotal%><span>/-</span></p>
+                        </div>
+                        <div class="total-values">
+                            <p class="total-texts">Coupon Discount:</p>
+                            <p class="cart-prices">-<span id="discountPrice">
+                                    <%=cartData.DiscountAmount%>
+                                </span>/-</p>
+                        </div>
+
+                        <div class="total-values">
+                            <p class="total-texts" style="font-size: x-large; color: black ;">Total :</p>
+                            <p style="font-size: x-large; font-weight: 600; " class="cart-prices"><span id="total">
+                                    <%if(cartData.DiscountAmount===0){%>
+                                        <%-subtotal%>
+                                            <%}else{%>
+                                                <%=cartData.TotalAmount%>
+                                                    <%}%>
+                                </span>/-</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;">
+                        <div class="selectPayment ">
+                            <h4 style=" margin-left: 10px; font-size: medium;  font-weight:600;margin-top: 10px;">Select
+                                Payment
+                            </h4>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentRadios" id="cod" value="COD">
+                                <label class="form-check-label" for="cod">
+                                    Cash on Delivery
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentRadios" id="upi"
+                                    value="Online">
+                                <label class="form-check-label" for="upi">
+                                    Online Payment
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentRadios" id="wallet"
+                                    value="wallet" disabled>
+                                <label class="form-check-label" for="wallet">
+                                    Wallet
+                                </label>
+                            </div>
+                        </div>
+                        <div style="width: 100%;display: flex;justify-content: center;">
+                            <div class=" search-nav"
+                                style="margin-bottom: 23px;margin-top: 9px;  padding: 5px;width: 100%;display: flex;justify-content: center; "
+                                id="coupon_box">
+                                <%if(cartData.couponUsed===true){%>
+                                    <p style="font-weight: 700; color: rgb(69, 69, 69);margin-bottom: 61px;">Applied Coupon Discount:
+                                        <%=cartData.DiscountAmount%>rs
+                                    </p>
+                                    <button id="CancelCouponBtn"
+                                        onclick="cancelCoupon()">
+                                        Cancel Coupon
+                                    </button>
+
+                                    <%}else{%>
+                                        <div class="couponcontainer" style="display: flex;flex-direction: column;margin-left: 88px;">
+                                            <div class="search-bars"
+                                                style=" height: 6vh;    height: 6vh;display: flex;">
+
+                                                <input type="text" id="Coupon_entry"
+                                                    class="form-control rounded-pill coupon-entry shadow-none "
+                                                    style="float: right;" placeholder="Coupon code">
+                                                <button id="applyCouponBtn" onclick="ApplyCoupon()">
+                                                    Apply Coupon
+                                                </button>
+                                            </div>
+                                            <a href="/coupon"
+                                                style="    float: right; margin-left: 115px;margin-top: 5px;">View My
+                                                Coupons</a>
+                                        </div>
+                                        <%}%>
+                            </div>
+                        </div>
+                        <div style="width: 100%;display: flex; justify-content: center;">
+                            <button onclick="placeOrder()" type="submit " value="submit" class="btn">Place
+                                Order</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <%-include("./partials/footer.ejs")%>
+
+                <script>
+
+function limitDigits(input, maxLength) {
+            const value = input.value;
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength);
+            }
+        }
+
+
+                    function ApplyCoupon() {
+                        var couponCode = document.getElementById("Coupon_entry").value;
+
+                        fetch('/applycoupon', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ couponCode: couponCode, orderid: "<%-cartData._id%>" }),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+
+                                if (data.success) {
+                                    let discountValue = data.discountValue;
+                                    let minamount = data.minpurchase;
+                                    let couponBox = document.getElementById("coupon_box")
+                                    let discountPrice = document.getElementById("discountPrice")
+                                    let TotalAmount = data.totalAmount;
+                                    let isused = data.isused;
+                                    let maxamount = data.maxpurchase;
+
+                                    let currentDate = new Date();
+                                    if (TotalAmount >= minamount && TotalAmount <= maxamount) {
+                                        const newtotalamount = TotalAmount ;
+
+                                        discountPrice.innerHTML = discountValue;
+
+                                        couponBox.innerHTML = `
+                                        <p style="font-weight: 700; color: rgb(69, 69, 69);margin-bottom: 61px;">Applied Coupon Discount:${discountValue}rs</p>
+                                        <button id="CancelCouponBtn" style="    background-color: rgb(213, 1, 1);
+                                        float: right;
+                                        position: relative;
+                                        /* width: 7vw; */
+                                        color: #eff6ff;
+                                        text-align: center;
+                                        border-radius: 50px;
+                                        margin-left: -150px;
+                                        height: 33px;
+                                        border: none;
+                                        outline: none;
+                                        font-size: small;
+                                        margin-top: 20px; ;" onclick="cancelCoupon()">
+                                        Cancel Coupon
+                                         </button>
+                                        `
+                                        document.getElementById("total").innerText = newtotalamount.toFixed(2);
+
+                                    } else {
+
+                                    }
+
+                                    console.log('Discount Value:', discountValue);
+                                }
+
+                                if (data.success === false) {
+                                    (function () {
+                                        Toastify({
+                                            text: data.message,
+                                            duration: 3000,
+                                            newWindow: true,
+                                            close: true,
+                                            gravity: "top",
+                                            position: "center",
+                                            stopOnFocus: true,
+                                            style: {
+                                                background: "#FF0000",
+
+                                            },
+                                            onClick: function () { }
+                                        }).showToast();
+                                    })();
+                                }
+                            })
+
+
+                            .catch(error => {
+                                console.error('Error applying coupon:', error);
+                            });
+                    }
+
+
+
+                    function cancelCoupon() {
+
+
+                        fetch('/cancelcoupon', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ orderid: "<%-cartData._id%>" }),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                let couponBox = document.getElementById("coupon_box")
+                                let discountPrice = document.getElementById("discountPrice")
+                                let DiscountPriceValue = discountPrice.textContent;
+                                let TotalAmount = document.getElementById("total");
+                                let TotalAmountvalue = TotalAmount.textContent;
+                                let ActualTotal = Number(TotalAmountvalue) + Number(DiscountPriceValue)
+
+
+                                TotalAmount.innerHTML = ActualTotal;
+                                discountPrice.innerHTML = 0;
+
+
+                                couponBox.innerHTML = `
+                                <div class="couponcontainer" style="display: flex;flex-direction: column;margin-left: 88px;">
+                                <div class="search-bars">
+
+                                <input type="text" id="Coupon_entry"
+                                    class="form-control rounded-pill coupon-entry shadow-none "
+                                    style="float: right;    width: 78%;
+    height: 40px;
+    float: right;
+    margin-right: 29px;
+    margin-left: -224px;
+}" placeholder="Coupon code">
+                                <button id="applyCouponBtn" onclick="ApplyCoupon()">
+                                    Apply Coupon
+                                    </button>
+                                    </div>
+                                    <a href="/coupon"
+                                                    style="    float: right; margin-left: 115px;margin-top: 5px;">View My
+                                                    Coupons</a>
+                                                    </div>
+                                       
+                                        `
+
+
+
+                                if (data.success) {
+
+                                    (function () {
+                                        Toastify({
+                                            text: data.message,
+                                            duration: 3000,
+                                            newWindow: true,
+                                            close: true,
+                                            gravity: "top",
+                                            position: "center",
+                                            stopOnFocus: true,
+                                            style: {
+                                                background: "#52b963",
+                                                borderRadius: "8px"
+                                            },
+                                            onClick: function () { }
+                                        }).showToast();
+                                    })();
+                                }
+
+                                if (data.success === false) {
+                                    (function () {
+                                        Toastify({
+                                            text: data.message,
+                                            duration: 3000,
+                                            newWindow: true,
+                                            close: true,
+                                            gravity: "top",
+                                            position: "center",
+                                            stopOnFocus: true,
+                                            style: {
+                                                background: "#FF0000",
+                                                borderRadius: "8px"
+                                            },
+                                            onClick: function () { }
+                                        }).showToast();
+                                    })();
+                                }
+                            })
+
+
+                            .catch(error => {
+                                console.error('Error applying coupon:', error);
+                            });
+                    }
+
+
+                </script>
+                <script>
+                    function placeOrder() {
+
+                        // document.getElementById(`selectaddress_${selectAddressId}`)
+                        const selectAddressRadio = document.querySelector('input[name="selectAddressRadio"]:checked');
+                        const selectAddressRadioValue = selectAddressRadio ? selectAddressRadio.value : null;
+
+                        const selectPaymentRadio = document.querySelector('input[name="paymentRadios"]:checked');
+                        const selectPaymentRadioValue = selectPaymentRadio ? selectPaymentRadio.value : null;
+
+
+                        if (!selectPaymentRadioValue) {
+                            (function () {
+                                Toastify({
+                                    text: "Select a Payment Option",
+                                    duration: 3000,
+                                    destination: "https://github.com/apvarun/toastify-js",
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "top",
+                                    position: "center",
+                                    stopOnFocus: true,
+                                    style: {
+                                        background: "#FF0000",
+                                        borderRadius: "8px"
+
+                                    },
+                                    onClick: function () { }
+                                }).showToast();
+                            })();
+                        }
+                        if (!selectAddressRadioValue) {
+
+                            (function () {
+                                Toastify({
+                                    text: "Select The Address",
+                                    duration: 3000,
+                                    destination: "https://github.com/apvarun/toastify-js",
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "top",
+                                    position: "center",
+                                    stopOnFocus: true,
+                                    style: {
+                                        background: "#FF0000",
+                                        borderRadius: "8px"
+                                    },
+                                    onClick: function () { } // Callback after click
+                                }).showToast();
+                            })();
+
+                        }
+
+
+                        if (selectAddressRadioValue && selectPaymentRadioValue === "COD") {
+
+                            const orderplaced = fetch('/placeorder', {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ selectPaymentRadioValue, selectAddressRadioValue })
+                            })
+                                .then(response => response.json())
+                                .then(res => {
+                                    if (res.success = true) {
+                                        window.location.href = "/placeOrder";
+                                    }
+                                    if (res.success = false) {
+                                        (function () {
+                                            Toastify({
+                                                text: res.messageww,
+                                                duration: 3000,
+                                                newWindow: true,
+                                                close: true,
+                                                gravity: "top",
+                                                position: "center",
+                                                stopOnFocus: true,
+                                                style: {
+                                                    background: "#FF0000",
+                                                    borderRadius: "8px"
+
+                                                },
+                                                onClick: function () { } // Callback after click
+                                            }).showToast();
+                                        })();
+                                    }
+
+                                })
+
+                        } else if (selectAddressRadioValue && selectPaymentRadioValue === "Online") {
+
+                            fetch('/generateRazorpay', {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({})
+                            }).then((response) => response.json()).then((res) => {
+                                if (res.online) {
+                                    razorpay(res)
+                                }
+                            })
+                        }
+
+                        function razorpay(orderResponse) {
+
+                            var options = {
+                                "key": "rzp_test_TZZu8xFsdUnCp9",
+                                "amount": orderResponse.order.amount,
+                                "currency": "INR",
+                                "name": "Aplex",
+                                "description": "Test Transaction",
+                                "image": "https://example.com/your_logo",
+                                "order_id": orderResponse.id,
+                                "handler": function (response) {
+                                    fetch('/placeorder', {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ selectPaymentRadioValue, selectAddressRadioValue })
+                                    })
+                                        .then(response => response.json())
+                                        .then(res => {
+                                            if (res.success = true) {
+                                                window.location.href = "/placeOrder";
+                                            }
+
+                                        })
+                                },
+                                "notes": {
+                                    "address": "Razorpay Corporate Office"
+                                },
+                                "theme": {
+                                    "color": "#2E51FF"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.open();
+                            rzp1.on('payment.failed', function (response) {
+
+                            });
+                            // e.preventDefault();
+                        }
+
+                    }
+
+                    function isEmpty(value) {
+                        const trimmedValue = value.trim();
+                        return trimmedValue === "";
+                    }
+
+
+                    document.querySelector("form").addEventListener("submit", function (event) {
+
+                        const shippingNameInput = document.querySelector("#shippingName");
+                        const shippingNameValue = shippingNameInput.value;
+                        const shippingNameError = document.querySelector("#shippingNameError");
+
+
+                        const phoneInput = document.querySelector("#phone");
+                        const phoneValue = phoneInput.value;
+                        const phoneError = document.querySelector("#phoneError");
+
+                        const cityInput = document.querySelector("#city");
+                        const cityValue = cityInput.value;
+                        const cityError = document.querySelector("#cityError");
+
+                        const stateInput = document.querySelector("#state");
+                        const stateValue = stateInput.value;
+                        const stateError = document.querySelector("#stateError");
+
+                        const countryInput = document.querySelector("#country");
+                        const countryValue = countryInput.value;
+                        const countryError = document.querySelector("#countryError");
+
+                        const pincodeInput = document.querySelector("#pincode");
+                        const pincodeValue = pincodeInput.value;
+                        const pincodeError = document.querySelector("#pincodeError");
+
+
+                        shippingNameError.textContent = "";
+                        phoneError.textContent = "";
+                        cityError.textContent = "";
+                        stateError.textContent = "";
+                        countryError.textContent = "";
+                        pincodeError.textContent = "";
+
+
+
+
+                        if (isEmpty(shippingNameValue)) {
+                            shippingNameError.textContent = "Shipping Name is required";
+                            event.preventDefault();
+                        }
+                        if (isEmpty(phoneValue)) {
+                            phoneError.textContent = "Phone number is required";
+                            event.preventDefault();
+                        }
+                        if (isEmpty(cityValue)) {
+                            cityError.textContent = "City name is required";
+                            event.preventDefault();
+                        }
+                        if (isEmpty(stateValue)) {
+                            stateError.textContent = "State name is required";
+                            event.preventDefault();
+                        }
+                        if (isEmpty(countryValue)) {
+                            countryError.textContent = "Country is required";
+                            event.preventDefault();
+                        }
+                        if (isEmpty(pincodeValue)) {
+                            pincodeError.textContent = "Pincode is required";
+                            event.preventDefault();
+                        }
+
+                    })
+
+
+
+                    function navigateaddAddress() {
+                        window.location.href = "";
+                    }
+                </script>
+
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+                    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                    crossorigin="anonymous"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    </body>
+
+    </html>

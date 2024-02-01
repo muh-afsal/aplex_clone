@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="/css/admin/ManageProduct.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .address_infos {
+            width: 100%;
+            height: 66vh;
+            display: flex;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 6px 2px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        #address_container {
+            width: 50%;
+            height: 60vh;
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+            font-size: larger;
+        }
+
+        .address_text {
+            margin-bottom: 10px;
+        }
+
+        .Order_infos {
+            width: 79vh;
+            height: 55vh;
+            background-color: #eff6ff;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 6px 2px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+            border-radius: 12px;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .addresss_values {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+
+
+
+        }
+
+        .addressTextss {
+            color: rgb(66, 66, 66);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 85%;
+        }
+
+        #address_containerr {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            margin-top: 23px;
+        }
+    </style>
+</head>
+
+<body>
+    <%-include("./partials/side-bar.ejs")%>
+
+        <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+            <h4 style="    margin-top: 11px;" id="ManageProduct-text">Order Details</h4>
+
+        </div>
+        <div>
+            <div class="col-12 tm-block-col">
+                <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll" style="    height: 32vh;">
+                    <h2 class="tm-block-title text-dark">Orders</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Sub Total</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <%orderData.Items.forEach((data)=>{%>
+                                <tr>
+
+                                    <td><img style="width: 55px;" src="<%=data.productId.Image[0]%>" alt=""></td>
+                                    <td>
+                                        <%=data.productId.Name%>
+                                    </td>
+                                    <td>
+                                        <%=data.productId.Price%>
+                                    </td>
+                                    <td>
+                                        <%=data.quantity%>
+                                    </td>
+                                    <td>
+                                        <%=data.productId.Price*data.quantity%>
+                                    </td>
+
+
+                                </tr>
+                                <%})%>
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="address_infos">
+                <div id="address_container">
+                    <div class="Order_infos">
+                        <h4>Address</h4>
+                        <div id="address_containerr">
+                            <div class="addressTextss">
+                                <div class="addresss_values">
+                                    <span>Shipping Name : </span>
+                                    <span>Phone No :</span>
+                                    <span>City :</span>
+                                    <span>State :</span>
+                                    <span>Country :</span>
+                                    <span>Pincode :</span>
+
+                                </div>
+                                <div class="addresss_values">
+                                    <span>
+                                        <%=orderData.Address.shippingName%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.phone%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.city%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.state%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.country%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.Address.pincode%>
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="address_container">
+                    <div class="Order_infos">
+                        <h4>Order Info</h4>
+                        <div id="address_containerr">
+                            <div class="addressTextss">
+                                <div class="addresss_values">
+                                    <span> Order ID :</span>
+                                    <span> Order Status :</span>
+                                    <span> Order Date :</span>
+                                    <span> Payment Status :</span>
+                                    <span>Payment Method :</span>
+                                    <span>Total :</span>
+
+                                </div>
+                                <div class="addresss_values">
+                               
+                                    <span>
+                                        <%=orderData.orderNumber%>
+                                    </span>
+                                    <span>
+                                        <%if(orderData.Status!=="Cancelled" ){%>
+                                        <select class="form-select form-select-input form-select-sm shadow-none"
+                                            name="status" style="width: 100% !important; border-radius: 5px;" id="orderStatus"
+                                            aria-label=".form-select-sm example">
+                                            <option value="Ordered" <%=orderData.Status==='Ordered' ? 'selected' : '' %>>Ordered</option>
+                                            <option value="Delivered" <%=orderData.Status==='Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%=orderData.Status==='Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                        <%}else{%>
+                                                <p>Cancelled</p>
+                                            <%}%>
+
+                                    </span>
+                                    <span>
+                                        <%=orderData.OrderDate.toLocaleDateString()%>
+                                    </span>
+                                    <span>
+                                        <%if(orderData.Status!=="Cancelled" ){%>
+                                        <select class="form-select form-select-input form-select-sm shadow-none"
+                                            name="status" style="width: 100% !important;border-radius: 5px;" id="paymentStatus"
+                                            aria-label=".form-select-sm example">
+                                            <option value="Pending" <%=orderData.paymentStatus==='Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Paid" <%=orderData.paymentStatus==='Paid' ? 'selected' : '' %>>Paid</option>
+                                            <option value="Return" <%=orderData.paymentStatus==='Return' ? 'selected' : '' %>>Return</option>
+                                        </select>
+                                        <%}else{%>
+                                                <p>Cancelled</p>
+                                            <%}%>
+                                    </span>
+                                    <span>
+                                        <%=orderData.paymentMethod%>
+                                    </span>
+                                    <span>
+                                        ₹<%=orderData.TotalPrice%>/-
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <script>
+            // Function to update order status
+            const updateOrderStatus = async (orderId, status) => {
+                try {
+                    const response = await fetch(`/admin/updateOrderStatus/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        window.location.reload()
+                        console.log('Order status updated successfully');
+                    } else {
+                        console.error('Failed to update order status');
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            // Function to update payment status
+            const updatePaymentStatus = async (orderId, status) => {
+
+                try {
+                    const response = await fetch(`/admin/updatePaymentStatus/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        window.location.reload()
+                        console.log('Payment status updated successfully');
+                    } else {
+                        console.error('Failed to update payment status');
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            // Event listener for order status select
+            document.getElementById('orderStatus').addEventListener('change', (event) => {
+                const orderId = '<%= orderData._id %>'; 
+                const status = event.target.value;
+                
+
+                // Call the updateOrderStatus function
+                updateOrderStatus(orderId, status);
+            });
+
+            document.getElementById('paymentStatus').addEventListener('change', (event) => {
+                const orderId = '<%= orderData._id %>'; 
+                const status = event.target.value;
+
+                // Call the updatePaymentStatus function
+                updatePaymentStatus(orderId, status);
+            });
+        </script>
+
+</body>
+
+</html>

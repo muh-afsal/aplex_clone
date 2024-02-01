@@ -1,0 +1,210 @@
+<%-include("./partials/header.ejs")%>
+    <title>Manage Coupon</title>
+    </head>
+    <style>
+        #addCoupon_btn {
+            border-radius: 9px;
+            width: 137px;
+            margin-top: 8px;
+            height: 41px;
+            background-color: #4461F2;
+            color: white;
+            font-weight: 600;
+            /* margin-left: 1095px; */
+            box-shadow: 0px 0px 5px -1px #4461F2;
+        }
+
+        .Entry {
+            font-size: medium;
+            height: 49px;
+            background-color: #DBECFF;
+            box-shadow: 0px 2px 13px -8px #000000;
+            border-radius: 10px;
+            width: 91%;
+            margin-left: 25px;
+            border: none;
+            padding: 16px;
+        }
+
+        .errorDiv {
+            margin-bottom: -17px;
+            font-size: small;
+            margin-left: 28px;
+        }
+        #contain_er{
+            background-color: #ebf4ff;
+        }
+    </style>
+
+    <body>
+        <%-include("./partials/side-bar.ejs")%>
+
+            <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+                <h4 style="margin-top: 11px;" id="ManageProduct-text">Returns</h4>
+             
+
+            </div>
+            <div>
+                <div class="col-12 tm-block-col">
+                    <div  id="contain_er" class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                        <h2 class="tm-block-title text-dark">Requests For Order Return</h2>
+                       
+                                <table class="table" style="background-color: #ebf4ff;">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Order ID</th>
+                                            <th scope="col">Total Price</th>
+                                            <th scope="col">Action
+                                            </th>
+                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%orderData.forEach((value,index)=>{%>
+                                            <tr>
+                                                <th scope="row">
+                                                   <%=index+1%>
+                                                </th>
+                                                <td>
+                                                   <%=value.orderNumber%>
+                                                </td>
+                                                <td>
+                                                    <%=value.TotalPrice%>
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        <button type="button"  onclick="rejectRequest('<%=value._id%>')" class="btn btn-danger">Reject</button>
+                                                        <button  type="button" onclick="AcceptRequest('<%=value._id%>')"  class="btn btn-success ">Accept</button>
+                                                    </span>
+                                                </td>
+                                               
+                                              
+                                                
+                                            </tr>
+                                            
+
+                                            <%})%>
+                                    </tbody>
+                                </table>
+                    </div>
+                   
+
+
+
+
+
+                </div>
+            </div>
+            <script>
+                const AcceptRequest = async (orderId) => {
+                try {
+                //   alert (orderId=)
+                    const response = await fetch(`/admin/acceptReturnRequest/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        (function() {
+                    Toastify({
+                      text: "Accepted the Order Return Request ",
+                      duration: 3000,
+                      newWindow: true,
+                      close: true,
+                      gravity: "top", 
+                      position: "center", 
+                      stopOnFocus: true, 
+                      style: {
+                        background: "#52b963",
+                      },
+                      onClick: function(){} 
+                    }).showToast();
+                  })();
+                    } else {
+                        (function () {
+                                        Toastify({
+                                            text: "Rejected the Order Return Request",
+                                            duration: 3000,
+                                            newWindow: true,
+                                            close: true,
+                                            gravity: "top",
+                                            position: "center",
+                                            stopOnFocus: true,
+                                            style: {
+                                                background: "#FF0000",
+
+                                            },
+                                            onClick: function () { }
+                                        }).showToast();
+                                    })();
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            // Function to update payment status
+            const rejectRequest = async (orderId) => {
+
+                try {
+                    const response = await fetch(`/admin/rejectReturnRequest/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        (function() {
+                    Toastify({
+                      text: "Accepted the Order Return Request ",
+                      duration: 3000,
+                      newWindow: true,
+                      close: true,
+                      gravity: "top", 
+                      position: "center", 
+                      stopOnFocus: true, 
+                      style: {
+                        background: "#52b963",
+                      },
+                      onClick: function(){} 
+                    }).showToast();
+                  })();
+                        
+                    } else {
+                        (function () {
+                                        Toastify({
+                                            text: "Rejected the Order Return Request",
+                                            duration: 3000,
+                                            newWindow: true,
+                                            close: true,
+                                            gravity: "top",
+                                            position: "center",
+                                            stopOnFocus: true,
+                                            style: {
+                                                background: "#FF0000",
+
+                                            },
+                                            onClick: function () { }
+                                        }).showToast();
+                                    })();
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+     
+           
+            </script>
+            
+            <%-include("./partials/footerlinks.ejs")%>

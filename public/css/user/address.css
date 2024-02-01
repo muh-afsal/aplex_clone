@@ -1,0 +1,365 @@
+.cart-total-container {
+  height: auto;
+  width: 22vw;
+  float: right;
+  margin-top: -95vh;
+  margin-right: 94px;
+  border-radius: 13px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  font-size: small;
+}
+
+.coupon-input {
+  height: 9vh;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  border-radius: 13px;
+  margin-top: -217px;
+
+  width: 281px;
+  float: right;
+  margin-right: 154px;
+}
+
+.cart-products-listing {
+  height: auto;
+  /* width: 30vw; */
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  padding-bottom: 88px;
+  overflow: scroll;
+}
+
+.cart-products-listing::-webkit-scrollbar {
+  width: 0;
+  /* Remove scrollbar space on Webkit browsers */
+}
+
+.cart-products-listing {
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.cart-products-container {
+  height: auto;
+  width: 80%;
+  margin-top: 50px;
+  padding-bottom: 10vh;
+  margin-left: 179px;
+}
+
+.cart-container {
+  height: auto;
+}
+
+@media (max-width: 1200px) {
+  .cart-total-container {
+    margin-top: 27px;
+    float: left;
+    width: 70vw;
+    margin-left: 30px;
+  }
+
+  .cart-products-container {
+    width: 90%;
+  }
+}
+
+.search-nav {
+  width: 100%;
+  height: 60px;
+}
+
+@media (max-width: 850px) {
+  #coupon-code-div {
+    display: none;
+  }
+
+  .search-bars {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .cart-products-container {
+    margin-left: 18px;
+  }
+
+  th {
+    font-size: smaller;
+  }
+}
+
+.total-values {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-values-container {
+  display: grid;
+  margin-top: 31px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.total-texts {
+  font-weight: 600;
+  color: rgba(85, 85, 85, 0.682);
+}
+
+.cart-prices {
+  margin-right: 20px;
+}
+
+.btn {
+  border-radius: 50px;
+  text-align: center;
+  padding: 0.45rem 0.8rem;
+  outline: 0;
+  color: white;
+  background-color: #4461f2;
+  box-shadow: 0px 0px 5px -1px #4461f2;
+  width: 13vw;
+  height: 36px;
+  margin-top: 1px;
+  margin-left: 74px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1200px) {
+  .btn {
+    width: 27vw;
+    margin-left: 270px;
+  }
+}
+
+@media (max-width: 900px) {
+  .btn {
+    width: 27vw;
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 700px) {
+  .btn {
+    width: 42vw;
+    margin-left: 97px;
+  }
+}
+
+@media (max-width: 500px) {
+  .btn {
+    width: 48vw;
+    margin-left: 52px;
+  }
+}
+
+@media (max-width: 380px) {
+  .btn {
+    width: 49vw;
+    margin-left: 32px;
+  }
+}
+
+.btn:hover {
+  background-color: #304ee4;
+  color: aliceblue;
+}
+
+.value-button {
+  display: inline-block;
+  margin: 0px;
+  width: 32px;
+  height: 36px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px 0;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.value-button:hover {
+  cursor: pointer;
+}
+
+form .decrease {
+  margin-right: -4px;
+  border-radius: 22px 0 0 22px;
+}
+
+form .increase {
+  margin-left: -4px;
+  border-radius: 0 22px 22px 0;
+}
+
+form #input-wrap {
+  margin: 0px;
+  padding: 0px;
+}
+
+input.number {
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 35px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.confirm-button {
+  width: 119px;
+  text-align: center;
+  height: 32px;
+  background-color: #4461f2;
+  border-radius: 7px;
+  padding-top: 4px;
+  text-decoration: none;
+  color: #ddd;
+}
+
+.preview-products {
+  height: auto;
+  width: 100%;
+  border-radius: 10px;
+  padding-top: 10px;
+  border: 0.5px solid;
+}
+
+.display_product {
+  height: 62px;
+  margin-top: -10px;
+  border-top: 0.5px solid;
+}
+
+.preview-products {
+  overflow: hidden;
+}
+
+.display_product {
+  margin-bottom: 10px;
+}
+
+.preview-products::-webkit-scrollbar {
+  width: 0;
+}
+
+.preview-products {
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.selectPayment {
+  width: 14vw;
+  float: right;
+  border-radius: 13px;
+  padding: 16px;
+
+  float: left;
+}
+
+.selectAddresscontainer {
+  height: 43vh;
+  /* background: aquamarine; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 44px;
+}
+
+.selectAddress {
+  cursor: pointer;
+  background-color: #eff6ff;
+  height: 31vh;
+  border-style: dashed;
+  border-radius: 12px;
+  border-color: #c7c7c7;
+  display: table-cell;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  flex-direction: column;
+  gap: 20px;
+  padding: 35px;
+}
+
+.DisplayAddress {
+  cursor: pointer;
+  background-color: #eff6ff;
+  height: auto;
+  border-radius: 12px;
+  border-color: #c7c7c7;
+  vertical-align: middle;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 260px;
+  overflow: auto;
+
+}
+
+#addAddressbtn {
+  border: none;
+  background: none;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+#coupon-code-div {
+  font-weight: 600;
+  margin-top: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: larger;
+}
+
+.coupon-entry {
+  width: 78%;
+  height: 50px;
+  float: right;
+}
+
+.actionbtn {
+  border: none;
+  border-radius: 5px;
+  background-color: #2e51ff;
+  color: white;
+  margin-top: 11px;
+}
+
+.applycoupon {
+  background: #2e51ff;
+  float: right;
+  position: relative;
+  width: 140px;
+  text-align: center;
+  border-radius: 50px;
+  margin-left: -50px;
+}

@@ -1,0 +1,492 @@
+<%-include("./partials/header.ejs")%>
+    <link rel="stylesheet" href="/css/user/address.css">
+    <title>Adress</title>
+
+
+    </head>
+
+    <body>
+
+        <%-include("./partials/nav-after-login.ejs")%>
+
+            <div class="cart-products-container">
+                <div class="cart-products-listing" style=" padding-top: 13px;">
+
+                    <div class="selectAddresscontainer">
+                        <div role="button" class="selectAddress">
+                            <button id="addAddressbtn" data-toggle="modal" data-target="#exampleModal"><i
+                                    class="fa-solid fa-plus" style="   font-size: 49px;"></i></button>
+                            <h4>Add Address</h4>
+                            <!-- add address modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 style=" margin-left: 20px;  font-weight:600;">Add Address</h4>
+                                            <form action="/adduserAddress" method="POST" style=" margin-top: 25px;"
+                                                id="form">
+                                                <div class="form-group  mb-4">
+                                                    <input maxlength="20" id="shippingName" type="text"
+                                                        class="form-control entry shadow-none"
+                                                        placeholder="Shipping name" name="shippingName">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;"
+                                                        id="shippingNameError"></div>
+
+                                                    <small class="form-text text-muted "></small>
+                                                </div>
+                                                <div class="form-group  mb-4">
+
+                                                    <input min="1"  oninput="limitDigits(this, 10)" id="phone" type="number"
+                                                        class="form-control entry shadow-none"
+                                                        placeholder="Phone Number" name="phone">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="phoneError">
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="form-group mt-4">
+                                                    <input  maxlength="10" id="city"  type="text"
+                                                        class="form-control entry shadow-none" name="city"
+                                                        placeholder="City">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="cityError">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mt-4">
+                                                    <input maxlength="10" id="state"  type="text"
+                                                        class="form-control entry shadow-none" name="state"
+                                                        placeholder="State">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="stateError">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mt-4">
+                                                    <input maxlength="10"  id="country" type="text"
+                                                        class="form-control entry shadow-none" name="country"
+                                                        placeholder="Country">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="countryError">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mt-4">
+                                                    <input min="1" oninput="limitDigits(this, 6)" id="pincode" type="number"
+                                                        class="form-control entry shadow-none" name="pincode"
+                                                        placeholder="Pincode">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="pincodeError">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <button type="submit " class="btn" value="submit"
+                                                    style="margin-top: 48px;     margin-left: 64px ;"
+                                                    id="signup-btn">Add Address</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <%userData.address.forEach((value)=>{%>
+                            <div class="DisplayAddress">
+
+                                <label style="font-weight: 600; margin-top: 10px;" class="form-check-label"
+                                    for="<%=value._id%>">
+                                    <%=value.shippingName%>
+                                </label>
+
+                                <div class="addressTexts" style="color: gray;">
+                                    <span>Shipping Name : </span><span>
+                                        <%=value.shippingName%>
+                                    </span><br>
+                                    <span>Phone No : </span><span>
+                                        <%=value.phone%>
+                                    </span><br>
+                                    <span>City : </span><span>
+                                        <%=value.city%>
+                                    </span><br>
+                                    <span>State : </span><span>
+                                        <%=value.state%>
+                                    </span><br>
+                                    <span>Country : </span><span>
+                                        <%=value.country%>
+                                    </span><br>
+                                    <span>Pincode : </span><span>
+                                        <%=value.pincode%>
+                                    </span>
+                                </div>
+                                <div>
+                                    <!-- Updated "Edit" button in the loop -->
+                                    <button class="actionbtn" data-toggle="modal"
+                                        data-target="#editAddressModal<%= value._id %>">Edit</button>
+
+                                    <button data-toggle="modal" data-target="#DeleteAddressModal<%= value._id %>"
+                                        class="actionbtn" type="submit">Delete</button>
+                                    </form>
+
+                                    <!-- are you sure modal -->
+                                    <div class="modal fade" id="DeleteAddressModal<%= value._id %>" tabindex="-1"
+                                        role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="logoutModalLabel">
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">Are you sure you want to remove this Address?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class=" btn-secondary " data-dismiss="modal"
+                                                        style="border-radius: 7px;" aria-label="close">
+                                                        Cancel
+                                                    </button>
+
+                                                    <a class="confirm-button btn-danger "
+                                                        onclick="confirmDelete('<%= value._id %>')" data-dismiss="modal"
+                                                        aria-label="close">Confirm</a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- modal for edit address -->
+                            <div class="modal fade" id="editAddressModal<%= value._id %>" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 style=" margin-left: 20px;  font-weight:600;">Edit Address</h4>
+                                            <form action="/edituserAddress?_id=<%=value._id%>" method="POST"
+                                                style=" margin-top: 25px;" id="editform">
+                                                <div class="form-group  mb-4">
+                                                    <input maxlength="20" id="shippingName" type="text"
+                                                        value="<%=value.shippingName%>"
+                                                        class="form-control entry shadow-none"
+                                                        placeholder="Shipping name" name="shippingName">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;"
+                                                        id="shippingNameError"></div>
+                                                    <small class="form-text text-muted "></small>
+                                                </div>
+
+                                                <div class="form-group  mb-4">
+                                                    <input oninput="limitDigits(this, 10)" id="phone" type="number"
+                                                        value="<%=value.phone%>" class="form-control entry shadow-none"
+                                                        placeholder="Phone Number" name="phone">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="phoneError">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group mt-4">
+                                                    <input maxlength="10" id="city" type="text" value="<%=value.city%>"
+                                                        class="form-control entry shadow-none" name="city"
+                                                        placeholder="City">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="cityError">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group mt-4">
+                                                    <input maxlength="10" id="state" type="text"
+                                                        value="<%=value.state%>" class="form-control entry shadow-none"
+                                                        name="state" placeholder="State">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="stateError">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group mt-4">
+                                                    <input maxlength="10" id="country" type="text"
+                                                        value="<%=value.country%>"
+                                                        class="form-control entry shadow-none" name="country"
+                                                        placeholder="Country">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="countryError">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group mt-4">
+                                                    <input oninput="limitDigits(this, 6)" id="pincode" type="number"
+                                                        value="<%=value.pincode%>"
+                                                        class="form-control entry shadow-none" name="pincode"
+                                                        placeholder="Pincode">
+                                                    <div class="text-danger "
+                                                        style="font-size: small; margin-left: 20px;" id="pincodeError">
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <button type="submit " class="btn" value="submit"
+                                                    style="margin-top: 48px;     margin-left: 64px ;"
+                                                    id="signup-btn">Edit Address</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <%})%>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <script>
+function limitDigits(input, maxLength) {
+            const value = input.value;
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength);
+            }
+        }
+
+        function isOnlyLettersAndSpaces(value) {
+        const regex = /^[a-zA-Z\s]+$/;
+        return regex.test(value);
+    }
+
+
+
+                function isEmpty(value) {
+                    const trimmedValue = value.trim();
+                    return trimmedValue === "";
+                }
+
+                //  validation for add address form
+                document.querySelector("form").addEventListener("submit", function (event) {
+
+                    const shippingNameInput = document.querySelector("#shippingName");
+                    const shippingNameValue = shippingNameInput.value;
+                    const shippingNameError = document.querySelector("#shippingNameError");
+
+
+                    const phoneInput = document.querySelector("#phone");
+                    const phoneValue = phoneInput.value;
+                    const phoneError = document.querySelector("#phoneError");
+
+                    const cityInput = document.querySelector("#city");
+                    const cityValue = cityInput.value;
+                    const cityError = document.querySelector("#cityError");
+
+                    const stateInput = document.querySelector("#state");
+                    const stateValue = stateInput.value;
+                    const stateError = document.querySelector("#stateError");
+
+                    const countryInput = document.querySelector("#country");
+                    const countryValue = countryInput.value;
+                    const countryError = document.querySelector("#countryError");
+
+                    const pincodeInput = document.querySelector("#pincode");
+                    const pincodeValue = pincodeInput.value;
+                    const pincodeError = document.querySelector("#pincodeError");
+
+
+                    shippingNameError.textContent = "";
+                    phoneError.textContent = "";
+                    cityError.textContent = "";
+                    stateError.textContent = "";
+                    countryError.textContent = "";
+                    pincodeError.textContent = "";
+
+
+
+
+                    if (isEmpty(shippingNameValue)) {
+                        shippingNameError.textContent = "Shipping Name is required";
+                        event.preventDefault();
+                    }
+
+                    if (isEmpty(phoneValue)) {
+                        phoneError.textContent = "Phone number is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(cityValue)) {
+                        cityError.textContent = "City name is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(stateValue)) {
+                        stateError.textContent = "State name is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(countryValue)) {
+                        countryError.textContent = "Country is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(pincodeValue)) {
+                        pincodeError.textContent = "Pincode is required";
+                        event.preventDefault();
+                    }
+                    if (!isOnlyLettersAndSpaces(shippingNameValue)) {
+            shippingNameError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(cityValue)) {
+            cityError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(stateValue)) {
+            stateError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(countryValue)) {
+            countryError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+                })
+
+                //  validation for edit address form
+                document.getElementById("editform").addEventListener("submit", function (event) {
+
+                    const editShippingNameInput = document.querySelector("#shippingName");
+                    const shippingNameValue = shippingNameInput.value;
+                    const editShippingNameError = document.querySelector("#shippingNameError");
+
+
+                    const phoneInput = document.querySelector("#phone");
+                    const phoneValue = phoneInput.value;
+                    const phoneError = document.querySelector("#phoneError");
+
+                    const cityInput = document.querySelector("#city");
+                    const cityValue = cityInput.value;
+                    const cityError = document.querySelector("#cityError");
+
+                    const stateInput = document.querySelector("#state");
+                    const stateValue = stateInput.value;
+                    const stateError = document.querySelector("#stateError");
+
+                    const countryInput = document.querySelector("#country");
+                    const countryValue = countryInput.value;
+                    const countryError = document.querySelector("#countryError");
+
+                    const pincodeInput = document.querySelector("#pincode");
+                    const pincodeValue = pincodeInput.value;
+                    const pincodeError = document.querySelector("#pincodeError");
+
+
+
+                    editShippingNameError.textContent = "";
+                    phoneError.textContent = "";
+                    cityError.textContent = "";
+                    stateError.textContent = "";
+                    countryError.textContent = "";
+                    pincodeError.textContent = "";
+
+
+
+
+
+                    if (isEmpty(shippingNameValue)) {
+                        editShippingNameError.textContent = "Shipping Name is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(phoneValue)) {
+                        phoneError.textContent = "Phone number is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(cityValue)) {
+                        cityError.textContent = "City name is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(stateValue)) {
+                        stateError.textContent = "State name is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(countryValue)) {
+                        countryError.textContent = "Country is required";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(pincodeValue)) {
+                        pincodeError.textContent = "Pincode is required";
+                        event.preventDefault();
+                    }
+                    if (!isOnlyLettersAndSpaces(shippingNameValue )) {
+            editShippingNameError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(cityValue)) {
+            cityError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(stateValue)) {
+            stateError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+
+        if (!isOnlyLettersAndSpaces(countryValue)) {
+            countryError.textContent = "Only characters are allowed as input";
+            event.preventDefault();
+        }
+                    
+
+                })
+            </script>
+
+
+            <script>
+                function confirmDelete(addressId) {
+
+
+                    fetch(`/deleteUserAddress/${addressId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+
+                            console.log(data);
+                            if (data.success) {
+
+                                window.location.reload()
+                            }
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                }
+            </script>
+
+
+
+            <%-include("./partials/footer.ejs")%>
+                <%-include("./partials/footerlinks.ejs")%>

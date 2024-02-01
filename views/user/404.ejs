@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/scripts/cart.js"></script>
+    <link rel="stylesheet" href="/css/user/login.css">
+    <link rel="stylesheet" href="/css/user/wishlist.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title>404</title>
+
+
+</head>
+<style>
+    #returntoshopbtn {
+    margin-left: 0;
+    margin-top: 18px;
+    color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 4, 0.1) 0px 0px 7px 2px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+
+}
+</style>
+
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/nav-after-login.ejs")%>
+        <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">Page Not Found</h2>
+        <div class="container-fluid cart-container">
+            <div class="cart-products-container">
+                
+
+                    
+                <img src="/assets/404.svg" style="margin-top: 40px;" class="cartemptyimg" alt=" 404-image">
+                <div style="width: 100%; display: flex;justify-content: center;">
+                <button onclick="navigatetoproductlisting()" type="submit " value="submit" class="btn" style="height: 38px;"
+                    id="returntoshopbtn">Return To Home</button>
+                </div>
+
+
+            </div>
+           
+
+
+                
+
+        </div>
+        <script>
+             function navigatetoproductlisting() {
+                    window.location.href = "/home";
+                }
+        </script>
+
+
+
+        <%-include("./partials/footer.ejs")%>
+           
+
+
+
+
+</body>
+
+</html>

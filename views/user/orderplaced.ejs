@@ -1,0 +1,37 @@
+<%-include("./partials/header.ejs")%>
+    <link rel="stylesheet" href="/css/user/orderplaced.css">
+    <title>OrderPlaced</title>
+
+
+    </head>
+
+    <body>
+
+        <%-include("./partials/nav-after-login.ejs")%>
+
+            <div class="orderplacedcontainer container-fluid">
+                <img id="checkimg" src="/assets/orderplacedimg.png" alt="">
+                <h2 style="font-weight: 700;text-align: center;">Your Order is Successfully Placed</h2>
+                <p class="longpara" style="color: gray; font-size: larger; margin-top: 20px;"> Thank you for choosing
+                    us! Your order has been successfully placed, and we appreciate </p>
+                <p class="longpara" style="color: gray; font-size: larger; margin-top: -10px;"> your trust in our
+                    products and services.</p>
+                <p id="shortpara" style="color: gray; font-size: larger; margin-top: 20px;text-align: center;"> Thank
+                    you for choosing us! Your order has been successfully placed</p>
+                <div class=" buttoncontainer">
+                    <button class="btn" onclick="navigateToshop()">Return to shop</button>
+                    <button class="btn" onclick="navigateToOrderDetails()">View Orders</button>
+                </div>
+            </div>
+
+            <script>
+                function navigateToshop() {
+                    window.location.href = "/productlistingverified";
+                }
+                function navigateToOrderDetails() {
+                    window.location.href = "/orders";
+                }
+            </script>
+
+            <%-include("./partials/footer.ejs")%>
+                <%-include("./partials/footerlinks.ejs")%>

@@ -1,0 +1,66 @@
+
+body{
+    margin: 0;
+    padding:0;
+}
+.main-container{
+ /* background-color: aqua; */
+ height: 92vh;
+ width: 100%;
+ padding-top: 26px;
+ 
+ 
+}
+.nav-bar{
+    /* background-color: #ff7272; */
+    width: 17%;
+    height: 90vh;
+    border-radius: 16px;
+    margin-left: 24px;
+    box-shadow: 0px 2px 13px -8px #000000;
+
+}
+.nav-contents-div{
+    height: 69vh;
+    /* background-color: azure; */
+    width: 100%;
+    /* display: inline; */
+}
+
+.profile-details{
+    /* background-color: blueviolet */
+    height: 16vh;
+    width: 100%;
+}
+.nav-contents{
+    height: 51px;
+    background-color: rgb(255, 255, 255);
+    width: 85%;
+    border-radius: 11px;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    /* padding-top: 5px; */
+    margin-inline-start: 17px;
+    margin-top: 5px;
+  
+
+}
+#aplex-logo{
+    width: 81px;
+    margin-left: 10px;
+    margin-top: 7px;
+}
+.dp-name{
+    height: 70px;
+    /* background-color: bisque; */
+    width: 85%;
+    margin-left: 19px;
+    display: flex;
+    border-radius: 11px;
+    /* box-shadow: 0px 0px 10px -3px #888888; */
+}
+
+.nav-contents:hover{
+    background-color:#DBECFF;
+}

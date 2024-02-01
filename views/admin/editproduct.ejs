@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product</title>
+  <link rel="stylesheet" href="/css/admin/addProduct.css">
+</head>
+
+<body>
+  <%-include("./partials/side-bar.ejs")%>
+    <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+      <h4 style="    margin-top: 11px;" id="ManageProduct-text">Edit Products</h4>
+      <button type="submit " value="submit" class="btn" id="login-btn" style="float: right;"><a
+          style="text-decoration: none; color: #000000;" href="/admin/manageProduct">Cancel</a></button>
+    </div>
+    <form action="/admin/editProduct?id=<%=productdata._id%>" method="POST" id="form" enctype="multipart/form-data">
+      <div class="general-info container-fluid" style="    width: 60%;margin-left: 13%;">
+        <h5 style="margin-left: 10px; color:#4461F2;">General Information</h5>
+        <div>
+          <div class="form-group">
+            <label for="formGroupExampleInput" style="margin-left: 1%; font-size: smaller;">Product Name</label>
+            <input type="text" class="form-control   shadow-none" value="<%=productdata.Name%>" id="product-name-input"
+              maxlength="40" name="name" placeholder="Product name">
+            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="nameError"></div>
+          </div>
+          <div class="form-group" style="float: right; margin-top: -62px;">
+            <label for="formGroupExampleInput" style="margin-left: 1%; font-size: smaller;">Price</label>
+            <input type="number" class="form-control shadow-none" id="product-price-input"
+              value="<%=productdata.Price%>" type="number" name="price" placeholder="price">
+            <div class="text-danger " style="font-size: small; margin-left: 20px;" id="priceError"></div>
+          </div>
+        </div>
+        <div class="form-group" style="    margin-top: 2vw; margin-left: 12px;">
+          <label for="formGroupExampleInput2" style="margin-left: 1%; font-size: smaller;">Product Description</label>
+          <input type="text" class="form-control shadow-none" id="product-des-input" maxlength="550"
+            value="<%=productdata.Description%>" name="description" style="font-size: smaller;"
+            placeholder="Product Description">
+          <div class="text-danger " style="font-size: small; margin-left: 20px;" id="descriptionError"></div>
+        </div>
+        <div class="form-group" style="float: right; margin-top: -94px;">
+          <label for="formGroupExampleInput" style="margin-left: 1%; font-size: smaller;">Stock Quantity</label>
+          <input type="number" class="form-control shadow-none" id="product-stock-input" type="number"
+            value="<%=productdata.Stock%>" name="Stock" placeholder="Stock">
+          <div class="text-danger " style="font-size: small; margin-left: 20px;" id="StockError"></div>
+        </div>
+
+
+      </div>
+      <div class="category-container">
+        <h5 style="margin-left: 10px;color:#4461F2;">Category</h5>
+        <select class="form-select form-select-input form-select-sm shadow-none" name="category" id="category"
+          style="    width: 79%;border-radius: 10px;" aria-label=".form-select-sm example">
+          <option selected value="<%=productdata.Category._id%>">
+            <%=productdata.Category.name%>
+          </option>
+
+          <%Category.forEach((data)=>{%>
+            <%if(productdata.Category.name !==data.name){%>
+              <option value="<%=data._id%>">
+                <%=data.name%>
+              </option>
+              <%}%>
+                <%})%>
+
+        </select>
+        <div class="text-danger " style="font-size: small; margin-left: 20px;" id="categoryError"></div>
+        <h5 style="margin-left: 10px;color:#4461F2;">Status</h5>
+        <select class="form-select form-select-input   form-select-sm shadow-none" name="status"
+          style="    width: 79%;border-radius: 10px;" id="status" aria-label=".form-select-sm example">
+          <option selected>
+            <%=productdata.Status%>
+          </option>
+          <option value="Draft">Draft</option>
+          <option value="Published">Published</option>
+          <option value="Out of Stock">Out of Stock</option>
+          <option value="Low Stock">Low Stock</option>
+        </select>
+        <div class="text-danger " style="font-size: small; margin-left: 20px;" id="statusError"></div>
+
+      </div>
+
+      <div class="image-upload container-fluid"
+        style="    width: 60%; margin-left: 13%;  height: auto; padding-bottom: 25px;   ">
+        <h5 style="margin-left: 10px;color:#4461F2;">Image Upload</h5>
+
+        <div class="image-upload-container" style=" height: auto; padding-bottom: 25px; ">
+          <p style="text-align: center;">Main Image</p>
+          <div style="       margin-left: 5%;">
+            <label for="file" class="custom-upload-btn">Upload Image</label>
+            <div class="text-danger " style="font-size: small; " id="mainImageError"></div>
+
+            <input name="main-image" type="file" accept="image/*" id="file" onchange="previewImage('file','Mimg')"
+              class="file-input">
+
+
+            <div class="img-con"><img src="<%=productdata.Image[0]%>" class="prev-img" alt="" id="Mimg"></div>
+          </div>
+          <p style="text-align: center;">Sub Images</p>
+          <div style="       margin-left: 5%;">
+            <label for="filemul" class="custom-upload-btn">Upload Image</label>
+            <div class="text-danger " style="font-size: small;  margin-top: auto; " id="img1Error"></div>
+            <input type="file" name="sub-image" onchange="showMultiplePreview('filemul','img')" id="filemul"
+              class="file-input" multiple>
+
+            <div style="display: flex;    display: flex;gap: 25px;">
+              <div class="img-con"><img src="<%=productdata.Image[1]%>" alt="" class="prev-img" id="img1">
+
+              </div>
+
+              <div class="img-con"><img src="<%=productdata.Image[2]%>" alt="" class="prev-img" id="img2">
+
+              </div>
+
+              <div class="img-con"><img src="<%=productdata.Image[3]%>" alt="" class="prev-img" id="img3">
+
+              </div>
+
+              <div class="img-con"><img src="<%=productdata.Image[4]%>" alt="" class="prev-img" id="img4">
+
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button type="submit " class="btn" value="submit" id="add-product-btn">Update</button>
+    </form>
+    <script>
+
+      function previewImage(inputid, imgID) {
+        const input = document.getElementById(inputid)
+        const img = document.getElementById(imgID)
+
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            img.src = e.target.result;
+          }
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          img.src = "";
+        }
+      }
+      function showMultiplePreview(inputId, image) {
+        const input = document.getElementById(inputId)
+        if (input.files) {
+          for (let i = 0; i < input.files.length; i++) {
+            const reader = new FileReader()
+
+            reader.onload = function (e) {
+              document.getElementById(`${image}${i + 1}`).src = e.target.result
+            }
+            reader.readAsDataURL(input.files[i])
+          }
+        }
+
+      }
+      //to validate select input
+      function emptyselect(value) {
+        if (value === "Select Status" || value === "Select Category") {
+          return true
+        }
+      }
+
+
+      function isValid(value) {
+        if (value > 0) {
+          return true
+        }
+      }
+
+
+
+
+      //to validat other inputs
+      function isEmpty(value) {
+        const trimmedValue = value.trim();
+        return trimmedValue === "";
+      }
+
+      function validateImageType(fileInput, errorElement) {
+        const allowedTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/gif',
+          'image/bmp',
+          'image/webp',
+          'image/tiff',
+          'image/svg+xml',
+          'image/x-icon',
+          'image/vnd.microsoft.icon',
+          'image/x-xbitmap',
+          'image/x-xpixmap',
+          'image/x-cmu-raster',
+          'image/x-portable-anymap',
+          'image/x-portable-bitmap',
+          'image/x-portable-graymap',
+          'image/x-portable-pixmap',
+          'image/x-rgb',
+          'image/x-xwindowdump',
+
+        ];
+
+        const file = fileInput.files[0];
+
+        if (file && !allowedTypes.includes(file.type)) {
+          errorElement.textContent = "Please select a valid image file like JPEG, PNG, WEBP etc..";
+          return false;
+        }
+
+        errorElement.textContent = "";
+        return true;
+      }
+
+
+      // Function to validate the form on submit
+      document.querySelector("form").addEventListener("submit", function (event) {
+        const nameInput = document.getElementById("product-name-input");
+        const nameValue = nameInput.value;
+        const nameError = document.querySelector("#nameError");
+
+        const priceInput = document.querySelector("#product-price-input");
+        const priceValue = priceInput.value;
+        const priceError = document.querySelector("#priceError");
+
+        const categoryInput = document.querySelector("#category");
+        const categoryValue = categoryInput.value;
+        const categoryError = document.querySelector("#categoryError");
+
+        const descriptionInput = document.querySelector("#product-des-input");
+        const descriptionValue = descriptionInput.value;
+        const descriptionError = document.querySelector("#descriptionError");
+
+        const statusInput = document.querySelector("#status");
+        const statusValue = statusInput.value;
+        const statusError = document.querySelector("#statusError");
+
+
+        const StockInput = document.querySelector("#product-stock-input");
+        const StockValue = StockInput.value;
+        const StockError = document.querySelector("#StockError");
+
+
+
+        nameError.textContent = "";
+        priceError.textContent = "";
+        descriptionError.textContent = "";
+        categoryError.textContent = "";
+        statusError.textContent = "";
+        StockError.textContent = "";
+
+
+
+        if (isEmpty(nameValue)) {
+          nameError.textContent = "Product Name cannot be empty";
+          event.preventDefault();
+        } else{
+          const nameRegex = /^[a-zA-Z0-9\s]+$/;
+          
+          if (!nameRegex.test(nameValue)) {
+           nameError.textContent = "Product Name should only contain letters and numbers";
+           event.preventDefault();
+         }
+        }
+
+
+        if (isEmpty(priceValue)) {
+          priceError.textContent = "Price cannot be empty";
+          event.preventDefault();
+        }
+        if (isEmpty(descriptionValue)) {
+          descriptionError.textContent = "Description cannot be empty";
+          event.preventDefault();
+        } else if (descriptionValue.length < 200) {
+          descriptionError.textContent = "Description should be at least 200 characters";
+          event.preventDefault();
+        }
+
+        if (isEmpty(StockValue)) {
+          StockError.textContent = "Stock cannot be empty";
+          event.preventDefault();
+        }
+
+
+
+        if (!isValid(priceValue)) {
+          priceError.textContent = "Please enter a positive value";
+          event.preventDefault();
+        }
+        if (!isValid(StockValue)) {
+          StockError.textContent = "Please enter a positive value";
+          event.preventDefault();
+        }
+
+
+
+        if (emptyselect(categoryValue) === true) {
+          categoryError.textContent = "Select the Category";
+          event.preventDefault();
+        }
+        if (emptyselect(statusValue)) {
+          statusError.textContent = "Select the Status";
+          event.preventDefault();
+        }
+
+
+
+        const mainImageInput = document.getElementById("file");
+        const mainImageError = document.getElementById('mainImageError');
+        if (!validateImageType(mainImageInput, mainImageError)) {
+          event.preventDefault();
+        }
+
+        const subImageInput = document.getElementById("filemul");
+        const subImageError = document.getElementById('img1Error');
+        if (!validateImageType(subImageInput, subImageError)) {
+          event.preventDefault();
+        }
+      })
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

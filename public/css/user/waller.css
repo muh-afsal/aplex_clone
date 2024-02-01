@@ -1,0 +1,139 @@
+.profile_container {
+  height: 77vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.side_nav_container {
+  width: 40%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userDetails_container {
+  margin-left: 53px;
+  width: 56vw;
+  height: auto;
+  margin-bottom: 21px;
+  margin-top: 23px;
+  border-radius: 11px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.profile_img_container {
+  height: 28vh;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 0.5px solid;
+}
+
+.profile_info_container {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#profile_image {
+  height: 12vw;
+  width: 24vh;
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.input_text {
+  width: 23vw;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.edit_btn {
+  width: 13vw;
+  height: 36px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #4461f2;
+}
+
+#order_date_id {
+  height: auto;
+  background-color: rgb(216, 234, 255);
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 23px;
+  flex-wrap: wrap;
+}
+
+.orderdetails {
+  height: auto;
+  width: 100%;
+  border-radius: 9px;
+  padding-bottom: 23px;
+}
+
+.Wallet_history_container {
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 85% !important;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 4, 0.1) 0px 0px 10px 2px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+#activity_Container {
+  width: 100%;
+  height: 42vh;
+  background-color: rgb(240, 240, 240);
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+.activity_Container::-webkit-scrollbar {
+  width: 0;
+}
+
+.activity_Container {
+  scrollbar-width: none;
+}
+
+.aplex-logo {
+  display: none;
+}
+
+.navbar-toggler {
+  display: none;
+}
+
+#containerdivofnav {
+  height: 32px;
+}
+
+.table > :not(:last-child) > :last-child > * {
+  border-bottom-color: #cbcbcb !important;
+}

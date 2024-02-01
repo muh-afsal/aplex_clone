@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user/home.css">
+    <link rel="stylesheet" href="/css/user/landing.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Home</title>
+
+</head>
+
+<body>
+
+    <%-include("./partials/navbar.ejs")%>
+
+        <div>
+            <div id="video-container" class=" container-fluid">
+                <video autoplay muted loop class="banner-video">
+                    <source src="/assets/iphone15video.mp4" type="video/mp4">
+
+                </video>
+            </div>
+        </div>
+        <div style="height: auto; width: 100%; " class="carosel-container container-fluid">
+            <div class="new-heading">
+                <h1 id="carosel-h1">EXPLORE THE NEW</h1>
+            </div>
+            <div class="carosel">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper " style="  border-radius: 25px;">
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/macbook.webp); ">
+                        </div>
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/iphone.webp);">
+                        </div>
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/applewatch.webp);">
+                        </div>
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/ipad.webp); ">
+                        </div>
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/airpods.webp); ">
+                        </div>
+                        <div class="swiper-slide slider-div" style="background-image: url(/assets/macProduct.png); ">
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+        <h3 id="recForyoubtn">
+            Recommended for You</h3>
+
+        <div class="container card-container">
+            <%products.forEach((data,index)=>{%>
+                <div class="card-1 card-div" onclick="goDetail('/ProductDetail?id=<%=data._id%>')"
+                    style="cursor: pointer;">
+                    <div class="like-icon-div" style="display: flex;justify-content: space-between;">
+                        <div id="offerDiv">
+                            <%if(data.isOffer){%>
+                                <div style="display: flex; align-items: center;">
+                                    <img src="/assets/offerPersentage.png" alt="" id="offerperimg">
+                                    <h4 id="offerper">
+                                        <%=data.DiscountPercentage%>
+                                    </h4>
+                                </div>
+                                <%}%>
+
+                        </div>
+
+
+                        <label for="card-1-like" class="like-icon-div-child">
+                            <a href="/login"><i class="far fa-heart heart-empty"></i></a>
+                            <a href="/login"><i class="fas fa-heart heart-fill"></i></a>
+                        </label>
+                    </div>
+                    <div class="gow-img-div img-div">
+                        <img style="width: 195px;" src="<%= data.Image[0] %>" alt="god-of-war-figurine">
+
+                    </div>
+
+                    <div class="text-container">
+
+
+                        <h2 class="item-name">
+                            <%=data.Name%>
+                        </h2>
+
+                        <div class="pricing-and-cart">
+                            <div class="pricing">
+                                <%if(data.isOffer){%>
+                                    <p class="previous-price" id="previousp">₹
+                                        <%=data.Price%>
+                                            <%}else{%>
+
+                                                <div
+                                                    style="    width: 115px;height: 42px;background-color: rgb(255, 255, 255);">
+                                                </div>
+
+                                                <%}%>
+                                                    <p class="current-price">₹
+                                                        <%if(data.isOffer){%>
+                                                            <%=data.DiscountPrice%>
+                                                                <%}else{%>
+                                                                    <%=data.Price%>
+                                                                        <%}%>
+                                                                            /-
+                                                    </p>
+                            </div>
+                            <a href="/login"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                <%})%>
+
+        </div>
+
+        <div class="container" style="display: flex; margin-top: 40px; margin-bottom: 100px;   ">
+            <div class="down-banner">
+
+            </div>
+            <div class=" down-banner-txt"
+                style="display: flex; text-align: center; align-items: center;  justify-content: center; ">
+                <h1 style="font-size: 61px; font-weight: 700;  color: #444444
+      ">Step inside, for <br>
+                    comfort and magic <br>
+                    await you.</h1>
+            </div>
+        </div>
+        <%-include("./partials/footer.ejs")%>
+
+
+
+
+
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+            <script>
+                let screentwidth = screen.width
+                let slider = 4;
+                if (screentwidth < 1400) {
+                    slider = 4
+                }
+                if (screentwidth < 1200) {
+                    slider = 3
+                }
+                if (screentwidth < 992) {
+                    slider = 2
+                }
+                if (screentwidth < 768) {
+                    slider = 1
+                }
+                window.addEventListener("resize", () => {
+                    let width = document.body.clientWidth
+                    if (width < 1400) {
+                        slider = 4
+                    }
+                    if (width < 1200) {
+                        slider = 3
+                    }
+                    if (width < 992) {
+                        slider = 2
+                    }
+                    if (width < 768) {
+                        slider = 1
+                    }
+                    var swiper = new Swiper(".mySwiper", {
+                        slidesPerView: slider,
+                        spaceBetween: 30,
+                        grabCursor: true,
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                    });
+                });
+                var swiper = new Swiper(".mySwiper", {
+                    slidesPerView: slider,
+                    spaceBetween: 30,
+                    grabCursor: true,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true,
+                    },
+                });
+
+
+                function goDetail(link) {
+                    window.location.href = link
+                }
+            </script>
+</body>
+</body>
+
+</html>

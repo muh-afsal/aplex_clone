@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .footer {
+      background-color: #ffffff;
+      color: #000;
+      padding: 20px;
+      height: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px -4px 16px 0px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+
+    }
+
+    .footer-column {
+      flex: 1;
+      margin: 10px;
+      text-align: center;
+    }
+
+    .footer-heading {
+      font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 17px;
+    }
+    .aplex-img{
+        width: 170px;
+    /* margin-top: 36px; */
+}
+    
+
+    .footer-text {
+      margin: 8px 0;
+    font-size: medium;
+    color: #8f8f8f;
+    }
+
+    @media (max-width: 768px) {
+      .footer-column {
+        flex: 1 0 100%; /* Stack columns on smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="footer">
+    <div class="footer-column">
+      <div class="footer-heading"><img class="aplex-img" src="/assets/logo.png" alt=""></div>
+      <div class="footer-text">Step inside and register for explore more</div>
+    </div>
+
+    <div class="footer-column">
+      <div class="footer-heading">About</div>
+      <div class="footer-text">About Us</div>
+      <div class="footer-text">Category</div>
+      <div class="footer-text">Blog</div>
+    </div>
+
+    <div class="footer-column">
+      <div class="footer-heading">Information</div>
+      <div class="footer-text">Help</div>
+      <div class="footer-text">Refund</div>
+      <div class="footer-text">Contact Us</div>
+    </div>
+
+    <div class="footer-column">
+      <div class="footer-heading">Get the App</div>
+      <!-- Add app download links or information here -->
+      <img style="width: 100px;" src="/assets/get the app.png" alt="">
+    </div>
+  </div>
+
+</body>
+</html>

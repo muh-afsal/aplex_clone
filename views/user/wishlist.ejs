@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/scripts/cart.js"></script>
+    <link rel="stylesheet" href="/css/user/login.css">
+    <link rel="stylesheet" href="/css/user/wishlist.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title>Wishlist</title>
+
+
+</head>
+
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/nav-after-login.ejs")%>
+        <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">Wishlist</h2>
+        <div class="container-fluid cart-container">
+            <div class="cart-products-container">
+                <%if(WishlistProducts.length>0){%>
+
+                    <div class="cart-products-listing" style=" padding-top: 13px;">
+                        <div class="table-container">
+                            <table class="table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">IMAGE</th>
+                                        <th scope="col">PRODUCT</th>
+                                        <th scope="col">PRICE</th>
+                                        <th scope="col"
+                                            style="display: flex;justify-content: center;align-items: center ;">ADD TO
+                                            CART</th>
+                                        <th></th>
+                                        <th scope="col"
+                                            style="display: flex;justify-content: center;align-items: center ;">REMOVE
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <%WishlistProducts.forEach((value,index)=>{%>
+
+                                        <tr id="remove_<%=value._id%>">
+                                            <th scope="row"><img class="p-img" style="float: left;  width: 60px;"
+                                                    src="<%=value.Products.Image[0]%>" alt="">
+                                            </th>
+                                            <td>
+                                                <%=value.Products.Name%>
+                                            </td>
+                                            <td>
+                                                <%=value.Products.Price%>/-
+                                            </td>
+                                            <td style="display: flex;justify-content: center;align-items: center ;">
+                                                <div onclick="addToCart(event,'<%=value.Products._id%>')"
+                                                    id="addtocartbtn">Add To Cart</div>
+                                            </td>
+                                            <td> </td>
+                                            <td style="display: flex;justify-content: center;align-items: center ;">
+                                                <button
+                                                    onclick="remove('<%=value.Products._id%>','remove_<%=value._id%>')"
+                                                    id="removefromlistbtn">
+                                                    <div>Remove </div>
+                                                </button>
+                                            </td>
+
+                                            <%})%>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <%}else{%>
+
+                <img src="/assets/cartempty.png" class="cartemptyimg" alt=" cart-empty-image">
+                <button onclick="navigatetoproductlisting()" type="submit " value="submit" class="btn"
+                    id="returntoshopbtn">Return To Shop</button>
+
+                <%}%>
+
+        </div>
+
+
+
+        <%-include("./partials/footer.ejs")%>
+            <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+                integrity="sha384-dpQyguPdAyPOUa5CCAE/csm3Iq74d4eOeb24NRLoc/HPb0Ff8yYLK7Cv7a+D5aup"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+                integrity="sha384-oysqN7c65EkEMB9S0Ag3ZqRde01Jg/rfBTKKY8iPm9nZpPGwTRkcmO9aHTt8XIGL"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+            <script>
+
+                window.addEventListener("load", () => {
+                    localStorage.setItem("wishlist", '<%-WishlistProducts.length%>')
+                })
+
+
+                
+                function navigatetoproductlisting() {
+                    window.location.href = "/productlistingverified";
+                }
+
+
+
+                function addtowishlist(productId) {
+                    // alert(productId)
+                    fetch('/addtowishlist', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ productId })
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            if (res.success) {
+                                showToast(res.message, "#52b963");
+                            } else {
+                                showToast(res.message, "#FF0000");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during fetch:", error);
+                            showToast("An error occurred", "#FF0000");
+                        });
+                }
+
+                function remove(productId, rowId) {
+                    const addtowishlist = fetch('/removeFromWishlist', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ productId })
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            if (res.success) {
+                                let currentCount = localStorage.getItem("wishlist")
+                                localStorage.setItem("wishlist", currentCount - 1)
+
+                                if (localStorage.getItem("wishlist") <= 0) {
+                                    window.location.reload()
+                                }
+                                document.getElementById(rowId).style.display = 'none';
+                                showToast(res.message, "#52b963");
+                            } else {
+                                showToast(res.message, "#FF0000");
+                            }
+
+                        })
+                }
+
+                function showToast(message, background) {
+                    Toastify({
+                        text: message,
+                        duration: 2000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "to",
+                        position: "center",
+                        stopOnFocus: true,
+                        style: {
+                            background: background,
+                            borderRadius: "8px"
+                        },
+                        onClick: function () { }
+                    }).showToast();
+                }
+
+
+
+            </script>
+
+
+
+
+</body>
+
+</html>

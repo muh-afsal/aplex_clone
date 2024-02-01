@@ -1,0 +1,672 @@
+<%-include("./partials/header.ejs")%>
+    <title>Manage Coupon</title>
+    </head>
+    <style>
+        #addCoupon_btn {
+            border-radius: 9px;
+            width: 137px;
+            margin-top: 8px;
+            height: 41px;
+            background-color: #4461F2;
+            color: white;
+            font-weight: 600;
+            /* margin-left: 1095px; */
+            box-shadow: 0px 0px 5px -1px #4461F2;
+        }
+
+        .Entry {
+            font-size: medium;
+            height: 49px;
+            background-color: #DBECFF;
+            box-shadow: 0px 2px 13px -8px #000000;
+            border-radius: 10px;
+            width: 91%;
+            margin-left: 25px;
+            border: none;
+            padding: 16px;
+        }
+
+        .errorDiv {
+            margin-bottom: -17px;
+            font-size: small;
+            margin-left: 28px;
+        }
+    </style>
+
+    <body>
+        <%-include("./partials/side-bar.ejs")%>
+
+            <div class="product-text-container container-fluid" style="display: flex; justify-content: space-between;">
+                <h4 style="margin-top: 11px;" id="ManageProduct-text">Manage Coupons</h4>
+                <button data-toggle="modal" data-target="#addCoupon" type="submit" value="submit" class="btn"
+                    id="addCoupon_btn" style="float: right;">
+                    <a style="text-decoration: none; color: #fff;">Add Coupon +</a>
+                </button>
+
+            </div>
+            <div>
+                <div class="col-12 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                        <h2 class="tm-block-title text-dark">Coupons</h2>
+                        <% if (err) { %>
+                            <div class="error-message" style="text-align: center; color: red; margin-bottom: 20px;">
+                                <%= err %>
+                            </div>
+                            <% } %>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Coupon Name</th>
+                                            <th scope="col">Coupon Code</th>
+                                            <th scope="col">Discount</th>
+                                            <th scope="col">Min</th>
+                                            <th scope="col">Max</th>
+                                            <th scope="col">Start</th>
+                                            <th scope="col">Expiry</th>
+                                            <th scope="col">Is Active</th>
+                                            <th scope="col">Is Used</th>
+                                            <th scope="col" style=" text-align: right;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%Coupons.forEach((data,index)=>{%>
+                                            <tr>
+                                                <th scope="row">
+                                                    <%=index+1%>
+                                                </th>
+                                                <td>
+                                                    <%=data.CouponName%>
+                                                </td>
+                                                <td>
+                                                    <%=data.CouponCode%>
+                                                </td>
+                                                <td>
+                                                    <%=data.DiscountValue%>₹
+                                                </td>
+                                                <td>
+                                                    <%=data.MinPurchaseAmount%>/-
+                                                </td>
+                                                <td>
+                                                    <%=data.MaxPurchaseAmount%>/-
+                                                </td>
+                                                <td>
+                                                    <% if (data.StartDate) { %>
+                                                        <%= data.StartDate.toLocaleDateString('en-GB', { day: '2-digit'
+                                                            , month: '2-digit' , year: '2-digit' }) %>
+                                                            <% } %>
+                                                </td>
+                                                <td>
+                                                    <% if (data.ExpirationDate) { %>
+                                                        <%= data.ExpirationDate.toLocaleDateString('en-GB', {
+                                                            day: '2-digit' , month: '2-digit' , year: '2-digit' }) %>
+                                                            <% } %>
+                                                </td>
+                                                <td>
+                                                    <%=data.IsActive%>
+                                                </td>
+                                                <td>
+                                                    <%=data.isUsed%>
+                                                </td>
+                                                <td class="edits">
+                                                    <span class="icon"><a style="cursor: pointer;"
+                                                            class="text-decoration-none text-secondary"
+                                                            data-toggle="modal"
+                                                            data-target="#editAddressModal<%= data._id %>">&#9998;</a></span>
+                                                </td>
+                                                <td class="edits">
+                                                    <span class="icon ml-3 delete"><a style="cursor: pointer;"
+                                                            class="text-decoration-none text-danger" data-toggle="modal"
+                                                            data-target="#DeleteAddressModal<%= data._id %>">&#128465;</a></span>
+
+                                                </td>
+                                            </tr>
+                                            <!-- are you sure confirmation modal -->
+                                            <div class="modal fade" id="DeleteAddressModal<%= data._id %>" tabindex="-1"
+                                                role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="logoutModalLabel">
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h5>Are you sure you want to remove this Coupon?</h5>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class=" btn-secondary "
+                                                                data-dismiss="modal" style="border-radius: 7px; "
+                                                                aria-label="close">
+                                                                Cancel
+                                                            </button>
+
+                                                            <a class="confirm-button btn-danger "
+                                                                style="cursor: pointer; color: #DBECFF ; background-color: #4461F2; padding: 4px; border-radius: 7px;"
+                                                                onclick="confirmDelete('<%= data._id %>')"
+                                                                data-dismiss="modal" aria-label="close">Confirm</a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- modal for edit the coupon -->
+                                            <div class="modal fade" id="editAddressModal<%= data._id %>" tabindex="-1"
+                                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4 style=" margin-left: 20px;  font-weight:600;">Edit Coupon
+                                                            </h4>
+                                                            <form action="/admin/editCoupon?_id=<%= data._id %>"
+                                                                method="POST" style="margin-top: 25px;"
+                                                                id="editform_<%= data._id%>"
+                                                                onsubmit="SubmitEditform(event,'<%= data._id %>')"
+                                                                >
+                                                                <div class="form-group mb-4">
+                                                                    <label for="CouponName"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Coupon
+                                                                        Name</label>
+                                                                    <input id="CouponName_<%= data._id%>" type="text"
+                                                                        value="<%=data.CouponName%>" class="Entry"
+                                                                        placeholder="Coupon Name" name="CouponName">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="CouponNameError_<%= data._id%>"></div>
+                                                                </div>
+                                                                <div class="form-group mb-4">
+                                                                    <label for="DiscountValue"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Discount
+                                                                        Price</label>
+                                                                    <input min="1" id="DiscountValue_<%= data._id%>"
+                                                                        type="number" value="<%=data.DiscountValue%>"
+                                                                        class="Entry"
+                                                                        placeholder="Enter the Discount Price"
+                                                                        name="DiscountValue">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="DiscountValueError_<%= data._id%>"></div>
+                                                                </div>
+                                                                <div class="form-group mb-4">
+                                                                    <label for="minPurchaceAmount"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Minimum
+                                                                        Purchase Amount</label>
+                                                                    <input min="1" id="minPurchaceAmount_<%= data._id%>"
+                                                                        type="number"
+                                                                        value="<%=data.MinPurchaseAmount%>"
+                                                                        class="Entry" placeholder="Enter Amount"
+                                                                        name="minPurchaceAmount">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="minPurchaceAmountError_<%= data._id%>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group mb-4">
+                                                                    <label for="maxPurchaceAmount"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Maximum
+                                                                        Purchase Amount</label>
+                                                                    <input min="1" id="maxPurchaceAmount_<%= data._id%>"
+                                                                        type="number"
+                                                                        value="<%=data.MaxPurchaseAmount%>"
+                                                                        class="Entry" placeholder="Enter Amount"
+                                                                        name="maxPurchaceAmount">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="maxPurchaceAmountError_<%= data._id%>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group mb-4">
+                                                                    <label for="startDate"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Start
+                                                                        Date</label>
+                                                                    <input readonly id="startDate_<%= data._id%>" type="date"
+                                                                        value="<%= new Date(data.StartDate).toISOString().split('T')[0] %>"
+                                                                        class="Entry" placeholder="Shipping name"
+                                                                        name="startDate">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="startDateError_<%= data._id%>"></div>
+                                                                </div>
+                                                                <div class="form-group mb-4">
+                                                                    <label for="expiringDate"
+                                                                        style="color: #000000; font-size: smaller; margin-left: 30px;">Expiring
+                                                                        Date</label>
+                                                                    <input id="expiringDate_<%= data._id%>" type="date"
+                                                                        class="Entry"
+                                                                        value="<%= new Date(data.ExpirationDate).toISOString().split('T')[0] %>"
+                                                                        placeholder="Shipping name" name="expiringDate">
+                                                                    <div class="text-danger errorDiv"
+                                                                        id="expiringDateError_<%= data._id%>"></div>
+                                                                </div>
+                                                                <button type="submit" class="btn" value="submit"
+                                                                    style="margin-top: 48px; margin-left: 64px;"
+                                                                    id="signup-btn">Edit Coupon</button>
+                                                            </form>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <%})%>
+                                    </tbody>
+                                </table>
+                    </div>
+                    <!-- modal for add the coupon -->
+                    <div class="modal fade" id="addCoupon" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h4 style=" margin-left: 20px;  font-weight:600;">Add Coupon</h4>
+                                    <form action="/admin/addCoupon" method="POST" style="margin-top: 25px;"
+                                        id="addform">
+                                        <div class="form-group mb-4">
+                                            <label for="newCouponName"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Coupon
+                                                Name </label>
+                                            <input id="newCouponName" type="text" value="" class="Entry"
+                                                placeholder="Coupon Name" name="newCouponName">
+                                            <div class="text-danger errorDiv" id="newCouponNameError"></div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="newDiscountValue"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Discount
+                                                Price</label>
+                                            <input id="newDiscountValue" type="number" value="" class="Entry"
+                                                placeholder="Enter the Discount Price" name="newDiscountValue">
+                                            <div class="text-danger errorDiv" id="newDiscountValueError"></div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="newminPurchaceAmount"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Minimum
+                                                Purchase Amount</label>
+                                            <input id="newminPurchaceAmount" type="number" value="" class="Entry"
+                                                placeholder="Enter Amount" name="newminPurchaceAmount">
+                                            <div class="text-danger errorDiv" id="newminPurchaceAmountError"></div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="newmaxPurchaseAmount"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Maximum
+                                                Purchase Amount</label>
+                                            <input id="newmaxPurchaseAmount" type="number" value="" class="Entry"
+                                                placeholder="Enter Amount" name="newmaxPurchaseAmount">
+                                            <div class="text-danger errorDiv" id="newmaxPurchaseAmountError"></div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="newstartDate"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Start
+                                                Date</label>
+                                            <input id="newstartDate" type="date" value="" class="Entry"
+                                                placeholder="Shipping name" name="newstartDate">
+                                            <div class="text-danger errorDiv" id="newstartDateError"></div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="newexpiringDate"
+                                                style="color: #000000; font-size: smaller; margin-left: 30px;">Expiring
+                                                Date</label>
+                                            <input id="newexpiringDate" type="date" value="" class="Entry"
+                                                placeholder="Shipping name" name="newexpiringDate">
+                                            <div class="text-danger errorDiv" id="newexpiringDateError"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn" value="submit"
+                                            style="margin-top: 48px; margin-left: 64px;" id="signup-btn">Add
+                                            Coupon</button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+            
+
+
+           <script>
+    function isEmpty(value) {
+        const trimmedValue = value.trim();
+        return trimmedValue === "";
+    }
+
+    // Set timeout for error message-------------
+    const errorMessage = document.querySelector(".error-message");
+    if (errorMessage) {
+        setTimeout(() => {
+            errorMessage.textContent = "";
+        }, 4000);
+    }
+
+    function SubmitEditform(event, id) {
+        const CouponNameInput = document.querySelector("#CouponName_" + id);
+        const CouponNameValue = CouponNameInput.value;
+        const CouponNameError = document.querySelector("#CouponNameError_" + id);
+
+        const DiscountValueInput = document.querySelector("#DiscountValue_" + id);
+        const DiscountValueValue = DiscountValueInput.value;
+        const DiscountValueError = document.querySelector("#DiscountValueError_" + id);
+
+        const minPurchaceAmountInput = document.querySelector("#minPurchaceAmount_" + id);
+        const minPurchaceAmountValue = minPurchaceAmountInput.value;
+        const minPurchaceAmountError = document.querySelector("#minPurchaceAmountError_" + id);
+
+        const maxPurchaseAmountInput = document.querySelector("#maxPurchaceAmount_" + id);
+        const maxPurchaseAmountValue = maxPurchaseAmountInput.value;
+        const maxPurchaseAmountError = document.querySelector("#maxPurchaceAmountError_" + id);
+
+        const startDateInput = document.querySelector("#startDate_" + id);
+        const startDateValue = startDateInput.value;
+        const startDateError = document.querySelector("#startDateError_" + id);
+
+        const expiringDateInput = document.querySelector("#expiringDate_" + id);
+        const expiringDateValue = expiringDateInput.value;
+        const expiringDateError = document.querySelector("#expiringDateError_" + id);
+
+        CouponNameError.textContent = "";
+        DiscountValueError.textContent = "";
+        minPurchaceAmountError.textContent = "";
+        maxPurchaseAmountError.textContent = "";
+        startDateError.textContent = "";
+        expiringDateError.textContent = "";
+
+        if (isEmpty(CouponNameValue)) {
+            CouponNameError.textContent = "Coupon Name is required!";
+            event.preventDefault();
+        }
+        if (isEmpty(DiscountValueValue)) {
+            DiscountValueError.textContent = "Discount Value is required!";
+            event.preventDefault();
+        }
+        if (isEmpty(minPurchaceAmountValue)) {
+            minPurchaceAmountError.textContent = "Minimum Purchase amount cannot be empty!";
+            event.preventDefault();
+        }
+        if (isEmpty(maxPurchaseAmountValue)) {
+            maxPurchaseAmountError.textContent = "Maximum Purchase amount cannot be empty!";
+            event.preventDefault();
+        }
+        if (isEmpty(startDateValue)) {
+            startDateError.textContent = "Starting Date is Required!";
+            event.preventDefault();
+        }
+        if (isEmpty(expiringDateValue)) {
+            expiringDateError.textContent = "Ending Date is Required!";
+            event.preventDefault();
+        }
+
+        // validating the amount 
+        const isAmountValid = validatePurchaseAmounts(minPurchaceAmountValue, maxPurchaseAmountValue, minPurchaceAmountError, maxPurchaseAmountError);
+        const isDateRangeValid = validatDateRange(startDateValue, expiringDateValue, startDateError, expiringDateError);
+        const isdiscountAmountValid = validateDiscountValue(DiscountValueValue, DiscountValueError, maxPurchaseAmountValue);
+
+        function validatePurchaseAmounts(minAmount, maxAmount, minError, maxError) {
+            minError.textContent = "";
+            maxError.textContent = "";
+
+            const minVal = parseFloat(minAmount);
+            const maxVal = parseFloat(maxAmount);
+
+            if (minVal >= maxVal) {
+                maxError.textContent = "The maximum purchase amount cannot be less than or equal to the minimum purchase amount!";
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
+        // validating the date 
+        function validatDateRange(startDate, endDate, startError, endError) {
+            startError.textContent = "";
+            endError.textContent = "";
+
+            const todaysDate = new Date();
+            todaysDate.setHours(0, 0, 0, 0);
+
+            const startDateVal = new Date(startDate);
+            startDateVal.setHours(0, 0, 0, 0);
+
+            const endDateVal = new Date(endDate);
+            endDateVal.setHours(0, 0, 0, 0);
+
+            if (startDateVal < todaysDate) {
+                startError.textContent = "The Start date cannot be before the current Date!";
+                event.preventDefault();
+                return false;
+            }
+
+            if (startDateVal > endDateVal) {
+                endError.textContent = "The expiration date cannot be before the starting date!";
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
+        // validating discount value
+        function validateDiscountValue(discountValue, discountError, maxAmount) {
+            discountError.textContent = "";
+
+            const discountVal = parseFloat(discountValue);
+
+            if (discountVal > maxAmount) {
+                discountError.textContent = "Discount Price Cannot be greater than maximum Purchase amount!";
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+    }
+</script>
+
+
+
+
+            <!------------------------ validation for add coupon  ----------------------->
+            <script>
+                document.getElementById("addform").addEventListener("submit", function (event) {
+
+                    const newCouponNameInput = document.querySelector("#newCouponName");
+                    const newCouponNameValue = newCouponNameInput.value;
+                    const newCouponNameError = document.querySelector("#newCouponNameError");
+
+                    const newDiscountValueInput = document.querySelector("#newDiscountValue");
+                    const newDiscountValueValue = newDiscountValueInput.value;
+                    const newDiscountValueError = document.querySelector("#newDiscountValueError");
+
+                    const newminPurchaceAmountInput = document.querySelector("#newminPurchaceAmount");
+                    const newminPurchaceAmountValue = newminPurchaceAmountInput.value;
+                    const newminPurchaceAmountError = document.querySelector("#newminPurchaceAmountError");
+
+                    const newmaxPurchaseAmountInput = document.querySelector("#newmaxPurchaseAmount");
+                    const newmaxPurchaseAmountValue = newmaxPurchaseAmountInput.value;
+                    const newmaxPurchaseAmountError = document.querySelector("#newmaxPurchaseAmountError");
+
+                    const newstartDateInput = document.querySelector("#newstartDate");
+                    const newstartDateValue = newstartDateInput.value;
+                    const newstartDateError = document.querySelector("#newstartDateError");
+
+                    const newexpiringDateInput = document.querySelector("#newexpiringDate");
+                    const newexpiringDateValue = newexpiringDateInput.value;
+                    const newexpiringDateError = document.querySelector("#newexpiringDateError");
+
+
+
+
+
+                    newCouponNameError.textContent = "";
+                    newDiscountValueError.textContent = "";
+                    newminPurchaceAmountError.textContent = "";
+                    newmaxPurchaseAmountError.textContent = "";
+                    newstartDateError.textContent = "";
+                    newexpiringDateError.textContent = "";
+
+
+                    if (isEmpty(newCouponNameValue)) {
+                        newCouponNameError.textContent = "Coupon Name is required!";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(newDiscountValueValue)) {
+                        newDiscountValueError.textContent = "Discount Value is required ! ";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(newminPurchaceAmountValue)) {
+
+                        newminPurchaceAmountError.textContent = "Minimum Purchase amount cannot be empty !";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(newmaxPurchaseAmountValue)) {
+
+                        newmaxPurchaseAmountError.textContent = "Maximum Purchase amount cannot be empty !";
+                        event.preventDefault();
+                    }
+
+                    if (isEmpty(newstartDateValue)) {
+                        newstartDateError.textContent = "Starting Date is Required !";
+                        event.preventDefault();
+                    }
+                    if (isEmpty(newexpiringDateValue)) {
+                        newexpiringDateError.textContent = "Ending Date is Required !";
+                        event.preventDefault();
+                    }
+
+
+
+
+
+                    // validating the amount 
+                    const isAmountValid = validatenewPurchaseAmounts(newminPurchaceAmountValue, newmaxPurchaseAmountValue, newminPurchaceAmountError, newmaxPurchaseAmountError);
+                    const isDateRangeValid = validatnewDateRange(newstartDateValue, newexpiringDateValue, newstartDateError, newexpiringDateError);
+                    const isdiscountAmountValid = validatenewDiscountValue(newDiscountValueValue, newDiscountValueError, newmaxPurchaseAmountValue)
+
+                    function validatenewPurchaseAmounts(minAmount, maxAmount, minError, maxError) {
+                        minError.textContent = "";
+                        maxError.textContent = "";
+
+                        const minVal = parseFloat(minAmount);
+                        const maxVal = parseFloat(maxAmount);
+
+                        if (minVal >= maxVal) {
+                            maxError.textContent = "The maximum purchase amount cannot be less than or equal to the minimum purchase amount !";
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+
+                    // validaring the date 
+                    function validatnewDateRange(startDate, endDate, startError, endError) {
+                        startError.textContent = "";
+                        endError.textContent = "";
+
+                        const todaysDate = new Date();
+                        todaysDate.setHours(0, 0, 0, 0);
+
+                        const startDateVal = new Date(startDate);
+                        startDateVal.setHours(0, 0, 0, 0);
+
+                        const endDateVal = new Date(endDate);
+                        endDateVal.setHours(0, 0, 0, 0);
+
+
+
+                        if (startDateVal < todaysDate) {
+                            startError.textContent = "The Start date cannot be before the current Date!";
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        if (startDateVal > endDateVal) {
+                            endError.textContent = "The expiration date cannot be before the starting date!";
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+
+
+
+
+                    //validating discount value
+
+
+                    function validatenewDiscountValue(discountValue, discountError, maxAmount) {
+                        discountError.textContent = "";
+
+                        const discountVal = parseFloat(discountValue);
+
+                        if (discountVal > maxAmount) {
+                            discountError.textContent = "Discount Price Cannot be greater than maximum Purchase amount!";
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        return true;
+                    }
+                })
+
+
+
+
+            </script>
+
+
+
+
+
+            </script>
+            <script>
+                function confirmDelete(couponId) {
+
+
+                    fetch(`/admin/deleteCoupon/${couponId}`, {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+
+                            if (data.success) {
+
+                                window.location.reload()
+                            }
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                }
+            </script>
+            <%-include("./partials/footerlinks.ejs")%>

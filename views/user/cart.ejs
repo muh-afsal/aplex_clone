@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <script src="/scripts/cart.js"></script>
+    <link rel="stylesheet" href="/css/user/login.css">
+    <link rel="stylesheet" href="/css/user/cart.css">
+    <title>Cart</title>
+
+
+</head>
+
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/nav-after-login.ejs")%>
+        <h2 style="text-align: center; font-weight:800 ; margin-top: 20px;">My Shopping Cart</h2>
+        <div class="container-fluid cart-container">
+            <div class="cart-products-container">
+                <%if(cartProduct.Items.length>0){%>
+
+                    <div class="cart-products-listing" style=" padding-top: 13px;">
+                        <div class="table-container">
+                            <table class="table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">IMAGE</th>
+                                        <th scope="col">PRODUCT</th>
+                                        <th scope="col">PRICE</th>
+                                        <th scope="col">QUANTITY</th>
+                                        <th scope="col">SUBTOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <%cartProduct.Items.forEach((value,index)=>{%>
+
+                                        <tr id="Product_<%=value.Products._id%><%-index%>">
+                                            <th scope="row"><img class="p-img" style="float: left;  width: 60px;"
+                                                    src="<%=value.Products.Image[0]%>" alt="">
+                                            </th>
+                                            <td>
+                                                <%=value.Products.Name%>
+                                            </td>
+                                            <td id="Price_<%=value.Products._id%>">
+                                                <%if(value.Products.isOffer){%>
+                                                    <%=value.Products.DiscountPrice%>/-
+                                                        <%}else{%>
+                                                            <%=value.Products.Price%>/-
+                                                                <%}%>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <div style="display: flex;flex-direction: row;">
+                                                        <div class="value-button decrease"
+                                                            onclick="updatequantity('<%=value.Products._id%>', '<%=value.Products.Stock%>', -1)"
+                                                            value="Decrease Value">-</div>
+                                                        <input type="number" class="number"
+                                                            id="number_<%=value.Products._id%>"
+                                                            style="font-size: smaller;" value="<%=value.Quantity%>"
+                                                            readonly />
+                                                        <div class="value-button increase"
+                                                            onclick="updatequantity('<%=value.Products._id%>', '<%=value.Products.Stock%>', 1)"
+                                                            value="Increase Value">+</div>
+                                                    </div>
+                                                </form>
+
+
+                                            </td>
+                                            <td id="Subtotal_<%=value.Products._id%>" style="font-weight: 700;">
+                                                <%if(value.Products.isOffer){%>
+                                                    <%=value.Products.DiscountPrice*value.Quantity%>/-
+                                                        <%}else{%>
+                                                            <%=value.Products.Price*value.Quantity%>/-
+                                                                <%}%>
+                                            </td>
+                                            <!-- Update the relevant part of your EJS file -->
+                                            <td style="font-weight: 700;">
+                                                <button type="button" class="closebutton" data-toggle="modal"
+                                                    data-target="#logoutModal<%=value.Products._id%><%=index%>">
+                                                    <i class="fas fa-times-circle"></i>
+                                                </button>
+
+                                            </td>
+
+                                            <!-- are you sure modal -->
+                                            <div class="modal fade" id="logoutModal<%=value.Products._id%><%-index%>"
+                                                tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="logoutModalLabel">
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">Are you sure you want to remove this
+                                                            Product?</div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class=" btn-secondary "
+                                                                data-dismiss="modal" style="border-radius: 7px;"
+                                                                aria-label="close">
+                                                                Cancel
+                                                            </button>
+                                                            <a onclick="removeProduct('<%=value.Products._id%>','<%-index%>','Product_<%=value.Products._id%><%-index%>','cart-empty-msg')"
+                                                                class="confirm-button btn-danger " data-dismiss="modal"
+                                                                aria-label="close">Confirm</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <%})%>
+
+
+
+                                        </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+            </div>
+
+
+            <div class="cart-total-container">
+                <h4 style=" margin-left: 10px;  font-weight:600;margin-top: 10px;">Cart Total</h4>
+                <div class="total-values-container">
+                    <div class="total-values">
+                        <p class="total-texts">Subtotal :</p>
+                        <p class="cart-prices" id="cartTotal-Subtotal"><%-total%> <span>/-</span></p>
+                    </div>
+                    <div class="total-values">
+                        <p class="total-texts">Discount Price :</p>
+                        <p class="cart-prices">-0/-</p>
+                    </div>
+                    <div class="total-values">
+                        <p class="total-texts" style="font-size: x-large; color: black ;">Total :</p>
+                        <p style="font-size: x-large; font-weight: 600; " class="cart-prices"><span
+                                id="total"><%-total%></span>/-</p>
+                    </div>
+                </div>
+                <button onclick="navigatetocheckout()" type="submit " value="submit" class="btn">Proceed To
+                    Checkout</button disabled>
+            </div>
+            <%}else{%>
+
+                <img src="/assets/cartempty.png" class="cartemptyimg" alt=" cart-empty-image">
+                <button onclick="navigatetoproductlisting()" type="submit " value="submit" class="btn"
+                    id="returntoshopbtn">Return To Shop</button>
+
+                <%}%>
+        </div>
+
+
+        <!-- <p class="text-danger">aflu is bad boy </p> -->
+        <%-include("./partials/footer.ejs")%>
+
+
+
+
+            <script>
+                window.addEventListener("load", () => {
+                    localStorage.setItem("cartcount", '<%-cartProduct.Items.length%>')
+                })
+                document.addEventListener("DOMContentLoaded", function () {
+                    // alert(cartProduct.Items.length);
+                    if (cartProduct.Items.length === 0) {
+                        window.location.reload();
+
+                    }
+                });
+
+
+                function navigatetocheckout() {
+                    window.location.href = "/checkout";
+                }
+                function navigatetoproductlisting() {
+                    window.location.href = "/productlistingverified";
+                }
+
+
+
+
+
+
+
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminLogin</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/user/login.css">
+<body>
+    <!-- Nav bar -->
+    <%-include("./partials/navbar.ejs")%>
+
+
+    <div class="container-fluid login-container">
+        <h2 class="text-center text-dark login-text" >Admin Login</h2>
+          <div class="container " id="inner-container">
+            <div class="container-fluid login-img">
+                
+            </div>
+            <div class="container-fluid login-inputs">
+                <% if( typeof message !=="undefined"){%>         
+                    <p class="text-center text-danger" style="font-size: small;">  <%- message %> <a class="text-decoration-none text-dark close" href="/admin/adminlogin">x</a></p>
+                 <% }%>
+                <form action="/admin/adminlogin" id="form" method="POST">
+                    <div class="form-group py-2 ">
+                        <input  type="text" class="form-control entry shadow-none"  placeholder="Email Address" value="admin@gmail.com" name="email" id="email">
+                       
+                    </div><div class="text-danger " style="font-size: small; margin-left: 20px;" id="emailError"></div>
+                    <div class="form-group mt-3">
+                        <input  type="password" class="form-control entry shadow-none"  name="password" value="Admin@123" placeholder="Password" id="password">
+                    </div><div class="text-danger " style="font-size: small; margin-left: 20px;" id="passwordError"></div>
+                    <!-- <a href="" class="text-primary"  style="text-decoration: none; font-size: small;margin-top: 13px; margin-left: 10px;     width: 91%;
+                    margin-left: 35px;">Forgot password </a> -->
+                    <button type="submit " value="submit" class="btn" id="login-btn">Login</button>
+                </form>
+               
+              
+            </div>
+          </div>
+    </div>
+    <%-include("./partials/footer.ejs")%>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+            function isEmpty(value) {
+                    const trimmedValue = value.trim();
+                    return trimmedValue === "";
+                }
+                function validateEmail(email) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
+                    return emailRegex.test(email);
+                }
+
+                document.querySelector('form').addEventListener('submit',function(event){
+                    const emailInput=document.querySelector("#email")
+                    const emailValue=emailInput.value;
+                    const emailError=document.querySelector("#emailError")
+                   
+                    const passwordInput=document.querySelector("#password")
+                    const passwordValue=passwordInput.value;
+                    const passwordError=document.querySelector("#passwordError")
+
+
+                    emailError.textContent="";
+                    passwordError.textContent="";
+
+
+                   if(isEmpty(emailValue)){
+                    emailError.textContent="Email cannot be empty...!";
+                    event.preventDefault()
+                }
+                   if(isEmpty(passwordValue)){
+                    passwordError.textContent="Password cannot be empty...!";
+                    event.preventDefault()
+                }
+
+                //validateEmail
+                if(!validateEmail(emailValue)){
+                  emailError.textContent="Enter a valid Email...!"
+                  event.preventDefault()
+                }
+                
+                })
+    </script>
+</body>
+</html>
