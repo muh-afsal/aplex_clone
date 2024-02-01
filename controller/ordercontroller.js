@@ -169,7 +169,7 @@ const GenerateInvoices = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const id = req.params.orderId;
-    const filePath = `D:\\brocamp weekly\\Week11-project-1st\\Aplex\\public\\pdf\\${id}.pdf`;
+    const filePath = `public\\pdf\\${id}.pdf`;
     res.download(filePath, `invoice.pdf`);
   } catch (error) {
     console.error("Error in downloading the invoice:", error);
