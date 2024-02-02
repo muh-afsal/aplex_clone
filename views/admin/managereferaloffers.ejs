@@ -49,27 +49,19 @@
                             <tr>
 
                                 <th scope="col">OFFER PRICE</th>
-                                <th scope="col">JOIN COUNT</th>
-                                <th scope="col">INVITE COUNT</th>
                                 <th scope="col">STATUS</th>
                                 <th scope="col">EDIT</th>
-                                <th scope="col">DELETE</th>
+                                <th scope="col">ACTION</th>
 
                             </tr>
                         </thead>
                         <tbody>
                           
 
-                                <td id="newprice">
-                                    
-                                    <%=Referaldata.BonusPrice%>
-                                </td>
-                                <td>
-                                    <%=Referaldata.Joincount%>
-                                </td>
-                                <td>
-                                    <%=Referaldata.Joincount%>
-
+                                <td id="newprice" >
+                                    <% if (Referaldata && Referaldata.BonusPrice !== undefined) { %>
+                                    <%=Referaldata.BonusPrice%>/-
+                                    <%}%>
                                 </td>
                                 <td>
                                     <%if(Referaldata.Status===true){%>
