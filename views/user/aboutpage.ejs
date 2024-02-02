@@ -21,30 +21,154 @@
 
 </head>
 <style>
-    #returntoshopbtn {
-    margin-left: 0;
-    margin-top: 18px;
-    color: rgb(255, 255, 255);
-    box-shadow: rgba(0, 0, 4, 0.1) 0px 0px 7px 2px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
-}
+    #container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .box {
+        box-sizing: border-box;
+        width: 50%;
+        height: 65vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+    @media (max-width: 992px) {
+        .box {
+            width: 100%;
+        }
+    }
+
+    .img-container {
+        width: 579px;
+        height: 393px;
+        /* background-color: beige; */
+        border-radius: 13px;
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .txt-container {
+        display: flex;
+        align-items: center;
+        padding: 30px;
+        width: 579px;
+        height: 393px;
+        /* background-color: beige; */
+        border-radius: 13px;
+    }
 </style>
 
 <body>
     <!-- Nav bar -->
     <%-include("./partials/nav-after-login.ejs")%>
-        
-        <div class="container-fluid cart-container" style="background-color: aqua;">
-        
-           
+        <div style="display: flex;justify-content: center;flex-direction:column;align-items: center;">
+            <h3 style="font-weight: 800;margin-top: 20px;">About Us</h3>
+            <div style="width: 87%;" id="container">
+                <div class="box">
+                    <div class="img-container" style="background-image: url(/assets/apple-eco.jpg);">
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="txt-container">
+                        <div>
+                            <h3>Supporting those who are making a better tomorrow</h3>
+                            <p>
+                                Discover exclusive savings with a special 10-15% discount on all orders, our heartfelt
+                                gratitude extended to teachers, students, healthcare heroes, military and government
+                                agencies, first responders, and seniors. As a token of appreciation, relish the benefits
+                                of these savings designed just for you. Embrace the value of your dedication with this
+                                limited-time offer. Thank you for your service and commitment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 87%;" id="container">
 
+                <div class="box">
+                    <div class="txt-container">
+                        <div>
+                            <h3>Who is eligible for discounts?</h3>
+                            <p>
+                                Teachers and Students - 15%<br>
+                                Teachers, teaching assistants and aides, administrators, and students enrolled at a<br>
+                                college, university, or technical program within the US and Canada<br><br>
 
-                
+                                Healthcare Professionals - 10%<br>
+                                Doctors, nurses, and other healthcare professionals<br><br>
 
+                                Military - 10%<br>
+                                Active duty, the reserves, national guard, retirees, veterans, and military families</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="img-container" style="background-image: url(/assets/apple\ banner1.jpg);">
+                    </div>
+                </div>
+            </div>
+            <div style="width: 87%;" id="container">
+                <div class="box">
+                    <div class="img-container" style="background-image: url(/assets/applewatchBanner-copy.png);">
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="txt-container">
+                        <div>
+                            <h3>Discover the Latest and Greatest from us</h3>
+                            <p>
+
+                                Also Discover the latest and greatest innovations from our e-commerce website
+                                specializing in Apple products. Elevate your tech experience with cutting-edge iPhones,
+                                MacBooks, iPads, and more. Immerse yourself in a world of sleek design, powerful
+                                performance, and unparalleled innovation. Our curated selection ensures you stay ahead
+                                in technology, backed by seamless online shopping and exceptional customer service.
+                                Explore the pinnacle of innovation – shop with us and redefine your digital lifestyle.
+                                Welcome to a world where technology meets elegance, and your desires meet fulfillment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 87%;" id="container">
+
+                <div class="box">
+                    <div class="txt-container">
+                        <div>
+                            <h3>Don't work in any of the
+                                above fields?</h3>
+                            <p>
+                                No worries, we have an incredible referral program that's open to all. Simply visit our
+                                referral page and share the word about us with your friends and family. They'll receive
+                                a $20 discount, and as a token of appreciation, you'll also receive a $20 reward for
+                                spreading the love. Embrace the value of your dedication with this
+                                limited-time offer. Thank you for your service and commitment.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="img-container" style="background-image: url(/assets/macbookproimage.jpg);">
+                    </div>
+                </div>
+            </div>
         </div>
-      
+
         <%-include("./partials/footer.ejs")%>
-           
+
 
 
 

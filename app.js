@@ -37,15 +37,12 @@ app.use("/",userRoute)
 app.use("/admin",adminRoute)
 
 
-app.use((err, req, res, next) => {
-  if (err.status === 404) {
-    res.status(404).render('user/404.ejs');
-  } else {
-    
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
+app.use((req, res, next) => {
+  res.status(404);
+
+  res.render('user/404.ejs');
 });
+
 
 
 
