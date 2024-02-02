@@ -13,7 +13,7 @@
                         <div class="profile_img_container">
                             <div class="image_upload " style="display: flex; flex-direction: column;">
                                 <div id="profile_image"
-                                    style="background-size: contain; background-position: center; background-image: url(/assets/<%=userData.profileImage%>);">
+                                    style="background-size: contain; background-position: center; background-image: url(/profile-images/<%=userData.profileImage%>);">
 
                                 </div>
                                 <label for="file" class="custom-upload-btn">Upload Image</label>
@@ -56,6 +56,26 @@
             </div>
 
             </div>
+
+            <!-- Add this script tag to your HTML file -->
+<script>
+    function previewImage(inputId, imageId) {
+     
+        const input = document.getElementById(inputId);
+        const imageContainer = document.getElementById(imageId);
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imageContainer.style.backgroundImage = `url(${e.target.result})`;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
 
            
            <script>
