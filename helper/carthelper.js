@@ -1,19 +1,23 @@
 const Cart = require("../model/collections/cartmodel");
 const Products = require("../model/collections/productmodel");
 
-
-
-async function productAddtocart(productId, userId,res) {
+async function productAddtocart(productId, userId, res) {
   try {
     const cartExist = await Cart.findOne({ User: userId });
-    const Productsdata=await Products.findOne({ _id: productId});
+    const productData = await Products.findOne({ _id: productId });
 
-    if (!Productsdata || Productsdata.Stock <= 0) {
-      return res.json({ success:true});
+    if (!productData || productData.Stock <= 0) {
+      return res.json({ success: false, message: "Product out of stock" });
     }
-   
-    
 
+    const productExist = await Cart.findOne({
+      User: userId,
+      "Items.Products": productId,
+    });
+
+    if (productExist) {
+      return res.json({ success: false, message: "Product already in the cart" });
+    }
 
     if (!cartExist) {
       const newCart = new Cart({
@@ -55,31 +59,25 @@ async function productAddtocart(productId, userId,res) {
       }
     }
 
-   const discount=cartExist.DiscountAmount
-   
-   let totals=0
-   
-   if(Productsdata.isOffer){
-      totals=Productsdata.DiscountPrice
-  }else{
-     totals = await calculateTotalPrice(userId);
-  }
+    const discount = cartExist.DiscountAmount;
+    let total = 0;
 
+    if (productData.isOffer) {
+      total = productData.DiscountPrice;
+    } else {
+      total = await calculateTotalPrice(userId);
+    }
 
-    const totalAmount = totals-discount;
-      
+    const totalAmount = total - discount;
 
     await Cart.updateOne({ User: userId }, { $set: { TotalAmount: totalAmount } });
 
-    res.json({ status: true });
+    res.json({ status: true, message: "Product added to cart successfully" });
   } catch (error) {
     console.log(error);
+    res.json({ success: false, message: "Error adding product to cart" });
   }
 }
-
-
-
-
 
 function calculateTotalPrice(userId) {
   return new Promise(async (resolve, reject) => {
@@ -90,12 +88,12 @@ function calculateTotalPrice(userId) {
 
       await Promise.all(
         cartData.Items.map(async (data) => {
-          let subtotal
+          let subtotal;
           let productData = await Products.findOne({ _id: data.Products });
-          if(productData.isOffer){
-             subtotal = productData.DiscountPrice * data.Quantity;
-          }else{
-             subtotal = productData.Price * data.Quantity;
+          if (productData.isOffer) {
+            subtotal = productData.DiscountPrice * data.Quantity;
+          } else {
+            subtotal = productData.Price * data.Quantity;
           }
           Total += subtotal;
         })

@@ -19,26 +19,26 @@ const uploadObj = [
 ];
 
 router.get("/adminlogin", adminController.loadAdminLogin);
-router.post("/adminlogin", adminController.loginAdmin);
+router.post("/adminloginpost", adminController.loginAdmin);
 router.get("/admin", checkAdminAuth, adminController.LoadAdminDash);
-router.get('/count-orders-by-day', adminController.getCount)
-router.get('/count-orders-by-month', adminController.getCount)
-router.get('/count-orders-by-year', adminController.getCount)
-router.get('/latestOrders', adminController.getOrdersAndSellers)
+router.get('/count-orders-by-day',checkAdminAuth, adminController.getCount)
+router.get('/count-orders-by-month',checkAdminAuth, adminController.getCount)
+router.get('/count-orders-by-year',checkAdminAuth, adminController.getCount)
+router.get('/latestOrders',checkAdminAuth, adminController.getOrdersAndSellers)
 router.get("/manageProduct", checkAdminAuth, productController.LoadmanageProduct);
 router.get("/addproduct", checkAdminAuth, productController.LoadaddProduct);
-router.post("/addProduct", productUpload.fields(uploadObj), productController.addProduct);
+router.post("/addProduct",checkAdminAuth, productUpload.fields(uploadObj), productController.addProduct);
 router.get("/editProduct", checkAdminAuth, productController.editProductLoad);
-router.post("/editProduct", productUpload.fields(uploadObj), productController.UpdateProduct);
-router.get("/deleteProduct", productController.softDeleteProduct);
+router.post("/editProduct",checkAdminAuth, productUpload.fields(uploadObj), productController.UpdateProduct);
+router.get("/deleteProduct",checkAdminAuth, productController.softDeleteProduct);
 router.get("/manageUser", checkAdminAuth, adminController.manageUser);
-router.post("/blockUnblockUser", adminController.blockUnblockUser);
+router.post("/blockUnblockUser",checkAdminAuth, adminController.blockUnblockUser);
 router.get("/manageCategory", checkAdminAuth, categoryController.LoadmanageCategory);
 router.get("/addCategory", checkAdminAuth, categoryController.LoadaddCategory);
-router.post("/addCategory", categoryController.addCategory);
+router.post("/addCategory",checkAdminAuth, categoryController.addCategory);
 router.get("/editCategory", checkAdminAuth, categoryController.LoadEditCategory);
-router.post("/editCategory", categoryController.UpdateCategory);
-router.get("/deleteCategory", categoryController.softDeleteCategory);
+router.post("/editCategory",checkAdminAuth, categoryController.UpdateCategory);
+router.get("/deleteCategory",checkAdminAuth, categoryController.softDeleteCategory);
 router.get("/orders", checkAdminAuth, orderController.LoadOrders);
 router.get("/orderdetails", checkAdminAuth, orderController.Orderdetails);
 router.post("/updateOrderStatus/:orderId", checkAdminAuth, orderController.UpdateOrderStatus);

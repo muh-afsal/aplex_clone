@@ -5,4 +5,6 @@ const checkAdminAuth=(req,res,next)=>{
         res.redirect('/admin/adminlogin')
     }
 }
+
+
 module.exports={checkAdminAuth}

@@ -6,6 +6,9 @@
     <body>
 
         <%-include("./partials/nav-after-login.ejs")%>
+        <div style="display: flex;justify-content: center;margin-top: 20px;">
+            <h2 style="font-weight: 700;">Edit Profile</h2>
+                  </div>
             <div class="profile_container container-fluid">
 
                 <div class="userDetails_container ">
@@ -20,7 +23,7 @@
                                 <div class="text-danger " style="font-size: small; " id="mainImageError"></div>
 
                                 <input name="image" type="file" accept="image/*" id="file"
-                                    onchange="previewImage('file','profile_image')" class="file-input">
+                                    onchange="handleImageSelection('file','profile_image', 'mainImageError')" class="file-input">
 
                             </div>
                             <h3 id="userName">
@@ -74,6 +77,44 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+
+    function handleImageSelection(inputId, imageId, errorId) {
+        const input = document.getElementById(inputId);
+        const imageContainer = document.getElementById(imageId);
+        const errorContainer = document.getElementById(errorId);
+
+        if (input.files && input.files[0]) {
+            const allowedFormats = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/bmp',
+                'image/tiff',
+                'image/webp',
+                'image/svg+xml',
+                'image/x-icon',
+                'image/vnd.microsoft.icon',
+                'image/vnd.wap.wbmp',
+                'image/apng',
+                'image/x-ms-bmp',
+                'image/jp2',
+                'image/jpx',
+                'image/jpm'
+            ];
+            const selectedFormat = input.files[0].type;
+
+            if (allowedFormats.includes(selectedFormat)) {
+                previewImage(inputId, imageId);
+                errorContainer.innerText = '';
+            } else {
+                errorContainer.innerText = 'Select a valid image format (JPEG, PNG, GIF)';
+                input.value = ''; // Clear the file input
+                imageContainer.style.backgroundImage = ''; // Clear the background image
+            }
+        }
+    }
+
 </script>
 
 
@@ -83,7 +124,7 @@
                 const username = document.getElementById('name').value.trim();
                 const phone = document.getElementById('phone').value.trim();
         
-                const usernameRegex = /^[a-zA-Z]+$/;
+                const usernameRegex = /^[a-zA-Z\s]+$/;
         
                 const phoneRegex = /^(?!0+$)(?!9+$)\d{10}$/;
         
@@ -93,7 +134,7 @@
                     document.getElementById('nameError').innerText = 'Username cannot be empty';
                     isValid = false;
                 } else if (!usernameRegex.test(username)) {
-                    document.getElementById('nameError').innerText = 'Invalid characters in username';
+                    document.getElementById('nameError').innerText = 'The username should only contain letters';
                     isValid = false;
                 } else {
                     document.getElementById('nameError').innerText = '';

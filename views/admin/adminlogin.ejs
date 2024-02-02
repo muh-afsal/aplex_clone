@@ -22,7 +22,7 @@
                 <% if( typeof message !=="undefined"){%>         
                     <p class="text-center text-danger" style="font-size: small;">  <%- message %> <a class="text-decoration-none text-dark close" href="/admin/adminlogin">x</a></p>
                  <% }%>
-                <form action="/admin/adminlogin" id="form" method="POST">
+                <form action="/admin/adminloginpost" id="form" method="POST">
                     <div class="form-group py-2 ">
                         <input  type="text" class="form-control entry shadow-none"  placeholder="Email Address"  name="email" id="email">
                        

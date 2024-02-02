@@ -5,27 +5,36 @@ const User = require("../model/collections/usermodel");
 const Admin = require("../model/collections/adminmodel");
 const order = require("../model/collections/ordermodel");
 const moment=require("moment")
+
+
+
+
+
+
+
 // Load admin login
 const loadAdminLogin = async (req, res) => {
-
   try {
     if (req.session && req.session.adminAuth) {
       res.redirect("/admin/admin");
-    } else {
-    
-      if (req.session && req.session.logged) {
-        const admin = await Admin.findOne({ email: req.session.email });
-        if (admin) {
-          res.redirect("/admin"); 
-        }
+    } else if (req.session && req.session.logged) {
+      const admin = await Admin.findOne({ email: req.session.email });
+      if (admin) {
+        res.redirect("/admin");
       } else {
         res.render("../views/admin/adminlogin");
       }
+    } else {
+      res.render("../views/admin/adminlogin");
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).send('Internal Server Error');
   }
 };
+
+
+
 
 // Admin login
 const loginAdmin = async (req, res) => {

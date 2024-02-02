@@ -41,9 +41,7 @@
           height: auto!important;
         }
 
-        .icons {
-               color: #4461F2;
-        }
+       
 
         /* Add this style for hovering color for links */
         .nav_link:hover {
@@ -68,7 +66,7 @@
 
 <body>
     <div id="body-pd">
-        <header class="header" id="header" style="    border-radius: 13px; ">
+        <header class="header" id="header" style="    border-radius: 13px; background: transparent;">
             <div class="header_toggle" style="color: black;"> <i class='bx bx-menu' id="header-toggle"></i> </div>
             <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
         </header>
@@ -133,16 +131,11 @@
                     bodypd = document.getElementById(bodyId),
                     headerpd = document.getElementById(headerId)
 
-                // Validate that all variables exist
                 if (toggle && nav && bodypd && headerpd) {
                     toggle.addEventListener('click', () => {
-                        // show navbar
                         nav.classList.toggle('show')
-                        // change icon
                         toggle.classList.toggle('bx-x')
-                        // add padding to body
                         bodypd.classList.toggle('body-pd')
-                        // add padding to header
                         headerpd.classList.toggle('body-pd')
                     })
                 }
@@ -161,7 +154,6 @@
             }
             linkColor.forEach(l => l.addEventListener('click', colorLink))
 
-            // Your code to run since DOM is loaded and ready
         });
     </script>
 </body>
