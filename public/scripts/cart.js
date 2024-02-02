@@ -76,6 +76,7 @@ function addToCart(e, productId) {
 
 function updatequantity(productId, stock, change) {
     const productPrice = parseInt(document.getElementById(`Price_${productId}`).textContent, 10);
+    let currentTotal = parseInt( document.getElementById("total").textContent,10)
 
     const newQuantity = parseInt(document.getElementById(`number_${productId}`).value, 10) + change;
     if (newQuantity <= stock && newQuantity >= 1) {
@@ -84,33 +85,42 @@ function updatequantity(productId, stock, change) {
 
         const subtotalelement = document.getElementById(`Subtotal_${productId}`);
         const cartTotal_subtotalelement = document.getElementById(`cartTotal-Subtotal`);
+        const totaldiv= document.getElementById("total")
         subtotalelement.textContent = `${Subtotaldisplay}/-`;
 
-        let currentTotal = document.getElementById("total").textContent;
-        if (change == 1) {
-            document.getElementById("total").textContent = Number(currentTotal) + Number(productPrice);
-            cartTotal_subtotalelement.textContent = Number(currentTotal) + Number(productPrice);
-        } else {
-            document.getElementById("total").textContent = Number(currentTotal) - Number(productPrice);
-            let subTotalcart = Number(currentTotal) - Number(productPrice);
-            cartTotal_subtotalelement.textContent = `${subTotalcart}/-`;
-        }
-
+       
         fetch(`/updatequantity/${productId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ newQuantity }),
         })
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.status) {
-                    document.getElementById(`number_${productId}`).value = newQuantity;
-                } else {
-                    console.log('Error updating quantity');
-                }
-            });
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.status) {
+
+        if (change == 1) {
+            totaldiv.textContent = Number(currentTotal) + Number(productPrice);
+            cartTotal_subtotalelement.textContent = Number(currentTotal) + Number(productPrice);
+        } else {
+            totaldiv.textContent = Number(currentTotal) - Number(productPrice);
+            let subTotalcart = Number(currentTotal) - Number(productPrice);
+            cartTotal_subtotalelement.textContent = `${subTotalcart}/-`;
+        }
+
+
+                document.getElementById(`number_${productId}`).value = newQuantity;
+
+                const updatedCart = res.updatedCart;
+                document.getElementById("cartTotal-Subtotal").textContent = `${updatedCart.TotalAmount}/-`;
+
+
+            } else {
+                console.log('Error updating quantity');
+            }
+        });
     }
 }
+
 
 function removeProduct(productId,rowId,rowtoremove) {    
    

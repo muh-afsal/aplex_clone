@@ -88,15 +88,20 @@ const updateQuantity = async (req, res) => {
 
     await userCart.save();
 
+    // Return updated cart information
+    const updatedCart = await Cart.findOne({ User: userId }).populate('Items.Products');
+    
     return res.json({
       status: true,
       message: "Quantity updated successfully",
+      updatedCart: updatedCart,
     });
   } catch (error) {
     console.log(error);
     return res.json({ status: false, message: "Error updating quantity" });
   }
 };
+
 
 const removeProduct = async (req, res) => {
   try {
