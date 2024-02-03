@@ -111,19 +111,22 @@ const UpdateCategory = async (req, res) => {
 const softDeleteCategory = async (req, res) => {
   try {
     const id = req.query.id;
-    const result = await category.deleteOne({ _id: id });
+    const result = await category.updateOne({ _id: id }, { Status: false });
 
-    if (result.deletedCount === 1) {
+    if (result.nModified === 1) {
       res.redirect("/admin/manageCategory");
     } else {
-      res.render("../views/admin/editcategory", {
-        errmessage: "Error during delete",
+      const category1 = await category.find({ Status: true }).sort({ date: -1 });
+      res.render("../views/admin/managecategory", {
+        errmessage: "Soft delete failed",
+        category: category1
       });
     }
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 module.exports = {
   LoadmanageCategory,

@@ -27,17 +27,7 @@
 </style>
 <body>
     <%-include("./partials/side-bar.ejs")%>
-    <!-- <div class=" search-nav">
-        <div>
-          
-        </div>
-        <div class="search-bars" style="margin-left: 26vw; margin-top: 20px;">
-            <input type="text" style="border:none;    height: 36px;" class="form-control rounded-pill shadow-none" placeholder="Search...">
-            <div class="search-icon" style="color: #4461F2;" >
-                <i class="fas fa-search"  ></i>
-            </div>
-        </div>
-    </div> -->
+    
     <div class="category-text-container container-fluid" style="display: flex; justify-content: space-between;">
              <h4 style="    margin-top: 11px;" id="ManageProduct-text" >Manage Category</h4>
              <button type="submit " value="submit" class="btn" id="login-btn" style="float: right;"><a href="/admin/addCategory" style="text-decoration: none; color: #fff;" >Add Category</a></button>
@@ -72,7 +62,7 @@
                                 <span class="icon"  style="    float: right;"><a class="text-decoration-none text-secondary" href="/admin/editCategory?id=<%=data._id%>">&#9998;</a></span>
                               </td>
                               <td class="edits">
-                                <span class="icon ml-3 delete"  style="    float: right;"><a class="text-decoration-none text-danger " href="/admin/deleteCategory?id=<%=data._id%>" onclick="return confirm('Are you sure')">&#128465;</a></span>
+                                <span class="icon ml-3 delete"  style="    float: right;"><a class="text-decoration-none text-danger " href="/admin/deleteCategory?id=<%=data._id%>" >&#128465;</a></span>
                               </td>
                             </tr>
                               <%})%>

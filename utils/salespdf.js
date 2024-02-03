@@ -73,7 +73,7 @@ module.exports = {
         }
       } catch (error) {
         console.error('Error generating report:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Internal Server Error',error);
       }
     },
 };

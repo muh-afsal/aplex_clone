@@ -203,7 +203,7 @@ const DeleteCategoryOffer = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Category offer not found' });
     }
 
-    const productsInCategory = await Products.find({ "Category.name": categoryOffer.CategoryName });
+    const productsInCategory = await Products.find({ Category: categoryOffer.CategoryName });
 
     const updateProductsPromises = productsInCategory.map(async (product) => {
       if (product.Offertype === 'categoryoffer') {
@@ -223,9 +223,10 @@ const DeleteCategoryOffer = async (req, res) => {
     res.json({ success: true, message: 'Category offer deleted successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: 'Some error Occured while deleting!' });
+    res.status(500).json({ success: false, message: 'Some error occurred while deleting!' });
   }
 };
+
 
 const EditCategoryOffer = async (req, res) => {
   try {
@@ -283,7 +284,7 @@ const AddProductOffer = async (req, res) => {
     if (existingProductOffer) {
       const ProductsData = await Products.find  ({isdeleted:false});
       const Offerdata = await ProductOffers.find();
-      return res.render('../views/admin/manageproductoffers.ejs', {ProductsData,Offerdata, errorMessage: 'Category with this name already exists.'});
+      return res.render('../views/admin/manageproductoffers.ejs', {ProductsData,Offerdata, errorMessage: 'Product offer for this Product already exists.'});
     }
 
     const newProductOffer = new ProductOffers({

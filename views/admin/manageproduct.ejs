@@ -59,7 +59,12 @@
                                         <%=data.Name%>
                                     </td>
                                     <td>
-                                        <%= data.Category.name%>
+                                        
+                                            <% if (data.Category) { %>
+                                                <%= data.Category.name %>
+                                            <% }%>
+                                        
+                                        
                                     </td>
                                     <td>
                                         <%=data.Stock%>

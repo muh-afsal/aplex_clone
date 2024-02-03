@@ -252,167 +252,120 @@
 
 
         <script>
-            function isEmpty(value) {
-                const trimmedValue = value.trim();
-                return trimmedValue === "";
-            }
-
-          
-
             function SubmitEditform(event, id) {
-             
-
                 const DiscountValueInput = document.querySelector("#OfferePersentage_" + id);
                 const DiscountValueValue = DiscountValueInput.value;
-                const DiscountValueError = document.querySelector("#OfferePersentageError_" + id)
-
+                const DiscountValueError = document.querySelector("#OfferePersentageError_" + id);
+        
                 const expiringDateInput = document.querySelector("#newexpiringDate_" + id);
                 const expiringDateValue = expiringDateInput.value;
                 const expiringDateError = document.querySelector("#newexpiringDateError_" + id);
-
-
+        
                 DiscountValueError.textContent = "";
                 expiringDateError.textContent = "";
-
-
+        
                 if (isEmpty(DiscountValueValue)) {
-                    DiscountValueError.textContent = "Discount Value is required ! ";
+                    DiscountValueError.textContent = "Discount Value is required!";
                     event.preventDefault();
                 }
                 if (isEmpty(expiringDateValue)) {
-                    expiringDateError.textContent = "Ending Date is Required !";
+                    expiringDateError.textContent = "Expiring Date is Required!";
                     event.preventDefault();
                 }
-
-
-                // validating the amount 
-               
-                const isDateRangeValid = validatDateRange( expiringDateValue, expiringDateError);
-
-
-
-                // validaring the date 
-                function validatDateRange( endDate,endError) {
-                    startError.textContent = "";
+        
+                const isDateRangeValid = validateDateRange(expiringDateValue, expiringDateError);
+        
+                function validateDateRange(endDate, endError) {
                     endError.textContent = "";
-
+        
                     const todaysDate = new Date();
                     todaysDate.setHours(0, 0, 0, 0);
-
+        
                     const endDateVal = new Date(endDate);
                     endDateVal.setHours(0, 0, 0, 0);
-
-                    if (startDateVal > endDateVal) {
-                        endError.textContent = "The expiration date cannot be before the starting date!";
+        
+                    if (todaysDate >= endDateVal) {
+                        endError.textContent = "The expiration date cannot be on or before the current date!";
                         event.preventDefault();
                         return false;
                     }
-
+        
                     return true;
                 }
-
-
             }
-
         </script>
+        
 
 
 
         
-    <!------------------------ validation for add Category offer  ----------------------->
+    <!------------------------ validation for add product offer  ----------------------->
     <script>
-    function isEmpty(value) {
-                    const trimmedValue = value.trim();
-                    return trimmedValue === "";
-                }
-
-
         document.getElementById("addform").addEventListener("submit", function (event) {
-
-
-               
-       
             const CategoryNameInput = document.querySelector("#SelectCategory");
-           const CategoryNameValue = CategoryNameInput.options[CategoryNameInput.selectedIndex].value;
-           const CategoryNameError = document.querySelector("#selectCategoryError");
-
-
-
+            const CategoryNameValue = CategoryNameInput.options[CategoryNameInput.selectedIndex].value;
+            const CategoryNameError = document.querySelector("#selectCategoryError");
+    
             const OfferPerInput = document.querySelector("#OfferePersentage");
             const OfferPerValue = OfferPerInput.value;
             const OfferPerError = document.querySelector("#OfferePersentageError");
-            
-
+    
             const newexpiringDateInput = document.querySelector("#newexpiringDate");
             const newexpiringDateValue = newexpiringDateInput.value;
             const newexpiringDateError = document.querySelector("#newexpiringDateError");
-            
-
-
-
-
-
-              CategoryNameError.textContent = "";
-              OfferPerError.textContent = "";
-              newexpiringDateError.textContent = "";
-
-
-            if (CategoryNameValue==="Choose...") {
-                CategoryNameError.textContent = "Select a Category Name !";
+    
+            CategoryNameError.textContent = "";
+            OfferPerError.textContent = "";
+            newexpiringDateError.textContent = "";
+    
+            if (CategoryNameValue === "Choose...") {
+                CategoryNameError.textContent = "Select a Category Name!";
                 event.preventDefault();
             }
             if (isEmpty(OfferPerValue)) {
-                OfferPerError.textContent = "Offer Persentage is required ! ";
+                OfferPerError.textContent = "Offer Percentage is required!";
                 event.preventDefault();
             }
-
-            if (isNaN(OfferPerValue) || OfferPerValue < 1 || OfferPerValue > 100) {
-            OfferPerError.textContent = "Offer Persentage must be between 1 and 100!";
-            event.preventDefault();
-        }
-
-           
+    
+            if (isNaN(OfferPerValue) || OfferPerValue < 1 || OfferPerValue >= 100) {
+                OfferPerError.textContent = "Offer Percentage must be above 0 and below 100!";
+                event.preventDefault();
+            }
+    
             if (isEmpty(newexpiringDateValue)) {
-                newexpiringDateError.textContent = "Ending Date is Required !";
+                newexpiringDateError.textContent = "Expiring Date is Required!";
                 event.preventDefault();
             }
-
-
-        if(newexpiringDateValue || newstartDateValue){
-            const isDateRangeValid = validatnewDateRange( newexpiringDateValue,newexpiringDateError);
-        }
-
-            
-
-
-            // validaring the date 
-            function validatnewDateRange( endDate,endError) {
-                
+    
+            if (newexpiringDateValue) {
+                const isDateRangeValid = validateNewDateRange(newexpiringDateValue, newexpiringDateError);
+            }
+    
+            function validateNewDateRange(endDate, endError) {
                 endError.textContent = "";
-
+    
                 const todaysDate = new Date();
                 todaysDate.setHours(0, 0, 0, 0);
-
-                
-
+    
                 const endDateVal = new Date(endDate);
                 endDateVal.setHours(0, 0, 0, 0);
-                
-                        if (startDateVal > endDateVal) {
-                            endError.textContent = "The expiration date cannot be before the starting date!";
-                            event.preventDefault();
-                            return false;
-                        }
-
+    
+                if (todaysDate >= endDateVal) {
+                    endError.textContent = "The expiration date cannot be on or before the current date!";
+                    event.preventDefault();
+                    return false;
+                }
+    
                 return true;
             }
-
-        })
-
-
-
-
-    </script>   
+        });
+    
+        function isEmpty(value) {
+            const trimmedValue = value.trim();
+            return trimmedValue === "";
+        }
+    </script>
+      
      <script>
         function confirmDelete(offerId,rowId) {
             fetch(`/admin/deleteproductOffer/${offerId}`, {
