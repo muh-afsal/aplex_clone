@@ -2,6 +2,8 @@ const fs = require('fs');
 const exceljs = require('exceljs');
 const dateFns = require('date-fns');
 const PDFDocument = require('pdfkit');
+const htmlToPdf = require('html-pdf');
+const ejs = require('ejs');
 
 module.exports = {
     downloadReport: async (req, res, orders, startDate, endDate, totalSales, format) => {
@@ -12,23 +14,23 @@ module.exports = {
             const totalAmount = parseInt(totalSales);
 
             if (format === 'pdf') {
-                const pdfDoc = new PDFDocument();
-                res.setHeader('Content-Disposition', `attachment; filename="sales-report-${formattedStartDate}-${formattedEndDate}.pdf"`);
-                pdfDoc.pipe(res);
+                const template = fs.readFileSync('./utils/salesreportpdftemplate.ejs', 'utf-8');
+                const compiledTemplate = ejs.compile(template);
+                const htmlContent = compiledTemplate({ startDate, endDate, orders, totalAmount });
 
-                // Add your PDF content here using pdfDoc
-                pdfDoc.text(`Sales Report from ${startDate} to ${endDate}`);
-                orders.forEach(order => {
-                    pdfDoc.text(`Order ID: ${order.orderNumber}`);
-                    pdfDoc.text(`Date: ${order.OrderDate ? new Date(order.OrderDate).toLocaleDateString() : ''}`);
-                    pdfDoc.text(`Total Amount: ${order.TotalPrice !== undefined ? order.TotalPrice.toFixed(2) : ''}`);
-                    pdfDoc.text(`Payment Method: ${order.paymentMethod}`);
-                    pdfDoc.moveDown(); // Move to the next line
+                const pdfBuffer = await new Promise((resolve, reject) => {
+                    htmlToPdf.create(htmlContent).toBuffer((err, buffer) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(buffer);
+                        }
+                    });
                 });
 
-                pdfDoc.text(`Total Sales Amount: ${totalAmount.toFixed(2)}`);
-
-                pdfDoc.end();
+                res.setHeader('Content-Disposition', `attachment; filename="sales-report-${formattedStartDate}-${formattedEndDate}.pdf"`);
+                res.setHeader('Content-Type', 'application/pdf');
+                res.send(pdfBuffer);
             } else if (format === 'excel') {
                 const workbook = new exceljs.Workbook();
                 const worksheet = workbook.addWorksheet('Sales Report');
