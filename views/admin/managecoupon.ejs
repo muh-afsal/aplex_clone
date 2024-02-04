@@ -188,7 +188,7 @@
                                                                     <label for="DiscountValue"
                                                                         style="color: #000000; font-size: smaller; margin-left: 30px;">Discount
                                                                         Price</label>
-                                                                    <input min="1" id="DiscountValue_<%= data._id%>"
+                                                                    <input  id="DiscountValue_<%= data._id%>"
                                                                         type="number" value="<%=data.DiscountValue%>"
                                                                         class="Entry"
                                                                         placeholder="Enter the Discount Price"
@@ -200,7 +200,7 @@
                                                                     <label for="minPurchaceAmount"
                                                                         style="color: #000000; font-size: smaller; margin-left: 30px;">Minimum
                                                                         Purchase Amount</label>
-                                                                    <input min="1" id="minPurchaceAmount_<%= data._id%>"
+                                                                    <input  id="minPurchaceAmount_<%= data._id%>"
                                                                         type="number"
                                                                         value="<%=data.MinPurchaseAmount%>"
                                                                         class="Entry" placeholder="Enter Amount"
@@ -213,7 +213,7 @@
                                                                     <label for="maxPurchaceAmount"
                                                                         style="color: #000000; font-size: smaller; margin-left: 30px;">Maximum
                                                                         Purchase Amount</label>
-                                                                    <input min="1" id="maxPurchaceAmount_<%= data._id%>"
+                                                                    <input  id="maxPurchaceAmount_<%= data._id%>"
                                                                         type="number"
                                                                         value="<%=data.MaxPurchaseAmount%>"
                                                                         class="Entry" placeholder="Enter Amount"
@@ -416,15 +416,24 @@
         // validating the amount 
         const isAmountValid = validatePurchaseAmounts(minPurchaceAmountValue, maxPurchaseAmountValue, minPurchaceAmountError, maxPurchaseAmountError);
         const isDateRangeValid = validatDateRange(startDateValue, expiringDateValue, startDateError, expiringDateError);
-        const isdiscountAmountValid = validateDiscountValue(DiscountValueValue, DiscountValueError, maxPurchaseAmountValue);
+        const isdiscountAmountValid = validateDiscountValue(DiscountValueValue, DiscountValueError, maxPurchaseAmountValue,minPurchaceAmountValue);
 
         function validatePurchaseAmounts(minAmount, maxAmount, minError, maxError) {
-            minError.textContent = "";
-            maxError.textContent = "";
+            
 
             const minVal = parseFloat(minAmount);
             const maxVal = parseFloat(maxAmount);
 
+            if (minVal <=0 ) {
+                minError.textContent = "Enter a valid positive Number!";
+                event.preventDefault();
+            return false;
+        }
+            if (maxVal <=0 ) {
+                maxError.textContent = "Enter a valid positive Number!";
+                event.preventDefault();
+            return false;
+        }
             if (minVal >= maxVal) {
                 maxError.textContent = "The maximum purchase amount cannot be less than or equal to the minimum purchase amount!";
                 event.preventDefault();
@@ -436,8 +445,7 @@
 
         // validating the date 
         function validatDateRange(startDate, endDate, startError, endError) {
-            startError.textContent = "";
-            endError.textContent = "";
+           
 
             const todaysDate = new Date();
             todaysDate.setHours(0, 0, 0, 0);
@@ -464,11 +472,21 @@
         }
 
         // validating discount value
-        function validateDiscountValue(discountValue, discountError, maxAmount) {
-            discountError.textContent = "";
+        function validateDiscountValue(discountValue, discountError, maxAmount,minAmount) {
+            
 
             const discountVal = parseFloat(discountValue);
 
+            if (discountVal  <=0 ) {
+            discountError.textContent = "Enter a valid positive Number!!";
+            event.preventDefault();
+            return false;
+        }
+        if (discountVal >= minAmount ) {
+            discountError.textContent = "Discount Price Cannot be greater than or equal to minimum Purchase amount!";
+            event.preventDefault();
+            return false;
+        }
             if (discountVal > maxAmount) {
                 discountError.textContent = "Discount Price Cannot be greater than maximum Purchase amount!";
                 event.preventDefault();
@@ -484,156 +502,143 @@
 
 
             <!------------------------ validation for add coupon  ----------------------->
-            <script>
-                document.getElementById("addform").addEventListener("submit", function (event) {
-
-                    const newCouponNameInput = document.querySelector("#newCouponName");
-                    const newCouponNameValue = newCouponNameInput.value;
-                    const newCouponNameError = document.querySelector("#newCouponNameError");
-
-                    const newDiscountValueInput = document.querySelector("#newDiscountValue");
-                    const newDiscountValueValue = newDiscountValueInput.value;
-                    const newDiscountValueError = document.querySelector("#newDiscountValueError");
-
-                    const newminPurchaceAmountInput = document.querySelector("#newminPurchaceAmount");
-                    const newminPurchaceAmountValue = newminPurchaceAmountInput.value;
-                    const newminPurchaceAmountError = document.querySelector("#newminPurchaceAmountError");
-
-                    const newmaxPurchaseAmountInput = document.querySelector("#newmaxPurchaseAmount");
-                    const newmaxPurchaseAmountValue = newmaxPurchaseAmountInput.value;
-                    const newmaxPurchaseAmountError = document.querySelector("#newmaxPurchaseAmountError");
-
-                    const newstartDateInput = document.querySelector("#newstartDate");
-                    const newstartDateValue = newstartDateInput.value;
-                    const newstartDateError = document.querySelector("#newstartDateError");
-
-                    const newexpiringDateInput = document.querySelector("#newexpiringDate");
-                    const newexpiringDateValue = newexpiringDateInput.value;
-                    const newexpiringDateError = document.querySelector("#newexpiringDateError");
-
-
-
-
-
-                    newCouponNameError.textContent = "";
-                    newDiscountValueError.textContent = "";
-                    newminPurchaceAmountError.textContent = "";
-                    newmaxPurchaseAmountError.textContent = "";
-                    newstartDateError.textContent = "";
-                    newexpiringDateError.textContent = "";
-
-
-                    if (isEmpty(newCouponNameValue)) {
-                        newCouponNameError.textContent = "Coupon Name is required!";
-                        event.preventDefault();
-                    }
-                    if (isEmpty(newDiscountValueValue)) {
-                        newDiscountValueError.textContent = "Discount Value is required ! ";
-                        event.preventDefault();
-                    }
-                    if (isEmpty(newminPurchaceAmountValue)) {
-
-                        newminPurchaceAmountError.textContent = "Minimum Purchase amount cannot be empty !";
-                        event.preventDefault();
-                    }
-                    if (isEmpty(newmaxPurchaseAmountValue)) {
-
-                        newmaxPurchaseAmountError.textContent = "Maximum Purchase amount cannot be empty !";
-                        event.preventDefault();
-                    }
-
-                    if (isEmpty(newstartDateValue)) {
-                        newstartDateError.textContent = "Starting Date is Required !";
-                        event.preventDefault();
-                    }
-                    if (isEmpty(newexpiringDateValue)) {
-                        newexpiringDateError.textContent = "Ending Date is Required !";
-                        event.preventDefault();
-                    }
-
-
-
-
-
-                    // validating the amount 
-                    const isAmountValid = validatenewPurchaseAmounts(newminPurchaceAmountValue, newmaxPurchaseAmountValue, newminPurchaceAmountError, newmaxPurchaseAmountError);
-                    const isDateRangeValid = validatnewDateRange(newstartDateValue, newexpiringDateValue, newstartDateError, newexpiringDateError);
-                    const isdiscountAmountValid = validatenewDiscountValue(newDiscountValueValue, newDiscountValueError, newmaxPurchaseAmountValue)
-
-                    function validatenewPurchaseAmounts(minAmount, maxAmount, minError, maxError) {
-                        minError.textContent = "";
-                        maxError.textContent = "";
-
-                        const minVal = parseFloat(minAmount);
-                        const maxVal = parseFloat(maxAmount);
-
-                        if (minVal >= maxVal) {
-                            maxError.textContent = "The maximum purchase amount cannot be less than or equal to the minimum purchase amount !";
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        return true;
-                    }
-
-
-                    // validaring the date 
-                    function validatnewDateRange(startDate, endDate, startError, endError) {
-                        startError.textContent = "";
-                        endError.textContent = "";
-
-                        const todaysDate = new Date();
-                        todaysDate.setHours(0, 0, 0, 0);
-
-                        const startDateVal = new Date(startDate);
-                        startDateVal.setHours(0, 0, 0, 0);
-
-                        const endDateVal = new Date(endDate);
-                        endDateVal.setHours(0, 0, 0, 0);
-
-
-
-                        if (startDateVal < todaysDate) {
-                            startError.textContent = "The Start date cannot be before the current Date!";
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        if (startDateVal > endDateVal) {
-                            endError.textContent = "The expiration date cannot be before the starting date!";
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        return true;
-                    }
-
-
-
-
-
-                    //validating discount value
-
-
-                    function validatenewDiscountValue(discountValue, discountError, maxAmount) {
-                        discountError.textContent = "";
-
-                        const discountVal = parseFloat(discountValue);
-
-                        if (discountVal > maxAmount) {
-                            discountError.textContent = "Discount Price Cannot be greater than maximum Purchase amount!";
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        return true;
-                    }
-                })
-
-
-
-
-            </script>
+            
+<script>
+    document.getElementById("addform").addEventListener("submit", function (event) {
+        const newCouponNameInput = document.querySelector("#newCouponName");
+        const newCouponNameValue = newCouponNameInput.value;
+        const newCouponNameError = document.querySelector("#newCouponNameError");
+    
+        const newDiscountValueInput = document.querySelector("#newDiscountValue");
+        const newDiscountValueValue = newDiscountValueInput.value;
+        const newDiscountValueError = document.querySelector("#newDiscountValueError");
+    
+        const newminPurchaceAmountInput = document.querySelector("#newminPurchaceAmount");
+        const newminPurchaceAmountValue = newminPurchaceAmountInput.value;
+        const newminPurchaceAmountError = document.querySelector("#newminPurchaceAmountError");
+    
+        const newmaxPurchaseAmountInput = document.querySelector("#newmaxPurchaseAmount");
+        const newmaxPurchaseAmountValue = newmaxPurchaseAmountInput.value;
+        const newmaxPurchaseAmountError = document.querySelector("#newmaxPurchaseAmountError");
+    
+        const newstartDateInput = document.querySelector("#newstartDate");
+        const newstartDateValue = newstartDateInput.value;
+        const newstartDateError = document.querySelector("#newstartDateError");
+    
+        const newexpiringDateInput = document.querySelector("#newexpiringDate");
+        const newexpiringDateValue = newexpiringDateInput.value;
+        const newexpiringDateError = document.querySelector("#newexpiringDateError");
+    
+        newCouponNameError.textContent = "";
+        newDiscountValueError.textContent = "";
+        newminPurchaceAmountError.textContent = "";
+        newmaxPurchaseAmountError.textContent = "";
+        newstartDateError.textContent = "";
+        newexpiringDateError.textContent = "";
+    
+        if (isEmpty(newCouponNameValue)) {
+            newCouponNameError.textContent = "Coupon Name is required!";
+            event.preventDefault();
+        }
+        if (isEmpty(newDiscountValueValue)) {
+            newDiscountValueError.textContent = "Discount Value is required ! ";
+            event.preventDefault();
+        }
+        if (isEmpty(newminPurchaceAmountValue)) {
+            newminPurchaceAmountError.textContent = "Minimum Purchase amount cannot be empty !";
+            event.preventDefault();
+        }
+        if (isEmpty(newmaxPurchaseAmountValue)) {
+            newmaxPurchaseAmountError.textContent = "Maximum Purchase amount cannot be empty !";
+            event.preventDefault();
+        }
+        if (isEmpty(newstartDateValue)) {
+            newstartDateError.textContent = "Starting Date is Required !";
+            event.preventDefault();
+        }
+        if (isEmpty(newexpiringDateValue)) {
+            newexpiringDateError.textContent = "Ending Date is Required !";
+            event.preventDefault();
+        }
+    
+        const isAmountValid = validatenewPurchaseAmounts(newminPurchaceAmountValue, newmaxPurchaseAmountValue, newminPurchaceAmountError, newmaxPurchaseAmountError);
+        const isDateRangeValid = validatnewDateRange(newstartDateValue, newexpiringDateValue, newstartDateError, newexpiringDateError);
+        const isdiscountAmountValid = validatenewDiscountValue(newDiscountValueValue, newDiscountValueError, newmaxPurchaseAmountValue,newminPurchaceAmountValue);
+    
+        if (!isAmountValid || !isDateRangeValid || !isdiscountAmountValid) {
+            event.preventDefault();
+        }
+    });
+    
+    function validatenewPurchaseAmounts(minAmount, maxAmount, minError, maxError) {
+      
+    
+        const minVal = parseFloat(minAmount);
+        const maxVal = parseFloat(maxAmount);
+    
+        if (minVal <=0 ) {
+            maxError.textContent = "Enter a valid positive Number!";
+            event.preventDefault();
+            return false;
+        }
+        if (minVal >= maxVal) {
+            maxError.textContent = "The maximum purchase amount cannot be less than or equal to the minimum purchase amount!";
+            event.preventDefault();
+            return false;
+        }
+    
+        return true;
+    }
+    
+    function validatnewDateRange(startDate, endDate, startError, endError) {
+    
+        const todaysDate = new Date();
+        todaysDate.setHours(0, 0, 0, 0);
+    
+        const startDateVal = new Date(startDate);
+        startDateVal.setHours(0, 0, 0, 0);
+    
+        const endDateVal = new Date(endDate);
+        endDateVal.setHours(0, 0, 0, 0);
+    
+        if (startDateVal < todaysDate) {
+            startError.textContent = "The Start date cannot be before the current Date!";
+            event.preventDefault();
+            return false;
+        }
+    
+        if (startDateVal > endDateVal) {
+            endError.textContent = "The expiration date cannot be before the starting date!";
+            event.preventDefault();
+            return false;
+        }
+    
+        return true;
+    }
+    
+    function validatenewDiscountValue(discountValue, discountError, maxAmount,minAmount) {
+    
+        const discountVal = parseFloat(discountValue);
+    
+        if (discountVal  <=0 ) {
+            discountError.textContent = "Enter a valid positive Number!";
+            event.preventDefault();
+            return false;
+        }
+        if (discountVal >= minAmount ) {
+            discountError.textContent = "Discount Price Cannot be greater than or equal to minimum Purchase amount!";
+            event.preventDefault();
+            return false;
+        }
+        if (discountVal >= maxAmount) {
+            discountError.textContent = "Discount Price Cannot be greater than or equal to maximum Purchase amount!";
+            event.preventDefault();
+            return false;
+        }
+    
+        return true;
+    }
+    </script>
 
 
 

@@ -382,9 +382,10 @@ const editAdress = async (req, res) => {
     address.country = country;
     address.pincode = pincode;
 
-    await userData.save();
-
-    res.redirect("/address");
+   await userData.save();
+    
+      res.redirect("/address");
+    
   } catch (error) {
     console.log(error.message);
   }

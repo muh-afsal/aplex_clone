@@ -256,12 +256,7 @@
 
                 <script>
 
-function limitDigits(input, maxLength) {
-            const value = input.value;
-            if (value.length > maxLength) {
-                input.value = value.slice(0, maxLength);
-            }
-        }
+
 
 
                     function ApplyCoupon() {
@@ -585,10 +580,20 @@ function limitDigits(input, maxLength) {
                         }
 
                     }
+                    function limitDigits(input, maxLength) {
+            const value = input.value;
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength);
+            }
+        }
 
                     function isEmpty(value) {
                         const trimmedValue = value.trim();
                         return trimmedValue === "";
+                    }
+                    function isOnlyLettersAndSpaces(value) {
+                        const regex = /^[a-zA-Z\s]+$/;
+                        return regex.test(value);
                     }
 
 
@@ -652,6 +657,25 @@ function limitDigits(input, maxLength) {
                         }
                         if (isEmpty(pincodeValue)) {
                             pincodeError.textContent = "Pincode is required";
+                            event.preventDefault();
+                        }
+                        if (!isOnlyLettersAndSpaces(shippingNameValue)) {
+                            shippingNameError.textContent = "Only characters are allowed as input";
+                            event.preventDefault();
+                        }
+                   
+                        if (!isOnlyLettersAndSpaces(cityValue)) {
+                            cityError.textContent = "Only characters are allowed as input";
+                            event.preventDefault();
+                        }
+                   
+                        if (!isOnlyLettersAndSpaces(stateValue)) {
+                            stateError.textContent = "Only characters are allowed as input";
+                            event.preventDefault();
+                        }
+                   
+                        if (!isOnlyLettersAndSpaces(countryValue)) {
+                            countryError.textContent = "Only characters are allowed as input";
                             event.preventDefault();
                         }
 
