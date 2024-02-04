@@ -1,72 +1,110 @@
-const ejs = require('ejs');
 const fs = require('fs');
 const exceljs = require('exceljs');
 const dateFns = require('date-fns');
-const pdf = require('html-pdf');
-const { generateTemplate } = require('./template');
+const PDFDocument = require('pdfkit');
+const ejs = require('ejs');
 
 module.exports = {
-    downloadReport: async (req, res, orders, startDate, endDate, totalSales, format) => {
-        const formattedStartDate = dateFns.format(new Date(startDate), 'yyyy-MM-dd');
-        const formattedEndDate = dateFns.format(new Date(endDate), 'yyyy-MM-dd');
+  downloadReport: async (req, res, orders, startDate, endDate, totalSales, format) => {
+    const formattedStartDate = dateFns.format(new Date(startDate), 'yyyy-MM-dd');
+    const formattedEndDate = dateFns.format(new Date(endDate), 'yyyy-MM-dd');
 
-        try {
-            const totalAmount = parseInt(totalSales);
+    try {
+      const totalAmount = parseInt(totalSales);
 
-            const html = generateTemplate(orders, startDate, endDate, totalAmount);
+      if (format === 'pdf') {
+        const pdfOptions = {
+          path: `public/sr-pdf/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`,
+        };
 
-            if (format === 'pdf') {
-                const pdfOptions = {
-                    format: 'Letter',
-                    orientation: 'portrait',
-                    border: '10mm',
-                    timeout: 60000, // Increase the timeout if needed
-                };
+        const doc = new PDFDocument();
+        const stream = fs.createWriteStream(pdfOptions.path);
+        doc.pipe(stream);
 
-                pdf.create(html, pdfOptions).toFile((err, pdfPath) => {
-                    if (err) {
-                        console.error('Error generating PDF:', err);
-                        res.status(500).send('Internal Server Error');
-                    } else {
-                        res.status(200).download(pdfPath.filename);
-                    }
-                });
-            } else if (format === 'excel') {
-                const workbook = new exceljs.Workbook();
-                const worksheet = workbook.addWorksheet('Sales Report');
+        // Add your PDF structure here based on your requirements
+        doc.fontSize(18).text(`Sales Report From ${startDate.toLocaleDateString('en-GB')} to ${endDate.toLocaleDateString('en-GB')}`, { align: 'center' });
 
-                worksheet.columns = [
-                    { header: 'Order ID', key: 'orderId', width: 25 },
-                    { header: 'Date', key: 'date', width: 25 },
-                    { header: 'Total Amount', key: 'totalamount', width: 25 },
-                    { header: 'Payment Method', key: 'paymentmethod', width: 25 },
-                ];
+        // Add table headers
+        doc.moveDown();
+        doc.font('Helvetica-Bold');
+        generateTableRow(doc, 100, 'No', 'Order ID', 'Order Date', 'Payment Method', 'Amount');
+        doc.font('Helvetica'); // Reset font
 
-                let totalSalesAmount = 0;
+        // Add table rows
+        let i = 0;
+        let sum = 0;
+        orders.forEach(order => {
+          doc.moveDown();
+          generateTableRow(doc, 100 + (i + 1) * 15, i + 1, order.orderNumber, order.OrderDate.toLocaleDateString('en-GB') + order.OrderDate.toLocaleTimeString(), order.paymentMethod, order.TotalPrice || 0);
+          i++;
+        });
 
-                orders.forEach(order => {
-                    worksheet.addRow({
-                        orderId: order.orderNumber,
-                        date: order.OrderDate ? new Date(order.OrderDate).toLocaleDateString() : '',
-                        totalamount: order.TotalPrice !== undefined ? order.TotalPrice.toFixed(2) : '',
-                        paymentmethod: order.paymentMethod,
-                    });
+        // Add total sales
+        doc.moveDown().text(`Total Sales: ${totalAmount.toFixed(2)}`, { align: 'right'});
 
-                    totalSalesAmount += order.TotalPrice !== undefined ? order.TotalPrice : 0;
-                });
 
-                worksheet.addRow({ totalamount: 'Total Sales Amount', paymentmethod: totalSalesAmount.toFixed(2) });
+        doc.end();
 
-                const excelFilePath = `public/sr-excel/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
-                await workbook.xlsx.writeFile(excelFilePath);
+        stream.on('finish', () => {
+          res.status(200).download(pdfOptions.path);
+        });
 
-                res.status(200).download(excelFilePath);
-            } else {
-                res.status(400).send('Invalid download format');
-            }
-        } catch (error) {
-            console.error('Error generating report:', error);
-            res.status(500).send('Internal Server Error');
-        }
-    },
+      } else if (format === 'excel') {
+        const workbook = new exceljs.Workbook();
+        const worksheet = workbook.addWorksheet('Sales Report');
+
+        worksheet.columns = [
+          { header: 'SL No', key: 'slno', width: 10 },
+          { header: 'Order ID', key: 'orderId', width: 25 },
+          { header: 'Order Date', key: 'orderDate', width: 25 },
+          { header: 'Payment Method', key: 'paymentMethod', width: 25 },
+          { header: 'Amount', key: 'amount', width: 20 },
+          { header: 'Grand Total', key: 'total', width: 20 },
+        ];
+
+        let totalSalesAmount = 0;
+
+        orders.forEach((order, index) => {
+          worksheet.addRow({
+            slno: index + 1,
+            orderId: order.orderNumber,
+            orderDate: order.OrderDate ? new Date(order.OrderDate).toLocaleDateString('en-US') : '',
+            paymentMethod: order.paymentMethod,
+            amount: (order.TotalPrice || 0).toFixed(2),  
+            
+          });
+
+          // totalSalesAmount += order.TotalPrice;
+        });
+
+        worksheet.addRow({ slno: '', orderId: '', orderDate: '', paymentMethod: '', amount: '',total: (totalAmount || 0).toFixed(2) });
+
+        const excelFilePath = `public/sr-excel/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
+        await workbook.xlsx.writeFile(excelFilePath);
+
+        res.status(200).download(excelFilePath);
+
+      } else {
+        res.status(400).send('Invalid download format');
+      }
+    } catch (error) {
+      console.error('Error generating report:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  },
 };
+
+function generateTableRow(doc, y, slno, orderId, orderDate, paymentMethod, amount) {
+  doc
+    .fontSize(12)
+    .text(slno.toString(), 50, y)
+    .text(orderId, 100, y)
+    .text(orderDate, 200, y)
+    .text(paymentMethod, 350, y) 
+    .text(parseFloat(amount).toFixed(2), 408, y, { align: 'right' })  
+    .moveTo(50, y + 15)
+    .lineTo(560, y + 15)
+    .lineWidth(0.5)
+    .strokeColor('#ccc')
+    .stroke();
+}
