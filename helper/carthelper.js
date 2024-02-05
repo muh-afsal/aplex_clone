@@ -9,7 +9,7 @@ async function productAddtocart(productId, userId, res) {
     if (!productData || productData.Stock <= 0) {
       return res.json({ success: false, message: "Product out of stock" });
     }
-
+ 
     const productExist = await Cart.findOne({
       User: userId,
       "Items.Products": productId,
@@ -58,19 +58,24 @@ async function productAddtocart(productId, userId, res) {
         );
       }
     }
+if(cartExist){
+  
+  const discount = cartExist.DiscountAmount;
+  console.log(discount,"-------------------")
+  let total = 0;
+  
+  if (productData.isOffer) {
+    total = productData.DiscountPrice;
+  } else {
+    total = await calculateTotalPrice(userId);
+  }
+  
+  const totalAmount = total - discount;
+  
+  await Cart.updateOne({ User: userId }, { $set: { TotalAmount: totalAmount } });
+}
 
-    const discount = cartExist.DiscountAmount;
-    let total = 0;
 
-    if (productData.isOffer) {
-      total = productData.DiscountPrice;
-    } else {
-      total = await calculateTotalPrice(userId);
-    }
-
-    const totalAmount = total - discount;
-
-    await Cart.updateOne({ User: userId }, { $set: { TotalAmount: totalAmount } });
 
     res.json({ status: true, message: "Product added to cart successfully" });
   } catch (error) {
