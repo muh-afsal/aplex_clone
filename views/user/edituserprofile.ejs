@@ -15,15 +15,14 @@
                     <form action="/editprofile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                         <div class="profile_img_container">
                             <div class="image_upload " style="display: flex; flex-direction: column;">
-                                <div id="profile_image"
-                                    style="background-size: contain; background-position: center; background-image: url(/profile-images/<%=userData.profileImage%>);">
-
+                                <div id="profile_image" style="display: flex; justify-content: center;align-items: center;">
+                                    <img id="imagespace" style=" height: 100%;"  src="/profile-images/<%=userData.profileImage%>" alt="">
                                 </div>
                                 <label for="file" class="custom-upload-btn">Upload Image</label>
                                 <div class="text-danger " style="font-size: small; " id="mainImageError"></div>
 
                                 <input name="image" type="file" accept="image/*" id="file"
-                                    onchange="handleImageSelection('file','profile_image', 'mainImageError')" class="file-input">
+                                    onchange="handleImageSelection('file','imagespace', 'mainImageError')" class="file-input">
 
                             </div>
                             <h3 id="userName">
@@ -62,21 +61,23 @@
 
             <!-- Add this script tag to your HTML file -->
 <script>
-    function previewImage(inputId, imageId) {
-     
-        const input = document.getElementById(inputId);
-        const imageContainer = document.getElementById(imageId);
-        
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+ function previewImage(inputId, imageId) {
+    const input = document.getElementById(inputId);
+    const imageContainer = document.getElementById(imageId);
 
-            reader.onload = function (e) {
-                imageContainer.style.backgroundImage = `url(${e.target.result})`;
-            };
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
 
-            reader.readAsDataURL(input.files[0]);
-        }
+        reader.onload = function (e) {
+            const imageDataUrl = e.target.result;
+
+            const imgElement = document.getElementById('imagespace');
+            imgElement.src = imageDataUrl;
+        };
+
+        reader.readAsDataURL(input.files[0]);
     }
+}
 
 
     function handleImageSelection(inputId, imageId, errorId) {

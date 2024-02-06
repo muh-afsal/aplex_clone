@@ -228,7 +228,7 @@ const otpverify = async (req, res) => {
           email: data.email,
           phone: data.phone,
           password: data.password,
-          profileImage: "usericons.png",
+          profileImage: "image-1702395018894usericons.png",
           date: Date.now(),
           ReferalID: referalID,
         });
@@ -273,7 +273,6 @@ const editUserProfile = async (req, res) => {
     const { username, phone } = req.body;
 
     const profileImage = req.file;
-    console.log(profileImage)
 
     const userData = await User.findOne({ email: req.session.email });
 

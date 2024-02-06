@@ -16,9 +16,8 @@
 
                 <div class="userDetails_container ">
                     <div class="profile_img_container">
-                        <div id="profile_image"
-                            style="background-size: contain; background-position: center; background-image: url(/profile-images/<%=userData.profileImage%>);">
-
+                        <div id="profile_image" style="display: flex; justify-content: center;align-items: center;">
+                            <img style=" height: 100%;"  src="/profile-images/<%=userData.profileImage%>" alt="">
                         </div>
                         <h3 id="userName">
                             <%=userData.username%> <br>
